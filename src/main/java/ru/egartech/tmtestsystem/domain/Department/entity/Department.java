@@ -1,4 +1,4 @@
-package ru.egartech.tmtestsystem.entity;
+package ru.egartech.tmtestsystem.domain.Department.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.egartech.tmtestsystem.domain.Employee.entity.Employee;
 
 import java.util.ArrayList;
 import java.util.List;

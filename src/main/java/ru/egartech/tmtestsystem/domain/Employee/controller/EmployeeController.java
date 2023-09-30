@@ -1,29 +1,27 @@
-package ru.egartech.tmtestsystem.controller;
+package ru.egartech.tmtestsystem.domain.Employee.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.egartech.tmtestsystem.entity.Department;
-import ru.egartech.tmtestsystem.entity.Employee;
-import ru.egartech.tmtestsystem.entity.TimeManagement;
-import ru.egartech.tmtestsystem.repository.DepartmentRepository;
-import ru.egartech.tmtestsystem.repository.EmployeeRepository;
-import ru.egartech.tmtestsystem.repository.TimeManagementRepository;
+import ru.egartech.tmtestsystem.domain.Department.entity.Department;
+import ru.egartech.tmtestsystem.domain.Employee.entity.Employee;
+import ru.egartech.tmtestsystem.domain.Department.repository.DepartmentRepository;
+import ru.egartech.tmtestsystem.domain.Employee.repository.EmployeeRepository;
+import ru.egartech.tmtestsystem.domain.TimeSheet.repository.TimeSheetRepository;
 
-import java.sql.Time;
 import java.util.List;
 
 @RestController
 @RequestMapping("api/v1")
 public class EmployeeController {
 
-    private TimeManagementRepository timeManagementRepository;
+    private TimeSheetRepository timeManagementRepository;
     private EmployeeRepository repository;
     private DepartmentRepository departmentRepository;
 
     public EmployeeController(EmployeeRepository repository, DepartmentRepository departmentRepository,
-                              TimeManagementRepository timeManagementRepository) {
+                              TimeSheetRepository timeManagementRepository) {
         this.repository = repository;
         this.departmentRepository = departmentRepository;
         this.timeManagementRepository = timeManagementRepository;
@@ -48,7 +46,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/time")
-    public List<TimeManagement> getAllTimes() {
+    public List<ru.egartech.tmtestsystem.domain.TimeSheet.entity.TimeSheet> getAllTimes() {
         return timeManagementRepository.findAll();
     }
 }

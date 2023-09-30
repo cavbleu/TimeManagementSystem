@@ -1,10 +1,12 @@
-package ru.egartech.tmtestsystem.entity;
+package ru.egartech.tmtestsystem.domain.Employee.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.egartech.tmtestsystem.domain.Department.entity.Department;
+import ru.egartech.tmtestsystem.domain.TimeSheet.entity.TimeSheet;
 
 import java.util.List;
 
@@ -37,7 +39,7 @@ public class Employee {
             joinColumns = @JoinColumn(name = "employee_id"),
             inverseJoinColumns = @JoinColumn(name = "time_management_id"))
     @JsonIgnoreProperties("employees")
-    private List<TimeManagement> timeManagement;
+    private List<TimeSheet> timeSheet;
 //    @ManyToMany
 //    @JoinTable(
 //            name = "employees_schedule",
