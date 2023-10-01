@@ -1,22 +1,18 @@
 package ru.egartech.tmsystem.domain.department.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.egartech.tmsystem.domain.employee.entity.Employee;
 
-@Setter
+import java.util.List;
+
 @Getter
+@Setter
+@NoArgsConstructor
 public class DepartmentDto {
-    private Long id;
-    private String name;
-    //Суммарное отработанное время
-    private String workTime;
-    //Суммарное продуктивное время
-    private String productiveTime;
-    //Суммарное время отвлечений от заданных целевых программ
-    private String distractionTime;
-    //Время потраченное на перерывы
-    private String restTime;
-    //Переработки - разница между отработанным временем и нормой рабочего времени.
-    //Может быть как положительным так и отрицательным
-    private String overTime;
+    //Название отдела
+    String name;
+    //Сотрудники отдела
+    List<Employee> employees;
 }
