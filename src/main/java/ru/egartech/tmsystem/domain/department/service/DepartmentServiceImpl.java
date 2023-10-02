@@ -12,8 +12,8 @@ import ru.egartech.tmsystem.domain.filter.dto.FilterDto;
 import ru.egartech.tmsystem.domain.limit.entitiy.Limit;
 import ru.egartech.tmsystem.domain.rest.entity.Rest;
 import ru.egartech.tmsystem.domain.timesheet.entity.TimeSheet;
+import ru.egartech.tmsystem.formatter.StatisticTimeFormatter;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +24,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     private final DepartmentRepository repository;
     private final DepartmentMapper departmentMapper;
+    private final StatisticTimeFormatter formatter;
 
     @Override
     public List<DepartmentSummaryDto> departmentsSummary(FilterDto filter, List<TimeSheet> timeSheets,
@@ -63,36 +64,11 @@ public class DepartmentServiceImpl implements DepartmentService {
             double overTimePercent = (double) (workTime * 100) / limit.getDefaultWorkTime() * days;
 
             departmentSummaryDto.setName(department.getName());
-            departmentSummaryDto.setWorkTime(String
-                    .format("%d ч %02d мин (%.1f ",
-                            Duration.ofMinutes(workTime).toHoursPart(),
-                            Duration.ofMinutes(workTime).toMinutesPart(),
-                            workTimePercent)
-                    .concat("%)"));
-            departmentSummaryDto.setProductiveTime(String
-                    .format("%d ч %02d мин (%.1f ",
-                            Duration.ofMinutes(productiveTime).toHoursPart(),
-                            Duration.ofMinutes(productiveTime).toMinutesPart(),
-                            productiveTimePercent)
-                    .concat("%)"));
-            departmentSummaryDto.setDistractionTime(String
-                    .format("%d ч %02d мин (%.1f ",
-                            Duration.ofMinutes(distractionTime).toHoursPart(),
-                            Duration.ofMinutes(distractionTime).toMinutesPart(),
-                            distractionTimePercent)
-                    .concat("%)"));
-            departmentSummaryDto.setRestTime(String
-                    .format("%d ч %02d мин (%.1f ",
-                            Duration.ofMinutes(restTime).toHoursPart(),
-                            Duration.ofMinutes(restTime).toMinutesPart(),
-                            restTimePercent)
-                    .concat("%)"));
-            departmentSummaryDto.setOverTime(String
-                    .format("%d ч %02d мин (%.1f ",
-                            Duration.ofMinutes(overTime).toHoursPart(),
-                            Duration.ofMinutes(overTimeMinutes).toMinutesPart(),
-                            overTimePercent)
-                    .concat("%)"));
+            departmentSummaryDto.setWorkTime(formatter.format(workTime, workTimePercent));
+            departmentSummaryDto.setProductiveTime(formatter.format(productiveTime, productiveTimePercent));
+            departmentSummaryDto.setDistractionTime(formatter.format(distractionTime, distractionTimePercent));
+            departmentSummaryDto.setRestTime(formatter.format(restTime, restTimePercent));
+            departmentSummaryDto.setOverTime(formatter.format(overTime, overTimeMinutes, overTimePercent));
 
             departmentsSummary.add(departmentSummaryDto);
         }
@@ -103,18 +79,20 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public List<DepartmentDto> findAll() {
         return repository.findAll().stream()
-                .map(departmentMapper::toDTO)
+                .map(departmentMapper::toDto)
                 .toList();
     }
 
     @Override
-    public Optional<DepartmentDto> findById(Long aLong) {
-        return Optional.empty();
+    public Optional<DepartmentDto> findById(Long id) {
+        return repository.findById(id)
+                .map(departmentMapper::toDto);
     }
 
     @Override
     public DepartmentDto save(DepartmentDto dto) {
-        return null;
+        Department department = repository.save(departmentMapper.toEntity(dto));
+        return departmentMapper.toDto(department);
     }
 
     @Override

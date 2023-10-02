@@ -1,8 +1,8 @@
 package ru.egartech.tmsystem.domain.helper;
 
-public interface EntityMapper<D, E> {
+public interface BaseMapper<D, E> {
 
     E toEntity(D dto);
-    D toDTO(E entity);
+    D toDto(E entity);
 
 }
