@@ -3,12 +3,10 @@ package ru.egartech.tmsystem.domain.helper;
 import java.util.List;
 import java.util.Optional;
 
-public interface BaseService<D, ID> {
-
-    List<D> findAll();
-    Optional<D> findById(ID id);
-    D save(D dto);
-    D updateById(ID id, D dto);
+public interface BaseService<T, ID> {
+    List<T> findAll();
+    Optional<T> findById(ID id);
+    T save(T dto);
+    T updateById(ID id, T dto);
     void deleteById(ID id);
-
 }

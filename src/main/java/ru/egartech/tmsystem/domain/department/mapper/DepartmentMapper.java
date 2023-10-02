@@ -6,6 +6,6 @@ import ru.egartech.tmsystem.domain.department.dto.DepartmentDto;
 import ru.egartech.tmsystem.domain.department.entity.Department;
 import ru.egartech.tmsystem.domain.helper.BaseMapper;
 
-@Mapper(componentModel = "spring", builder = @Builder(disableBuilder = true))
+@Mapper(componentModel = "spring")
 public interface DepartmentMapper extends BaseMapper<DepartmentDto, Department> {
 }

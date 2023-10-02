@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.egartech.tmsystem.domain.department.entity.Department;
+import ru.egartech.tmsystem.domain.position.entity.Position;
 import ru.egartech.tmsystem.domain.timesheet.entity.TimeSheet;
 
 import java.util.List;
@@ -20,14 +21,14 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "first_name")
-    private String firstName;
-    @Column(name = "last_name")
-    private String lastName;
+    @Column(name = "full_name")
+    private String fullName;
     @Column(name = "age")
     private int age;
-    @Column(name = "work_position")
-    private String workPosition;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("employees")
+    private Position position;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnoreProperties("employees")
@@ -41,11 +42,9 @@ public class Employee {
     @JsonIgnoreProperties("employees")
     private List<TimeSheet> timeSheet;
 
-    public Employee(String firstName, String lastName, int age, String workPosition, Department department) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public Employee(String fullName, int age, Department department) {
+        this.fullName = fullName;
         this.age = age;
-        this.workPosition = workPosition;
         this.department = department;
     }
 

@@ -31,7 +31,6 @@ public class TimeSheet {
     private String skipReason;
     @Column(name = "productive_time")
     private long productiveTime;
-
     @Temporal(TemporalType.TIME)
     @Column(name = "start_work")
     private LocalTime startWork;

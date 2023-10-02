@@ -27,26 +27,5 @@ public class EmployeeController {
         this.timeManagementRepository = timeManagementRepository;
     }
 
-    @GetMapping
-    public List<Employee> getAllEmployees() {
-        return repository.findAll();
-    }
 
-    @GetMapping("/departments")
-    public List<Department> getAllDepartments() {
-        return departmentRepository.findAll();
-    }
-
-    @PostMapping
-    public Employee save() {
-        Department department = departmentRepository.findById(2L).get();
-        Employee emp = new Employee("John", "Ceena", 21, "Security", department);
-        repository.save(emp);
-        return emp;
-    }
-
-    @GetMapping("/time")
-    public List<ru.egartech.tmsystem.domain.timesheet.entity.TimeSheet> getAllTimes() {
-        return timeManagementRepository.findAll();
-    }
 }

@@ -1,12 +1,12 @@
-package ru.egartech.tmsystem.domain.department.dto;
+package ru.egartech.tmsystem.domain.position.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @Getter
-public class DepartmentSummaryDto {
-    //Наименование отдела
+@Setter
+public class PositionSummaryDto {
+    //Наименование должности
     private String name;
     //Суммарное отработанное время
     private String workTime;
