@@ -2,8 +2,8 @@ package ru.egartech.tmsystem.service;
 
 import ru.egartech.tmsystem.model.dto.DepartmentDto;
 import ru.egartech.tmsystem.model.dto.DepartmentSummaryDto;
-import ru.egartech.tmsystem.domain.filter.dto.FilterDto;
-import ru.egartech.tmsystem.domain.helper.BaseService;
+import ru.egartech.tmsystem.model.dto.FilterDto;
+import ru.egartech.tmsystem.utils.BaseService;
 
 import java.util.List;
 

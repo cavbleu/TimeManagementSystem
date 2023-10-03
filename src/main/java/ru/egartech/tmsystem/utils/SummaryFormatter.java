@@ -3,6 +3,10 @@ package ru.egartech.tmsystem.utils;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.UtilityClass;
 import org.springframework.stereotype.Component;
+import ru.egartech.tmsystem.model.dto.EntityDto;
+import ru.egartech.tmsystem.model.dto.FilterDto;
+import ru.egartech.tmsystem.model.dto.SettingsDto;
+import ru.egartech.tmsystem.model.dto.SummaryDto;
 
 import java.time.Duration;
 
@@ -33,27 +37,28 @@ public class SummaryFormatter {
         return (double) minutes * 100 / percentFrom;
     }
 
-    public <T> T toSummaryDto( long workTime, long distractionTime, long restTime, long lunchTime, T t) {
+    public void toSummaryDto(long workTime, long distractionTime, long restTime, long lunchTime,
+                             SummaryDto summaryDto, EntityDto entityDto, FilterDto filter, SettingsDto settings) {
         long productiveTime = workTime - distractionTime - restTime - lunchTime;
         long days = Duration.between(filter.getStartPeriod(), filter.getEndPeriod()).toDays();
         long overTime = workTime - settings.getDefaultWorkTime() * days;
         long overTimeMinutes = overTime > 0 ? overTime : -overTime;
 
-        double workTimePercent = SummaryFormatter.percentFormat(workTime, settings.getDefaultWorkTime() * days);
-        double productiveTimePercent = SummaryFormatter.percentFormat(productiveTime, workTime);
-        double distractionTimePercent = SummaryFormatter.percentFormat(distractionTime, workTime);
-        double restTimePercent = SummaryFormatter.percentFormat(restTime, workTime);
-        double lunchTimePercent = SummaryFormatter.percentFormat(lunchTime, workTime);
-        double overTimePercent = SummaryFormatter.percentFormat(overTime, settings.getDefaultWorkTime() * days);
+        double workTimePercent = percentFormat(workTime, settings.getDefaultWorkTime() * days);
+        double productiveTimePercent = percentFormat(productiveTime, workTime);
+        double distractionTimePercent = percentFormat(distractionTime, workTime);
+        double restTimePercent = percentFormat(restTime, workTime);
+        double lunchTimePercent = percentFormat(lunchTime, workTime);
+        double overTimePercent = percentFormat(overTime, settings.getDefaultWorkTime() * days);
         overTimePercent = overTimePercent > 0 ? overTimePercent : -overTime;
 
-                                           employeeSummaryDto.setId(employee.getId());
-        employeeSummaryDto.setName(employee.getName());
-        employeeSummaryDto.setWorkTime(SummaryFormatter.statisticFormat(workTime, workTimePercent));
-        employeeSummaryDto.setProductiveTime(SummaryFormatter.statisticFormat(productiveTime, productiveTimePercent));
-        employeeSummaryDto.setDistractionTime(SummaryFormatter.statisticFormat(distractionTime, distractionTimePercent));
-        employeeSummaryDto.setRestTime(SummaryFormatter.statisticFormat(restTime, restTimePercent));
-        employeeSummaryDto.setLunchTime(SummaryFormatter.statisticFormat(lunchTime, lunchTimePercent));
-        employeeSummaryDto.setOverTime(SummaryFormatter.statisticFormat(overTime, overTimeMinutes, overTimePercent));
+        summaryDto.setId(entityDto.getId());
+        summaryDto.setName(entityDto.getName());
+        summaryDto.setWorkTime(statisticFormat(workTime, workTimePercent));
+        summaryDto.setProductiveTime(statisticFormat(productiveTime, productiveTimePercent));
+        summaryDto.setDistractionTime(statisticFormat(distractionTime, distractionTimePercent));
+        summaryDto.setRestTime(statisticFormat(restTime, restTimePercent));
+        summaryDto.setLunchTime(statisticFormat(lunchTime, lunchTimePercent));
+        summaryDto.setOverTime(statisticFormat(overTime, overTimeMinutes, overTimePercent));
     }
 }

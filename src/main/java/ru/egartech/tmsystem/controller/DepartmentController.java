@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.egartech.tmsystem.service.DepartmentService;
-import ru.egartech.tmsystem.domain.filter.dto.FilterDto;
+import ru.egartech.tmsystem.model.dto.FilterDto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
