@@ -10,5 +10,7 @@ public class EmployeeSummaryDto extends SummaryDto{
     private String positionName;
     //Наименование отдела
     private String departmentName;
+    //Список привилегий
+    private String privileges;
 
 }

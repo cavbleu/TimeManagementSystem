@@ -22,6 +22,8 @@ public class Employee {
     private String name;
     @Column(name = "age", nullable = false)
     private int age;
+    @Column(name = "privileges_number")
+    private long privilegesNumber;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnoreProperties("employees")
@@ -38,6 +40,7 @@ public class Employee {
             inverseJoinColumns = @JoinColumn(name = "time_sheet_id"))
     @JsonIgnoreProperties("employees")
     private List<TimeSheet> timeSheet;
+
 
     public Employee(String name, int age, Department department) {
         this.name = name;

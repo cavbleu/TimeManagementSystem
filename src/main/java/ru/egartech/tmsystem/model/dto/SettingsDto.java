@@ -7,10 +7,7 @@ import java.time.LocalTime;
 
 @Setter
 @Getter
-public class SettingsDto {
-    private Long id;
-    //Наименование профиля настроек
-    private String settingsProfile;
+public class SettingsDto extends EntityDto{
     //Является ли текущим профилем
     private boolean isCurrentSettingsProfile;
     //Норма рабочего времени за сутки

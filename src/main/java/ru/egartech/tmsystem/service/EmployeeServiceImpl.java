@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.model.dto.EmployeeDto;
 import ru.egartech.tmsystem.model.dto.EmployeeSummaryDto;
 import ru.egartech.tmsystem.model.entity.Employee;
+import ru.egartech.tmsystem.model.enumeration.EmployeePrivilegesEnum;
 import ru.egartech.tmsystem.model.mapping.EmployeeMapper;
 import ru.egartech.tmsystem.model.repository.EmployeeRepository;
 import ru.egartech.tmsystem.model.dto.FilterDto;
@@ -70,6 +71,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                     employeeSummaryDto, employee, filter,settings);
             employeeSummaryDto.setPositionName(employee.getPosition().getName());
             employeeSummaryDto.setDepartmentName(employee.getDepartment().getName());
+            employeeSummaryDto.setPrivileges(String.join(" ;", employee.getPrivileges()));
             employeesSummary.add(employeeSummaryDto);
         }
 

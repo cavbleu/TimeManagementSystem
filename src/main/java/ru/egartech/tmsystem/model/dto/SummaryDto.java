@@ -5,10 +5,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public abstract class SummaryDto {
-    private Long id;
-    //Наименование
-    private String name;
+public abstract class SummaryDto extends EntityDto{
     //Наименование отдела
     private String departmentName;
     //Суммарное отработанное время
