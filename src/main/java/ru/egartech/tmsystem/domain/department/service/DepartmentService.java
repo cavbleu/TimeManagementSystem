@@ -10,4 +10,21 @@ import java.util.List;
 public interface DepartmentService extends BaseService<DepartmentDto, Long> {
 
     List<DepartmentSummaryDto> departmentsSummary(FilterDto filter);
+
+    long departmentWorkTimeByDate(FilterDto filter, String departmentName);
+
+    long departmentDistractionTimeByDate(FilterDto filter, String departmentName);
+
+    long departmentRestTimeByDate(FilterDto filter, String departmentName);
+
+    long departmentLunchTimeByDate(FilterDto filter, String departmentName);
+
+    long summaryWorkTimeByDate(FilterDto filter);
+
+    long summaryDistractionTimeByDate(FilterDto filter);
+
+    long summaryRestTimeByDate(FilterDto filter);
+
+    long summaryLunchTimeByDate(FilterDto filter);
+
 }

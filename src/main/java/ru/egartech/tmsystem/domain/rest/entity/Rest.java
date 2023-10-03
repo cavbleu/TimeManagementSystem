@@ -14,7 +14,7 @@ import java.time.LocalTime;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "break")
+@Table(name = "rest")
 public class Rest {
 
     @Id

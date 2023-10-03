@@ -10,7 +10,7 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @Entity
-@Table(name = "limit")
+@Table(name = "settings")
 public class Settings {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +18,7 @@ public class Settings {
     @Column(name = "settings_profile")
     private String settingsProfile;
     @Column(name = "current_settings_profile")
-    private boolean isCurrentSettingsProfile;
+    private boolean currentSettingsProfile;
     @Column(name = "default_work_time")
     private long defaultWorkTime;
     @Column(name = "max_rest_count_by_day")

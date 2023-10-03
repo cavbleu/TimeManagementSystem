@@ -10,11 +10,11 @@ import ru.egartech.tmsystem.domain.timesheet.entity.TimeSheet;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-@Entity
-@Table
 @NoArgsConstructor
 @Getter
 @Setter
+@Entity
+@Table(name = "distraction")
 public class Distraction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

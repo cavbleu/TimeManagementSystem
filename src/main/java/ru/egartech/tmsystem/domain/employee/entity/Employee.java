@@ -15,7 +15,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "employees")
+@Table(name = "employee")
 public class Employee {
 
     @Id
@@ -36,9 +36,9 @@ public class Employee {
 
     @ManyToMany
     @JoinTable(
-            name = "employees_time_management",
+            name = "employee_time_sheet",
             joinColumns = @JoinColumn(name = "employee_id"),
-            inverseJoinColumns = @JoinColumn(name = "time_management_id"))
+            inverseJoinColumns = @JoinColumn(name = "time_sheet_id"))
     @JsonIgnoreProperties("employees")
     private List<TimeSheet> timeSheet;
 

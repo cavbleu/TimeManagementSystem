@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.antlr.v4.runtime.misc.NotNull;
 import ru.egartech.tmsystem.domain.employee.entity.Employee;
 
 import java.util.ArrayList;
@@ -15,12 +16,13 @@ import java.util.List;
 @Getter
 @Entity
 @NoArgsConstructor
-@Table(name = "departments")
+@Table(name = "department")
 public class Department {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true, nullable = false, name = "name")
     private String name;
 
     @OneToMany(mappedBy = "department")

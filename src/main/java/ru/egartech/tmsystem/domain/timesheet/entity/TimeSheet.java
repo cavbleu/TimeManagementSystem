@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.egartech.tmsystem.domain.distraction.entity.Distraction;
 import ru.egartech.tmsystem.domain.rest.entity.Rest;
 import ru.egartech.tmsystem.domain.employee.entity.Employee;
 
@@ -17,7 +18,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "time_management")
+@Table(name = "time_sheet")
 public class TimeSheet {
 
     @Id
@@ -26,7 +27,6 @@ public class TimeSheet {
     @Temporal(TemporalType.DATE)
     @Column(name = "date")
     private LocalDate date;
-    //Причина отсутствия на работе
     @Column(name = "skip_reason")
     private String skipReason;
     @Column(name = "productive_time")
@@ -41,8 +41,8 @@ public class TimeSheet {
     @Column(name = "work_time")
     private long workTime;
 
-    @ManyToMany(mappedBy = "timeManagement", cascade = { CascadeType.ALL })
-    @JsonIgnoreProperties("timeManagement")
+    @ManyToMany(mappedBy = "timeSheet", cascade = { CascadeType.ALL })
+    @JsonIgnoreProperties("timeSheet")
     private List<Employee> employees = new ArrayList<>();
 
     @OneToMany(mappedBy = "timeSheet")
@@ -51,7 +51,7 @@ public class TimeSheet {
 
     @OneToMany(mappedBy = "timeSheet")
     @JsonIgnoreProperties("timeSheet")
-    private List<Rest> distractions = new ArrayList<>();
+    private List<Distraction> distractions = new ArrayList<>();
 
     @OneToMany(mappedBy = "timeSheet")
     @JsonIgnoreProperties("timeSheet")
