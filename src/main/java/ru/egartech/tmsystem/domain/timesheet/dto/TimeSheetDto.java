@@ -10,6 +10,7 @@ import java.util.List;
 
 @Data
 public class TimeSheetDto {
+    Long id;
     //Дата
     private LocalDate date;
     //Причина отсутствия на работе

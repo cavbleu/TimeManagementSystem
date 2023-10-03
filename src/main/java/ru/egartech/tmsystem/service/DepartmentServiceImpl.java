@@ -1,19 +1,16 @@
-package ru.egartech.tmsystem.domain.department.service;
+package ru.egartech.tmsystem.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.egartech.tmsystem.domain.department.dto.DepartmentDto;
-import ru.egartech.tmsystem.domain.department.dto.DepartmentSummaryDto;
-import ru.egartech.tmsystem.domain.department.entity.Department;
-import ru.egartech.tmsystem.domain.department.mapper.DepartmentMapper;
-import ru.egartech.tmsystem.domain.department.repository.DepartmentRepository;
-import ru.egartech.tmsystem.domain.distraction.service.DistractionService;
+import ru.egartech.tmsystem.model.dto.DepartmentDto;
+import ru.egartech.tmsystem.model.dto.DepartmentSummaryDto;
+import ru.egartech.tmsystem.model.entity.Department;
+import ru.egartech.tmsystem.model.mapping.DepartmentMapper;
+import ru.egartech.tmsystem.model.repository.DepartmentRepository;
 import ru.egartech.tmsystem.domain.filter.dto.FilterDto;
-import ru.egartech.tmsystem.domain.rest.service.RestService;
 import ru.egartech.tmsystem.domain.settings.dto.SettingsDto;
 import ru.egartech.tmsystem.domain.settings.service.SettingsService;
-import ru.egartech.tmsystem.domain.timesheet.service.TimeSheetService;
-import ru.egartech.tmsystem.formatter.StatisticTimeFormatter;
+import ru.egartech.tmsystem.utils.SummaryFormatter;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -25,12 +22,8 @@ import java.util.Optional;
 public class DepartmentServiceImpl implements DepartmentService {
 
     private final DepartmentRepository repository;
-    private final TimeSheetService timeSheetService;
-    private final DistractionService distractionService;
     private final SettingsService settingsService;
-    private final RestService restService;
     private final DepartmentMapper mapper;
-    private final StatisticTimeFormatter formatter;
 
     @Override
     public List<DepartmentDto> findAll() {
@@ -82,21 +75,22 @@ public class DepartmentServiceImpl implements DepartmentService {
             long overTime = workTime - settings.getDefaultWorkTime() * days;
             long overTimeMinutes = overTime > 0 ? overTime : -overTime;
 
-            double workTimePercent = (double) (workTime * 100) / settings.getDefaultWorkTime() * days;
-            double productiveTimePercent = (double) (productiveTime * 100) / workTime;
-            double distractionTimePercent = (double) (distractionTime * 100) / workTime;
-            double restTimePercent = (double) (restTime * 100) / workTime;
-            double lunchTimePercent = (double) (lunchTime * 100) / workTime;
-            double overTimePercent = (double) (overTime * 100) / settings.getDefaultWorkTime() * days;
-            overTime = overTime > 0 ? overTimeMinutes : -overTime;
+            double workTimePercent = SummaryFormatter.percentFormat(workTime, settings.getDefaultWorkTime() * days);
+            double productiveTimePercent = SummaryFormatter.percentFormat(productiveTime, workTime);
+            double distractionTimePercent = SummaryFormatter.percentFormat(distractionTime, workTime);
+            double restTimePercent = SummaryFormatter.percentFormat(restTime, workTime);
+            double lunchTimePercent = SummaryFormatter.percentFormat(lunchTime, workTime);
+            double overTimePercent = SummaryFormatter.percentFormat(overTime, settings.getDefaultWorkTime() * days);
+            overTimePercent = overTimePercent > 0 ? overTimePercent : -overTimePercent;
 
+            departmentSummaryDto.setId(department.getId());
             departmentSummaryDto.setName(department.getName());
-            departmentSummaryDto.setWorkTime(formatter.format(workTime, workTimePercent));
-            departmentSummaryDto.setProductiveTime(formatter.format(productiveTime, productiveTimePercent));
-            departmentSummaryDto.setDistractionTime(formatter.format(distractionTime, distractionTimePercent));
-            departmentSummaryDto.setRestTime(formatter.format(restTime, restTimePercent));
-            departmentSummaryDto.setLunchTime(formatter.format(lunchTime, lunchTimePercent));
-            departmentSummaryDto.setOverTime(formatter.format(overTime, overTimeMinutes, overTimePercent));
+            departmentSummaryDto.setWorkTime(SummaryFormatter.statisticFormat(workTime, workTimePercent));
+            departmentSummaryDto.setProductiveTime(SummaryFormatter.statisticFormat(productiveTime, productiveTimePercent));
+            departmentSummaryDto.setDistractionTime(SummaryFormatter.statisticFormat(distractionTime, distractionTimePercent));
+            departmentSummaryDto.setRestTime(SummaryFormatter.statisticFormat(restTime, restTimePercent));
+            departmentSummaryDto.setLunchTime(SummaryFormatter.statisticFormat(lunchTime, lunchTimePercent));
+            departmentSummaryDto.setOverTime(SummaryFormatter.statisticFormat(overTime, overTimeMinutes, overTimePercent));
 
             departmentsSummary.add(departmentSummaryDto);
         }

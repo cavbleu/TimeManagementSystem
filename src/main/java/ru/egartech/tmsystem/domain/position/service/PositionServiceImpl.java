@@ -2,24 +2,17 @@ package ru.egartech.tmsystem.domain.position.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.egartech.tmsystem.domain.department.dto.DepartmentDto;
-import ru.egartech.tmsystem.domain.department.service.DepartmentService;
-import ru.egartech.tmsystem.domain.distraction.dto.DistractionDto;
-import ru.egartech.tmsystem.domain.distraction.service.DistractionService;
 import ru.egartech.tmsystem.domain.filter.dto.FilterDto;
 import ru.egartech.tmsystem.domain.position.dto.PositionDto;
 import ru.egartech.tmsystem.domain.position.dto.PositionSummaryDto;
 import ru.egartech.tmsystem.domain.position.entity.Position;
 import ru.egartech.tmsystem.domain.position.mapper.PositionMapper;
 import ru.egartech.tmsystem.domain.position.repository.PositionRepository;
-import ru.egartech.tmsystem.domain.rest.service.RestService;
-import ru.egartech.tmsystem.domain.rest.dto.RestDto;
 import ru.egartech.tmsystem.domain.settings.dto.SettingsDto;
 import ru.egartech.tmsystem.domain.settings.service.SettingsService;
-import ru.egartech.tmsystem.domain.timesheet.dto.TimeSheetDto;
-import ru.egartech.tmsystem.domain.timesheet.service.TimeSheetService;
-import ru.egartech.tmsystem.formatter.StatisticTimeFormatter;
+import ru.egartech.tmsystem.utils.SummaryFormatter;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,12 +23,7 @@ public class PositionServiceImpl implements PositionService {
 
     private final PositionRepository repository;
     private final PositionMapper mapper;
-    private final DepartmentService departmentService;
-    private final TimeSheetService timeSheetService;
-    private final DistractionService distractionService;
     private final SettingsService settingsService;
-    private final RestService restService;
-    private final StatisticTimeFormatter formatter;
 
     @Override
     public List<PositionDto> findAll() {
@@ -71,55 +59,66 @@ public class PositionServiceImpl implements PositionService {
     @Override
     public List<PositionSummaryDto> positionsSummary(FilterDto filter) {
 
-        List<PositionSummaryDto> positionSummary = new ArrayList<>();
+        List<PositionSummaryDto> positionsSummary = new ArrayList<>();
         List<PositionDto> positions = findAll();
-        List<DepartmentDto> departments = departmentService.findAll();
         SettingsDto settings = settingsService.findByCurrentSettingsProfile();
-
-        List<TimeSheetDto> timeSheets = timeSheetService.findAll();
-        List<DistractionDto> distractions = distractionService.findAll();
-        List<RestDto> rests = restService.findAll();
 
         for (PositionDto position : positions) {
 
             PositionSummaryDto positionSummaryDto = new PositionSummaryDto();
-
-            long workTime = 0;
-            long productiveTime = 0;
-            int days = 0;
-            for (TimeSheetDto timeSheet : timeSheets) {
-                workTime += timeSheet.getWorkTime();
-                productiveTime += timeSheet.getProductiveTime();
-                days++;
-            }
-            long distractionTime = 0;
-            for (DistractionDto distraction : distractions) {
-                distractionTime += distraction.getDistractionTime();
-            }
-            long restTime = 0;
-            for (RestDto rest : rests) {
-                restTime += rest.getRestTime();
-            }
+            long workTime = positionWorkTimeByPeriod(filter, position.getName());
+            long distractionTime = positionDistractionTimeByPeriod(filter, position.getName());
+            long restTime = positionRestTimeByPeriod(filter, position.getName());
+            long lunchTime = positionLunchTimeByPeriod(filter, position.getName());
+            long productiveTime = workTime - distractionTime - restTime - lunchTime;
+            long days = Duration.between(filter.getStartPeriod(), filter.getEndPeriod()).toDays();
             long overTime = workTime - settings.getDefaultWorkTime() * days;
             long overTimeMinutes = overTime > 0 ? overTime : -overTime;
 
+            double workTimePercent = SummaryFormatter.percentFormat(workTime, settings.getDefaultWorkTime() * days);
+            double productiveTimePercent = SummaryFormatter.percentFormat(productiveTime, workTime);
+            double distractionTimePercent = SummaryFormatter.percentFormat(distractionTime, workTime);
+            double restTimePercent = SummaryFormatter.percentFormat(restTime, workTime);
+            double lunchTimePercent = SummaryFormatter.percentFormat(lunchTime, workTime);
+            double overTimePercent = SummaryFormatter.percentFormat(overTime, settings.getDefaultWorkTime() * days);
+            overTimePercent = overTimePercent > 0 ? overTimePercent : -overTimePercent;
 
-            double workTimePercent = (double) (workTime * 100) / settings.getDefaultWorkTime();
-            double productiveTimePercent = (double) (productiveTime * 100) / workTime;
-            double distractionTimePercent = (double) (distractionTime * 100) / workTime;
-            double restTimePercent = (double) (restTime * 100) / workTime;
-            double overTimePercent = (double) (workTime * 100) / settings.getDefaultWorkTime() * days;
+            positionSummaryDto.setId(position.getId());
+            positionSummaryDto.setName(position.getName());
+            positionSummaryDto.setWorkTime(SummaryFormatter.statisticFormat(workTime, workTimePercent));
+            positionSummaryDto.setProductiveTime(SummaryFormatter.statisticFormat(productiveTime, productiveTimePercent));
+            positionSummaryDto.setDistractionTime(SummaryFormatter.statisticFormat(distractionTime, distractionTimePercent));
+            positionSummaryDto.setRestTime(SummaryFormatter.statisticFormat(restTime, restTimePercent));
+            positionSummaryDto.setLunchTime(SummaryFormatter.statisticFormat(lunchTime, lunchTimePercent));
+            positionSummaryDto.setOverTime(SummaryFormatter.statisticFormat(overTime, overTimeMinutes, overTimePercent));
 
-//            departmentSummaryDto.setName(department.getName());
-//            departmentSummaryDto.setWorkTime(formatter.format(workTime, workTimePercent));
-//            departmentSummaryDto.setProductiveTime(formatter.format(productiveTime, productiveTimePercent));
-//            departmentSummaryDto.setDistractionTime(formatter.format(distractionTime, distractionTimePercent));
-//            departmentSummaryDto.setRestTime(formatter.format(restTime, restTimePercent));
-//            departmentSummaryDto.setOverTime(formatter.format(overTime, overTimeMinutes, overTimePercent));
-
-            positionSummary.add(positionSummaryDto);
+            positionsSummary.add(positionSummaryDto);
         }
 
-        return positionSummary;
+        return positionsSummary;
+    }
+
+    @Override
+    public long positionWorkTimeByPeriod(FilterDto filter, String positionName) {
+        return repository.positionWorkTimeByPeriod(filter.getStartPeriod().toLocalDate(),
+                filter.getEndPeriod().toLocalDate(), positionName);
+    }
+
+    @Override
+    public long positionDistractionTimeByPeriod(FilterDto filter, String positionName) {
+        return repository.positionDistractionTimeByPeriod(filter.getStartPeriod().toLocalDate(),
+                filter.getEndPeriod().toLocalDate(), positionName);
+    }
+
+    @Override
+    public long positionRestTimeByPeriod(FilterDto filter, String positionName) {
+        return repository.positionRestTimeByPeriod(filter.getStartPeriod().toLocalDate(),
+                filter.getEndPeriod().toLocalDate(), positionName);
+    }
+
+    @Override
+    public long positionLunchTimeByPeriod(FilterDto filter, String positionName) {
+        return repository.positionLunchTimeByPeriod(filter.getStartPeriod().toLocalDate(),
+                filter.getEndPeriod().toLocalDate(), positionName);
     }
 }

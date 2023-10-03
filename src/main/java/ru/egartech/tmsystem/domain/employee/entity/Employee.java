@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.egartech.tmsystem.domain.department.entity.Department;
+import ru.egartech.tmsystem.model.entity.Department;
 import ru.egartech.tmsystem.domain.position.entity.Position;
 import ru.egartech.tmsystem.domain.timesheet.entity.TimeSheet;
 
@@ -21,8 +21,8 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "full_name", nullable = false)
-    private String fullName;
+    @Column(name = "name", nullable = false)
+    private String name;
     @Column(name = "age", nullable = false)
     private int age;
 
@@ -42,8 +42,8 @@ public class Employee {
     @JsonIgnoreProperties("employees")
     private List<TimeSheet> timeSheet;
 
-    public Employee(String fullName, int age, Department department) {
-        this.fullName = fullName;
+    public Employee(String name, int age, Department department) {
+        this.name = name;
         this.age = age;
         this.department = department;
     }

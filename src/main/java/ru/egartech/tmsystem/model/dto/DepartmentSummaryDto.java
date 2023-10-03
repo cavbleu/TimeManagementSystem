@@ -1,13 +1,13 @@
-package ru.egartech.tmsystem.domain.position.dto;
+package ru.egartech.tmsystem.model.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
 @Setter
-public class PositionSummaryDto {
+@Getter
+public class DepartmentSummaryDto {
     private Long id;
-    //Наименование должности
+    //Наименование отдела
     private String name;
     //Суммарное отработанное время
     private String workTime;
@@ -15,9 +15,9 @@ public class PositionSummaryDto {
     private String productiveTime;
     //Суммарное время отвлечений от заданных целевых программ
     private String distractionTime;
-    //Суммарное время перерывов
+    //Суммарное время потраченное на перерывы
     private String restTime;
-    //Суммарное время, потраченное на обед
+    //Суммарное время потраченное на обед
     private String lunchTime;
     //Переработки - разница между отработанным временем и нормой рабочего времени.
     //Может быть как положительным так и отрицательным

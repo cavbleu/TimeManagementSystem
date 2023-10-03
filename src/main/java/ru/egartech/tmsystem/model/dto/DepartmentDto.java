@@ -1,4 +1,4 @@
-package ru.egartech.tmsystem.domain.department.dto;
+package ru.egartech.tmsystem.model.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,8 +9,9 @@ import java.util.List;
 @Getter
 @Setter
 public class DepartmentDto {
-    //Название отдела
-    String name;
+    private Long id;
+    //Наименование отдела
+    private String name;
     //Сотрудники отдела
-    List<Employee> employees;
+    private List<Employee> employees;
 }

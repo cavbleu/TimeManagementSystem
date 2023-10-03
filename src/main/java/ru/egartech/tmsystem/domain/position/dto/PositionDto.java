@@ -9,10 +9,11 @@ import java.util.List;
 @Getter
 @Setter
 public class PositionDto {
+    private Long id;
     //Название отдела
-    String name;
+    private String name;
     //Сотрудники отдела
-    List<Employee> employees;
+    private List<Employee> employees;
 }
 
 

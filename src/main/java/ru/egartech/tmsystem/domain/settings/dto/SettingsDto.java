@@ -8,6 +8,7 @@ import java.time.LocalTime;
 @Setter
 @Getter
 public class SettingsDto {
+    private Long id;
     //Наименование профиля настроек
     private String settingsProfile;
     //Является ли текущим профилем

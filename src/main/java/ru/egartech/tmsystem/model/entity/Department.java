@@ -1,4 +1,4 @@
-package ru.egartech.tmsystem.domain.department.entity;
+package ru.egartech.tmsystem.model.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

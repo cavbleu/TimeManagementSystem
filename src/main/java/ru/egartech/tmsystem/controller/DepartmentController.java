@@ -1,17 +1,15 @@
-package ru.egartech.tmsystem.domain.department.controller;
+package ru.egartech.tmsystem.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.egartech.tmsystem.domain.department.dto.DepartmentSummaryDto;
-import ru.egartech.tmsystem.domain.department.service.DepartmentService;
+import ru.egartech.tmsystem.service.DepartmentService;
 import ru.egartech.tmsystem.domain.filter.dto.FilterDto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController

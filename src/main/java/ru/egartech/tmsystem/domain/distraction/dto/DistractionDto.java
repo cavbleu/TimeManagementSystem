@@ -12,6 +12,7 @@ import java.time.LocalTime;
 @Setter
 @Getter
 public class DistractionDto {
+    private Long id;
     //Дата
     private LocalDate date;
     //Начало отвлечения от целевых программ

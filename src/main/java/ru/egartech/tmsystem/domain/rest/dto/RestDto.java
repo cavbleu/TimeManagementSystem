@@ -12,6 +12,7 @@ import java.time.LocalTime;
 @Getter
 @Setter
 public class RestDto {
+    private Long id;
     //Дата
     private LocalDate date;
     //Время начала перерыва

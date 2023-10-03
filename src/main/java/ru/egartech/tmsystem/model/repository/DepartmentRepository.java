@@ -1,9 +1,9 @@
-package ru.egartech.tmsystem.domain.department.repository;
+package ru.egartech.tmsystem.model.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import ru.egartech.tmsystem.domain.department.entity.Department;
+import ru.egartech.tmsystem.model.entity.Department;
 
 import java.time.LocalDate;
 
