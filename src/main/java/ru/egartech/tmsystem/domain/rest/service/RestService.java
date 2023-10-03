@@ -1,4 +1,4 @@
-package ru.egartech.tmsystem.domain.rest;
+package ru.egartech.tmsystem.domain.rest.service;
 
 import ru.egartech.tmsystem.domain.helper.BaseService;
 import ru.egartech.tmsystem.domain.rest.dto.RestDto;

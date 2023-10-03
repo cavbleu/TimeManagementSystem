@@ -1,21 +1,21 @@
-package ru.egartech.tmsystem.domain.rest.repository;
+package ru.egartech.tmsystem.domain.rest.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.egartech.tmsystem.domain.rest.service.RestService;
 import ru.egartech.tmsystem.domain.rest.dto.RestDto;
 import ru.egartech.tmsystem.domain.rest.entity.Rest;
 import ru.egartech.tmsystem.domain.rest.mapper.RestMapper;
+import ru.egartech.tmsystem.domain.rest.repository.RestRepository;
 
 import java.util.List;
 import java.util.Optional;
-
-@Service
 @RequiredArgsConstructor
-public class RestServiceImpl implements RestService {
+@Service
+public class RestServiceImpl implements RestService{
 
     private final RestRepository repository;
     private final RestMapper mapper;
+
     @Override
     public List<RestDto> findAll() {
         return repository.findAll().stream()

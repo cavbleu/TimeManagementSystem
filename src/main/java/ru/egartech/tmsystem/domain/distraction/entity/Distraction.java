@@ -20,7 +20,7 @@ public class Distraction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Temporal(TemporalType.DATE)
-    @Column(name = "date")
+    @Column(name = "date", nullable = false)
     private LocalDate date;
 
     @Temporal(TemporalType.TIME)

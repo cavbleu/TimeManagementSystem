@@ -21,9 +21,9 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "full_name")
+    @Column(name = "full_name", nullable = false)
     private String fullName;
-    @Column(name = "age")
+    @Column(name = "age", nullable = false)
     private int age;
 
     @ManyToOne(cascade = CascadeType.ALL)

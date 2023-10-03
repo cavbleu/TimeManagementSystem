@@ -9,7 +9,7 @@ import ru.egartech.tmsystem.domain.department.mapper.DepartmentMapper;
 import ru.egartech.tmsystem.domain.department.repository.DepartmentRepository;
 import ru.egartech.tmsystem.domain.distraction.service.DistractionService;
 import ru.egartech.tmsystem.domain.filter.dto.FilterDto;
-import ru.egartech.tmsystem.domain.rest.RestService;
+import ru.egartech.tmsystem.domain.rest.service.RestService;
 import ru.egartech.tmsystem.domain.settings.dto.SettingsDto;
 import ru.egartech.tmsystem.domain.settings.service.SettingsService;
 import ru.egartech.tmsystem.domain.timesheet.service.TimeSheetService;
