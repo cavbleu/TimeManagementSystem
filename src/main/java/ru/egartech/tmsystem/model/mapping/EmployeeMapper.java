@@ -3,8 +3,7 @@ package ru.egartech.tmsystem.model.mapping;
 import org.mapstruct.Mapper;
 import ru.egartech.tmsystem.model.dto.EmployeeDto;
 import ru.egartech.tmsystem.model.entity.Employee;
-import ru.egartech.tmsystem.model.enumeration.EmployeePrivilegesEnum;
-import ru.egartech.tmsystem.utils.BaseMapper;
+import ru.egartech.tmsystem.utils.BitsConverter;
 
 @Mapper(componentModel = "spring")
 public abstract class EmployeeMapper {
@@ -17,7 +16,7 @@ public abstract class EmployeeMapper {
         employee.setPosition(dto.getPosition());
         employee.setDepartment(dto.getDepartment());
         employee.setTimeSheet(dto.getTimeSheet());
-        employee.setPrivilegesNumber(EmployeePrivilegesEnum.getEmployeePrivilegesNumber(dto.getPrivileges()));
+        employee.setPrivilegesNumber(BitsConverter.getEmployeePrivilegesNumber(dto.getPrivileges()));
 
         return employee;
     }
@@ -30,7 +29,7 @@ public abstract class EmployeeMapper {
         dto.setPosition(employee.getPosition());
         dto.setDepartment(employee.getDepartment());
         dto.setTimeSheet(employee.getTimeSheet());
-        dto.setPrivileges(EmployeePrivilegesEnum.getEmployeePrivileges(employee.getPrivilegesNumber()));
+        dto.setPrivileges(BitsConverter.getEmployeePrivileges(employee.getPrivilegesNumber()));
 
         return dto;
     }
