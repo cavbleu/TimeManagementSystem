@@ -18,17 +18,20 @@ public class PrivilegeServiceImpl implements PrivilegeService{
     @Override
     public List<PrivilegeDto> findAll() {
         return repository.findAll().stream()
-                .map(p -> mapper.toDto(p))
+                .map(mapper::toDto)
                 .toList();
     }
 
     @Override
     public Optional<PrivilegeDto> findById(Long id) {
-        return Optional.empty();
+        return repository.findById(id)
+                .map(mapper::toDto);
     }
 
     @Override
     public PrivilegeDto updateById(Long id, PrivilegeDto dto) {
-        return null;
+        return repository.findById(id)
+                .map(p -> mapper.toDto(repository.save(p)))
+                .orElseThrow();
     }
 }

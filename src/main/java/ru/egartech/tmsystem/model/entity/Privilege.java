@@ -20,7 +20,7 @@ public class Privilege {
     @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "increased_late", nullable = false)
-    private int late;
+    private int increasedLate;
     @Column(name = "increased_early_leaving", nullable = false)
     private int increasedEarlyLeaving;
     @Column(name = "increased_absence", nullable = false)

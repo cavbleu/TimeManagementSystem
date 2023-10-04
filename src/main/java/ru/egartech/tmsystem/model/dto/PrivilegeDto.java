@@ -8,7 +8,7 @@ import lombok.Setter;
 public class PrivilegeDto extends EntityDto{
 
     //Увеличенное суммарное количество опозданий в месяц
-    private int late;
+    private int increasedLate;
     //Увеличенное суммарное количество ранних уходов с работы в месяц
     private int increasedEarlyLeaving;
     //Увеличенное суммарное количество отсутствий на работе в месяц
