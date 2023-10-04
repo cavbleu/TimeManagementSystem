@@ -2,13 +2,6 @@ package ru.egartech.tmsystem.model.enumeration;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.BooleanUtils;
-import org.hibernate.id.IntegralDataTypeHolder;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static ru.egartech.tmsystem.utils.EmployeePrivilegesBits.*;
 
 @Getter
 @RequiredArgsConstructor
