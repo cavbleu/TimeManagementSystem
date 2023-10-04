@@ -9,39 +9,23 @@ import java.time.LocalDate;
 
 public interface DepartmentRepository extends JpaRepository<Department, Long> {
     @Query("select sum(t.workTime) from TimeSheet t join t.employees e where t.date >= :startDate " +
-            "and t.date <= :endDate and e.department.name = :name")
+            "and t.date <= :endDate and e.department.id = :id")
     long departmentWorkTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate,
-                                    @Param("name") String departmentName);
+                                    @Param("id") Long id);
 
     @Query("select sum(d.distractionTime) from TimeSheet t join t.distractions d join t.employees e " +
-            "where t.date >= :startDate and t.date <= :endDate and e.department.name = :name")
+            "where t.date >= :startDate and t.date <= :endDate and e.department.id = :id")
     long departmentDistractionTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate,
-                                           @Param("name") String departmentName);
+                                           @Param("id") Long id);
 
     @Query("select sum(r.restTime) from TimeSheet t join t.rests r join t.employees e " +
-            "where t.date >= :startDate and t.date <= :endDate and e.department.name = :name")
+            "where t.date >= :startDate and t.date <= :endDate and e.department.id = :id")
     long departmentRestTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate,
-                                    @Param("name") String departmentName);
+                                    @Param("id") Long id);
 
     @Query("select sum(r.lunchTime) from TimeSheet t join t.rests r join t.employees e " +
-            "where t.date >= :startDate and t.date <= :endDate and e.department.name = :name")
+            "where t.date >= :startDate and t.date <= :endDate and e.department.id = :id")
     long departmentLunchTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate,
-                                     @Param("name") String departmentName);
-
-    @Query("select sum(t.workTime) from TimeSheet t join t.employees e where t.date >= :startDate " +
-            "and t.date <= :endDate")
-    long summaryWorkTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
-
-    @Query("select sum(d.distractionTime) from TimeSheet t join t.distractions d join t.employees e " +
-            "where t.date >= :startDate and t.date <= :endDate")
-    long summaryDistractionTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
-
-    @Query("select sum(r.restTime) from TimeSheet t join t.rests r join t.employees e " +
-            "where t.date >= :startDate and t.date <= :endDate")
-    long summaryRestTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
-
-    @Query("select sum(r.lunchTime) from TimeSheet t join t.rests r join t.employees e " +
-            "where t.date >= :startDate and t.date <= :endDate")
-    long summaryLunchTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+                                     @Param("id") Long id);
 
 }

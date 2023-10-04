@@ -1,6 +1,7 @@
 package ru.egartech.tmsystem.model.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,6 +15,7 @@ import java.time.LocalTime;
 public class Settings {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     private Long id;
     @Column(name = "settings_profile", nullable = false)
     private String settingsProfile;
@@ -21,6 +23,8 @@ public class Settings {
     private boolean currentSettingsProfile;
     @Column(name = "default_work_time", nullable = false)
     private long defaultWorkTime;
+    @Column(name = "default_work_time", nullable = false)
+    private LocalTime defaultStartWork;
     @Column(name = "max_late_count_by_month", nullable = false)
     private int maxLateCountByMonth;
     @Column(name = "max_early_living_count_by_month", nullable = false)
@@ -32,7 +36,7 @@ public class Settings {
     @Column(name = "max_rest_time_by_day", nullable = false)
     private long maxRestTimeByDay;
     @Column(name = "max_distraction_time_by_day", nullable = false)
-    private LocalTime maxDistractionTimeByDay;
+    private long maxDistractionTimeByDay;
     @Column(name = "max_lunch_time_by_day", nullable = false)
-    private LocalTime maxLunchTimeByDay;
+    private long maxLunchTimeByDay;
 }

@@ -6,6 +6,6 @@ import ru.egartech.tmsystem.utils.BaseMapper;
 import ru.egartech.tmsystem.model.dto.PositionDto;
 import ru.egartech.tmsystem.model.entity.Position;
 
-@Mapper(componentModel = "spring", builder = @Builder(disableBuilder = true))
+@Mapper(componentModel = "spring")
 public interface PositionMapper extends BaseMapper<PositionDto, Position> {
 }

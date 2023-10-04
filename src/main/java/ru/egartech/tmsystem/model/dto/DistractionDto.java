@@ -1,5 +1,6 @@
 package ru.egartech.tmsystem.model.dto;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import ru.egartech.tmsystem.model.entity.TimeSheet;
@@ -10,6 +11,7 @@ import java.time.LocalTime;
 @Setter
 @Getter
 public class DistractionDto {
+
     private Long id;
     //Дата
     private LocalDate date;

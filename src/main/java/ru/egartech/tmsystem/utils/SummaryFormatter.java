@@ -1,21 +1,20 @@
 package ru.egartech.tmsystem.utils;
 
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.UtilityClass;
-import org.springframework.stereotype.Component;
 import ru.egartech.tmsystem.model.dto.EntityDto;
 import ru.egartech.tmsystem.model.dto.FilterDto;
 import ru.egartech.tmsystem.model.dto.SettingsDto;
 import ru.egartech.tmsystem.model.dto.SummaryDto;
 
+import java.sql.Date;
 import java.time.Duration;
+import java.time.LocalDate;
+import java.util.Calendar;
 
-@Component
-@RequiredArgsConstructor
 @UtilityClass
 public class SummaryFormatter {
 
-    public String statisticFormat(long time, double percent) {
+    public String format(long time, double percent) {
         return String
                 .format("%d ч %02d мин (%.1f ",
                         Duration.ofMinutes(time).toHoursPart(),
@@ -24,7 +23,7 @@ public class SummaryFormatter {
                 .concat("%)");
     }
 
-    public String statisticFormat(long hoursPart, long minutesPart, double percent) {
+    public String format(long hoursPart, long minutesPart, double percent) {
         return String
                 .format("%d ч %02d мин (%.1f ",
                         Duration.ofMinutes(hoursPart).toHoursPart(),
@@ -40,7 +39,7 @@ public class SummaryFormatter {
     public void toSummaryDto(long workTime, long distractionTime, long restTime, long lunchTime,
                              SummaryDto summaryDto, EntityDto entityDto, FilterDto filter, SettingsDto settings) {
         long productiveTime = workTime - distractionTime - restTime - lunchTime;
-        long days = Duration.between(filter.getStartPeriod(), filter.getEndPeriod()).toDays();
+        long days = getWorkingDays(filter.getStartPeriod().toLocalDate(), filter.getEndPeriod().toLocalDate());
         long overTime = workTime - settings.getDefaultWorkTime() * days;
         long overTimeMinutes = overTime > 0 ? overTime : -overTime;
 
@@ -54,11 +53,40 @@ public class SummaryFormatter {
 
         summaryDto.setId(entityDto.getId());
         summaryDto.setName(entityDto.getName());
-        summaryDto.setWorkTime(statisticFormat(workTime, workTimePercent));
-        summaryDto.setProductiveTime(statisticFormat(productiveTime, productiveTimePercent));
-        summaryDto.setDistractionTime(statisticFormat(distractionTime, distractionTimePercent));
-        summaryDto.setRestTime(statisticFormat(restTime, restTimePercent));
-        summaryDto.setLunchTime(statisticFormat(lunchTime, lunchTimePercent));
-        summaryDto.setOverTime(statisticFormat(overTime, overTimeMinutes, overTimePercent));
+        summaryDto.setWorkTime(format(workTime, workTimePercent));
+        summaryDto.setProductiveTime(format(productiveTime, productiveTimePercent));
+        summaryDto.setDistractionTime(format(distractionTime, distractionTimePercent));
+        summaryDto.setRestTime(format(restTime, restTimePercent));
+        summaryDto.setLunchTime(format(lunchTime, lunchTimePercent));
+        summaryDto.setOverTime(format(overTime, overTimeMinutes, overTimePercent));
+    }
+
+    public static long getWorkingDays(LocalDate startDate, LocalDate endDate) {
+        Calendar startCal = Calendar.getInstance();
+        startCal.setTime(Date.valueOf(startDate));
+
+        Calendar endCal = Calendar.getInstance();
+        endCal.setTime(Date.valueOf(endDate));
+
+        long workDays = 0;
+
+        if (startCal.getTimeInMillis() == endCal.getTimeInMillis()) {
+            return 0;
+        }
+
+        if (startCal.getTimeInMillis() > endCal.getTimeInMillis()) {
+            startCal.setTime(Date.valueOf(endDate));
+            endCal.setTime(Date.valueOf(startDate));
+        }
+
+        do {
+            //excluding start date
+            startCal.add(Calendar.DAY_OF_MONTH, 1);
+            if (startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+                ++workDays;
+            }
+        } while (startCal.getTimeInMillis() < endCal.getTimeInMillis());
+
+        return workDays;
     }
 }

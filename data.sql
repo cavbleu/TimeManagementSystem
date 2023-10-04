@@ -1,9 +1,9 @@
-INSERT INTO departments (id, name)
+INSERT INTO department (id, name)
 VALUES (1, 'Marketing'),
        (2, 'IT'),
        (3, 'Sales');
 
-INSERT INTO positions (id, name)
+INSERT INTO position (id, name)
 VALUES (1, 'Programmer'),
        (2, 'QA'),
        (3, 'TeamLead'),
@@ -12,7 +12,7 @@ VALUES (1, 'Programmer'),
        (6, 'Marketolog'),
        (7, 'Salesman');
 
-INSERT INTO employees (id, age, full_name, position_id, department_id)
+INSERT INTO employee (id, age, name, position_id, department_id)
 VALUES (1, 32, 'Aleksei Zhukov', 1, 1),
        (2, 45, 'Boris Filimonov', 2, 2),
        (3, 41, 'Fedor Dobrov', 3, 2),
@@ -27,7 +27,7 @@ INSERT INTO time_sheet (id, date, end_work, productive_time, skip_reason, start_
 VALUES (1, '2023-10-01',  '18:00:00', 360, null, '09:00', 540),
        (2, '2023-10-03', '18:00:00', 130, null, '13:00', 540);
 
-INSERT INTO  employees_time_sheet (employee_id, time_sheet_id)
+INSERT INTO  employee_time_sheet (employee_id, time_sheet_id)
 VALUES (1, 1),
        (2, 1),
        (3, 1),

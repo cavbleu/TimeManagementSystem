@@ -65,10 +65,10 @@ public class PositionServiceImpl implements PositionService {
         for (PositionDto position : positions) {
 
             PositionSummaryDto positionSummaryDto = new PositionSummaryDto();
-            long workTime = positionWorkTimeByPeriod(filter, position.getName());
-            long distractionTime = positionDistractionTimeByPeriod(filter, position.getName());
-            long restTime = positionRestTimeByPeriod(filter, position.getName());
-            long lunchTime = positionLunchTimeByPeriod(filter, position.getName());
+            long workTime = positionWorkTimeByPeriod(filter, position.getId());
+            long distractionTime = positionDistractionTimeByPeriod(filter, position.getId());
+            long restTime = positionRestTimeByPeriod(filter, position.getId());
+            long lunchTime = positionLunchTimeByPeriod(filter, position.getId());
             SummaryFormatter.toSummaryDto(workTime, distractionTime, restTime, lunchTime,
                     positionSummaryDto, position, filter,settings);
             positionSummaryDto.setDepartmentName(position.getDepartment().getName());
@@ -79,26 +79,26 @@ public class PositionServiceImpl implements PositionService {
     }
 
     @Override
-    public long positionWorkTimeByPeriod(FilterDto filter, String positionName) {
+    public long positionWorkTimeByPeriod(FilterDto filter, Long id) {
         return repository.positionWorkTimeByPeriod(filter.getStartPeriod().toLocalDate(),
-                filter.getEndPeriod().toLocalDate(), positionName);
+                filter.getEndPeriod().toLocalDate(), id);
     }
 
     @Override
-    public long positionDistractionTimeByPeriod(FilterDto filter, String positionName) {
+    public long positionDistractionTimeByPeriod(FilterDto filter, Long id) {
         return repository.positionDistractionTimeByPeriod(filter.getStartPeriod().toLocalDate(),
-                filter.getEndPeriod().toLocalDate(), positionName);
+                filter.getEndPeriod().toLocalDate(), id);
     }
 
     @Override
-    public long positionRestTimeByPeriod(FilterDto filter, String positionName) {
+    public long positionRestTimeByPeriod(FilterDto filter, Long id) {
         return repository.positionRestTimeByPeriod(filter.getStartPeriod().toLocalDate(),
-                filter.getEndPeriod().toLocalDate(), positionName);
+                filter.getEndPeriod().toLocalDate(), id);
     }
 
     @Override
-    public long positionLunchTimeByPeriod(FilterDto filter, String positionName) {
+    public long positionLunchTimeByPeriod(FilterDto filter, Long id) {
         return repository.positionLunchTimeByPeriod(filter.getStartPeriod().toLocalDate(),
-                filter.getEndPeriod().toLocalDate(), positionName);
+                filter.getEndPeriod().toLocalDate(), id);
     }
 }

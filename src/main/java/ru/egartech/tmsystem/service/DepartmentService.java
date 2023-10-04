@@ -11,13 +11,13 @@ public interface DepartmentService extends BaseService<DepartmentDto, Long> {
 
     List<DepartmentSummaryDto> departmentsSummary(FilterDto filter);
 
-    long departmentWorkTimeByDate(FilterDto filter, String departmentName);
+    long departmentWorkTimeByDate(FilterDto filter, Long id);
 
-    long departmentDistractionTimeByDate(FilterDto filter, String departmentName);
+    long departmentDistractionTimeByDate(FilterDto filter, Long id);
 
-    long departmentRestTimeByDate(FilterDto filter, String departmentName);
+    long departmentRestTimeByDate(FilterDto filter, Long id);
 
-    long departmentLunchTimeByDate(FilterDto filter, String departmentName);
+    long departmentLunchTimeByDate(FilterDto filter, Long id);
 
     long summaryWorkTimeByDate(FilterDto filter);
 

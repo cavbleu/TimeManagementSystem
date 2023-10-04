@@ -6,6 +6,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class EmployeeSummaryDto extends SummaryDto{
+
     //Наименование должности
     private String positionName;
     //Наименование отдела

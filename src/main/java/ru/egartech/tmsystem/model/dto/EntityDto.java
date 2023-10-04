@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public abstract class EntityDto {
+
     private Long id;
     private String name;
 }

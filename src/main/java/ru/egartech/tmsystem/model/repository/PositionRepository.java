@@ -10,22 +10,22 @@ import java.time.LocalDate;
 public interface PositionRepository extends JpaRepository<Position, Long> {
 
     @Query("select sum(t.workTime) from TimeSheet t join t.employees e where t.date >= :startDate " +
-            "and t.date <= :endDate and e.position.name = :name")
+            "and t.date <= :endDate and e.position.id = :id")
     long positionWorkTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate,
-                                    @Param("name") String positionName);
+                                    @Param("id") Long id);
 
     @Query("select sum(d.distractionTime) from TimeSheet t join t.distractions d join t.employees e " +
-            "where t.date >= :startDate and t.date <= :endDate and e.position.name = :name")
+            "where t.date >= :startDate and t.date <= :endDate and e.position.id = :id")
     long positionDistractionTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate,
-                                  @Param("name") String positionName);
+                                  @Param("id") Long id);
 
     @Query("select sum(r.restTime) from TimeSheet t join t.rests r join t.employees e " +
-            "where t.date >= :startDate and t.date <= :endDate and e.position.name = :name")
+            "where t.date >= :startDate and t.date <= :endDate and e.position.id = :id")
     long positionRestTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate,
-                                  @Param("name") String positionName);
+                                  @Param("id") Long id);
 
     @Query("select sum(r.lunchTime) from TimeSheet t join t.rests r join t.employees e " +
-            "where t.date >= :startDate and t.date <= :endDate and e.position.name = :name")
+            "where t.date >= :startDate and t.date <= :endDate and e.position.id = :id")
     long positionLunchTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate,
-                                  @Param("name") String positionName);
+                                  @Param("id") Long id);
 }

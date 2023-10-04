@@ -1,15 +1,19 @@
 package ru.egartech.tmsystem.model.dto;
 
-import lombok.Data;
-import ru.egartech.tmsystem.model.entity.Rest;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 import ru.egartech.tmsystem.model.entity.Employee;
+import ru.egartech.tmsystem.model.entity.Rest;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-@Data
+@Setter
+@Getter
 public class TimeSheetDto {
+
     Long id;
     //Дата
     private LocalDate date;

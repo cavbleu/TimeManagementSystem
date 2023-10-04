@@ -2,6 +2,7 @@ package ru.egartech.tmsystem.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,12 +24,13 @@ public class TimeSheet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     private Long id;
     @Temporal(TemporalType.DATE)
     @Column(name = "date")
     private LocalDate date;
-    @Column(name = "skip_reason")
-    private String skipReason;
+    @Column(name = "absence_reason")
+    private String absenceReason;
     @Column(name = "productive_time")
     private long productiveTime;
     @Temporal(TemporalType.TIME)
@@ -37,7 +39,6 @@ public class TimeSheet {
     @Temporal(TemporalType.TIME)
     @Column(name = "end_work")
     private LocalTime endWork;
-    //Отработанное время
     @Column(name = "work_time")
     private long workTime;
 

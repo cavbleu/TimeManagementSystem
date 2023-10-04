@@ -63,10 +63,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         for (EmployeeDto employee : employees) {
 
             EmployeeSummaryDto employeeSummaryDto = new EmployeeSummaryDto();
-            long workTime = employeeWorkTimeByDate(filter, employee.getName());
-            long distractionTime = employeeDistractionTimeByDate(filter, employee.getName());
-            long restTime = employeeRestTimeByDate(filter, employee.getName());
-            long lunchTime = employeeLunchTimeByDate(filter, employee.getName());
+            long workTime = employeeWorkTimeByDate(filter, employee.getId());
+            long distractionTime = employeeDistractionTimeByDate(filter, employee.getId());
+            long restTime = employeeRestTimeByDate(filter, employee.getId());
+            long lunchTime = employeeLunchTimeByDate(filter, employee.getId());
             SummaryFormatter.toSummaryDto(workTime, distractionTime, restTime, lunchTime,
                     employeeSummaryDto, employee, filter,settings);
             employeeSummaryDto.setPositionName(employee.getPosition().getName());
@@ -79,26 +79,26 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public long employeeWorkTimeByDate(FilterDto filter, String employeeName) {
+    public long employeeWorkTimeByDate(FilterDto filter, Long id) {
         return repository.employeeWorkTimeByPeriod(filter.getStartPeriod().toLocalDate(),
-                filter.getEndPeriod().toLocalDate(), employeeName);
+                filter.getEndPeriod().toLocalDate(), id);
     }
 
     @Override
-    public long employeeDistractionTimeByDate(FilterDto filter, String employeeName) {
+    public long employeeDistractionTimeByDate(FilterDto filter, Long id) {
         return repository.employeeDistractionTimeByPeriod(filter.getStartPeriod().toLocalDate(),
-                filter.getEndPeriod().toLocalDate(), employeeName);
+                filter.getEndPeriod().toLocalDate(), id);
     }
 
     @Override
-    public long employeeRestTimeByDate(FilterDto filter, String employeeName) {
+    public long employeeRestTimeByDate(FilterDto filter, Long id) {
         return repository.employeeRestTimeByPeriod(filter.getStartPeriod().toLocalDate(),
-                filter.getEndPeriod().toLocalDate(), employeeName);
+                filter.getEndPeriod().toLocalDate(), id);
     }
 
     @Override
-    public long employeeLunchTimeByDate(FilterDto filter, String employeeName) {
+    public long employeeLunchTimeByDate(FilterDto filter, Long id) {
         return repository.employeeLunchTimeByPeriod(filter.getStartPeriod().toLocalDate(),
-                filter.getEndPeriod().toLocalDate(), employeeName);
+                filter.getEndPeriod().toLocalDate(), id);
     }
 }

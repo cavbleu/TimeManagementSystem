@@ -9,11 +9,11 @@ import java.util.List;
 
 public interface EmployeeService extends BaseService<EmployeeDto, Long> {
     List<EmployeeSummaryDto> employeesSummary(FilterDto filter);
-    long employeeWorkTimeByDate(FilterDto filter, String employeeName);
+    long employeeWorkTimeByDate(FilterDto filter, Long id);
 
-    long employeeDistractionTimeByDate(FilterDto filter, String employeeName);
+    long employeeDistractionTimeByDate(FilterDto filter, Long id);
 
-    long employeeRestTimeByDate(FilterDto filter, String employeeName);
+    long employeeRestTimeByDate(FilterDto filter, Long id);
 
-    long employeeLunchTimeByDate(FilterDto filter, String employeeName);
+    long employeeLunchTimeByDate(FilterDto filter, Long id);
 }

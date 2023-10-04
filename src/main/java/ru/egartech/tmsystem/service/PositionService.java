@@ -11,12 +11,12 @@ public interface PositionService extends BaseService<PositionDto, Long> {
 
     List<PositionSummaryDto> positionsSummary(FilterDto filter);
 
-    long positionWorkTimeByPeriod(FilterDto filter, String positionName);
+    long positionWorkTimeByPeriod(FilterDto filter, Long id);
 
-    long positionDistractionTimeByPeriod(FilterDto filter, String positionName);
+    long positionDistractionTimeByPeriod(FilterDto filter, Long id);
 
-    long positionRestTimeByPeriod(FilterDto filter, String positionName);
+    long positionRestTimeByPeriod(FilterDto filter, Long id);
 
 
-    long positionLunchTimeByPeriod(FilterDto filter, String positionName);
+    long positionLunchTimeByPeriod(FilterDto filter, Long id);
 }
