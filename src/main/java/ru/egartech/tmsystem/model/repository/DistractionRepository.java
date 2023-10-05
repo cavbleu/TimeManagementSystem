@@ -17,10 +17,9 @@ public interface DistractionRepository extends JpaRepository<Distraction, Long> 
             "where e.id = :id " +
             "and t.date >= :startDate " +
             "and t.date <= :endDate")
-    List<EmployeeDistractionDto> employeeDistractionsByPeriod(@Param("id") Long employeeId,
-                                                              @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+    List<EmployeeDistractionDto> employeeDistractionsByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 
-    @Query("select sum(d.distractionTime) from TimeSheet t join t.distractions d join t.employees e " +
-            "where t.date >= :startDate and t.date <= :endDate")
-    long summaryDistractionTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+//    @Query("select sum(d.distractionTime) from TimeSheet t join t.distractions d join t.employees e " +
+//            "where t.date >= :startDate and t.date <= :endDate")
+//    long summaryDistractionTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 }

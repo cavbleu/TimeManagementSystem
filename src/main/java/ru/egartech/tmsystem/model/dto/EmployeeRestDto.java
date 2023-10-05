@@ -10,11 +10,11 @@ import java.util.List;
 public class EmployeeRestDto {
 
     //Имя сотрудника
-    String employeeName;
+    private String employeeName;
     //Наименование отдела
-    String departmentName;
+    private String departmentName;
     //Наименование должности
-    String positionName;
-    //Список перерывов
-    List<RestDto> rests;
+    private String positionName;
+    //Список перерывов, включает в себя обеды
+    private List<RestDto> rests;
 }

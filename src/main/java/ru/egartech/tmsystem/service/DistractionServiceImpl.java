@@ -3,11 +3,12 @@ package ru.egartech.tmsystem.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.model.dto.DistractionDto;
+import ru.egartech.tmsystem.model.dto.EmployeeDistractionDto;
+import ru.egartech.tmsystem.model.dto.FilterDto;
 import ru.egartech.tmsystem.model.entity.Distraction;
 import ru.egartech.tmsystem.model.mapping.DistractionMapper;
 import ru.egartech.tmsystem.model.repository.DistractionRepository;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,10 +48,5 @@ public class DistractionServiceImpl implements DistractionService {
     @Override
     public void deleteById(Long id) {
         repository.deleteById(id);
-    }
-
-    @Override
-    public List<DistractionDto> employeeDistractionsByDate(LocalDate date, Long employeeId) {
-        return null;
     }
 }

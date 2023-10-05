@@ -25,7 +25,7 @@ public class Employee {
     @Column(name = "age", nullable = false)
     private int age;
     @Column(name = "privileges_number")
-    private long privilegesNumber;
+    private Long privilegesNumber;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnoreProperties("employees")

@@ -23,9 +23,9 @@ VALUES (1, 32, 'Aleksei Zhukov', 1, 1),
        (8, 37, 'Kristina Alekseeva', 7, 3),
        (9, 42, 'Mihail Mishustin', 1, 3);
 
-INSERT INTO time_sheet (id, date, end_work, productive_time, skip_reason, start_work, work_time)
-VALUES (1, '2023-10-01',  '18:00:00', 360, null, '09:00', 540),
-       (2, '2023-10-03', '18:00:00', 130, null, '13:00', 540);
+INSERT INTO time_sheet (id, date, end_work, start_work, work_time, absence_reason)
+VALUES (1, '2023-10-01',  '18:00:00', '09:00', 540, null),
+       (2, '2023-10-03', '18:00:00', '13:00', 540, 'illness');
 
 INSERT INTO  employee_time_sheet (employee_id, time_sheet_id)
 VALUES (1, 1),

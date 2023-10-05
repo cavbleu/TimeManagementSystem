@@ -1,6 +1,7 @@
 package ru.egartech.tmsystem.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.model.dto.EmployeeDto;
 import ru.egartech.tmsystem.model.dto.EmployeeSummaryDto;
@@ -15,12 +16,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 @Service
-@RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository repository;
     private final EmployeeMapper mapper;
     private final SettingsService settingsService;
+
+    public EmployeeServiceImpl(@Qualifier("employeeRepository") EmployeeRepository repository, EmployeeMapper mapper, SettingsService settingsService) {
+        this.repository = repository;
+        this.mapper = mapper;
+        this.settingsService = settingsService;
+    }
 
     @Override
     public List<EmployeeDto> findAll() {

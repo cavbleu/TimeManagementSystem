@@ -5,9 +5,9 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Getter
 @Setter
-public class EmployeeDistractionDto {
+@Getter
+public class EmployeeTimeSheetDto {
 
     //Имя сотрудника
     String employeeName;
@@ -18,6 +18,5 @@ public class EmployeeDistractionDto {
     //Наименование должности
     String positionName;
     //Список отвлечений
-    List<DistractionDto> distractions;
-
+    List<TimeSheetDto> timeSheets;
 }

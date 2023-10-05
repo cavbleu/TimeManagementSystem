@@ -3,26 +3,23 @@ package ru.egartech.tmsystem.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.model.dto.EmployeeDistractionDto;
+import ru.egartech.tmsystem.model.dto.EmployeeDto;
 import ru.egartech.tmsystem.model.dto.FilterDto;
+import ru.egartech.tmsystem.model.entity.Employee;
+import ru.egartech.tmsystem.model.repository.DistractionRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class EmployeeDistractionServiceImpl implements EmployeeDistractionService{
 
-    private final EmployeeService employeeService;
-    private final DistractionService distractionService;
+    private final DistractionRepository distractionRepository;
 
     @Override
-    public List<EmployeeDistractionDto> empDistractionsByPeriod(FilterDto filter) {
-
-
-
-        return null;
+    public List<EmployeeDistractionDto> employeeDistractionsByPeriod(FilterDto filter) {
+        return distractionRepository.employeeDistractionsByPeriod(filter.getStartPeriod().toLocalDate(),
+                filter.getEndPeriod().toLocalDate());
     }
 
-    @Override
-    public EmployeeDistractionDto empDistractionByPeriod(FilterDto filter) {
-        return null;
-    }
 }

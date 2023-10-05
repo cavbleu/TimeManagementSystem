@@ -16,6 +16,7 @@ import java.time.LocalTime;
 @Entity
 @Table(name = "distraction")
 public class Distraction {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
