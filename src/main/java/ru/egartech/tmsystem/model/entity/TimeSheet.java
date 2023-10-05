@@ -31,8 +31,6 @@ public class TimeSheet {
     private LocalDate date;
     @Column(name = "absence_reason")
     private String absenceReason;
-    @Column(name = "productive_time")
-    private long productiveTime;
     @Temporal(TemporalType.TIME)
     @Column(name = "start_work")
     private LocalTime startWork;
@@ -44,22 +42,22 @@ public class TimeSheet {
 
     @ManyToMany(mappedBy = "timeSheet", cascade = { CascadeType.ALL })
     @JsonIgnoreProperties("timeSheet")
+    @Setter(AccessLevel.NONE)
     private List<Employee> employees = new ArrayList<>();
 
     @OneToMany(mappedBy = "timeSheet")
     @JsonIgnoreProperties("timeSheet")
+    @Setter(AccessLevel.NONE)
     private List<Rest> rests = new ArrayList<>();
 
     @OneToMany(mappedBy = "timeSheet")
     @JsonIgnoreProperties("timeSheet")
+    @Setter(AccessLevel.NONE)
     private List<Distraction> distractions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "timeSheet")
-    @JsonIgnoreProperties("timeSheet")
-    private List<Rest> deviations = new ArrayList<>();
-
-    public TimeSheet(LocalDate date, LocalTime startWork, LocalTime endWork) {
+    public TimeSheet(LocalDate date, String absenceReason, LocalTime startWork, LocalTime endWork) {
         this.date = date;
+        this.absenceReason = absenceReason;
         this.startWork = startWork;
         this.endWork = endWork;
     }

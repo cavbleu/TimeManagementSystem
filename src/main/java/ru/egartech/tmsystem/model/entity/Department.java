@@ -27,10 +27,12 @@ public class Department {
 
     @OneToMany(mappedBy = "department")
     @JsonIgnoreProperties("department")
+    @Setter(AccessLevel.NONE)
     private List<Position> positions = new ArrayList<>();
 
     @OneToMany(mappedBy = "department")
     @JsonIgnoreProperties("department")
+    @Setter(AccessLevel.NONE)
     private List<Employee> employees = new ArrayList<>();
 
     public Department(String names) {

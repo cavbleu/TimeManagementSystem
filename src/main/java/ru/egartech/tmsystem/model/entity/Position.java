@@ -27,10 +27,12 @@ public class Position {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnoreProperties("positions")
+    @Setter(AccessLevel.NONE)
     private Department department;
 
     @OneToMany(mappedBy = "position")
     @JsonIgnoreProperties("position")
+    @Setter(AccessLevel.NONE)
     private List<Employee> employees = new ArrayList<>();
 
     public Position(String names) {

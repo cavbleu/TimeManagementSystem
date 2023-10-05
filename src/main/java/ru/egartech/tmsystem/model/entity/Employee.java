@@ -29,10 +29,12 @@ public class Employee {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnoreProperties("employees")
+    @Setter(AccessLevel.NONE)
     private Position position;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnoreProperties("employees")
+    @Setter(AccessLevel.NONE)
     private Department department;
 
     @ManyToMany
@@ -41,6 +43,7 @@ public class Employee {
             joinColumns = @JoinColumn(name = "employee_id"),
             inverseJoinColumns = @JoinColumn(name = "time_sheet_id"))
     @JsonIgnoreProperties("employees")
+    @Setter(AccessLevel.NONE)
     private List<TimeSheet> timeSheet;
 
 

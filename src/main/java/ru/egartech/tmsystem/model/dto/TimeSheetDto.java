@@ -18,7 +18,7 @@ public class TimeSheetDto {
     //Дата
     private LocalDate date;
     //Причина отсутствия на работе
-    private String skipReason;
+    private String absenceReason;
     //Время начала рабочего дня
     private LocalTime startWork;
     //Время окончания рабочего дня

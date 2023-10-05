@@ -45,5 +45,6 @@ public class Rest {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnoreProperties("rests")
+    @Setter(AccessLevel.NONE)
     private TimeSheet timeSheet;
 }

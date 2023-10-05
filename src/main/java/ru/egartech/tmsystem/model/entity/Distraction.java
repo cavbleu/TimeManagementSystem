@@ -35,5 +35,6 @@ public class Distraction {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnoreProperties("distractions")
+    @Setter(AccessLevel.NONE)
     private TimeSheet timeSheet;
 }
