@@ -7,6 +7,7 @@ import ru.egartech.tmsystem.model.repository.DeviationRepository;
 import ru.egartech.tmsystem.utils.DeviationFormatter;
 import ru.egartech.tmsystem.utils.SummaryFormatter;
 
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,7 @@ public class DeviationServiceImpl implements DeviationService {
     private final DeviationRepository deviationRepository;
 
     @Override
-    public DeviationDto deviationEmployeeByMonth(FilterDto filter, Long employeeId) {
+    public DeviationDto deviationEmployeeByMonth(LocalDate yearMonth, Long employeeId) {
 
         DeviationDto deviationsSummaryDto = new DeviationDto();
         EmployeeDto employeeDto = employeeService.findById(employeeId)
@@ -32,11 +33,11 @@ public class DeviationServiceImpl implements DeviationService {
         SettingsDto settingsDto = settingsService.findByCurrentSettingsProfile();
 
         long lateCount = deviationRepository.employeeLateCountByMonth(settingsService.findByCurrentSettingsProfile().getDefaultStartWork(),
-                employeeId, YearMonth.from(filter.getYearMonth()));
+                employeeId, YearMonth.from(yearMonth));
         long earlyLeavingCount = deviationRepository.earlyLeavingCountByEmployeeAndPeriod(settingsService.findByCurrentSettingsProfile().getDefaultWorkTime(),
-                employeeId, YearMonth.from(filter.getYearMonth()));
-        long absenceCount = deviationRepository.absenceCountByEmployeeAndPeriod(employeeId, YearMonth.from(filter.getYearMonth()));
-        long skipCount = deviationRepository.skipCountByEmployeeAndPeriod(employeeId, YearMonth.from(filter.getYearMonth()));
+                employeeId, YearMonth.from(yearMonth));
+        long absenceCount = deviationRepository.absenceCountByEmployeeAndPeriod(employeeId, YearMonth.from(yearMonth));
+        long skipCount = deviationRepository.skipCountByEmployeeAndPeriod(employeeId, YearMonth.from(yearMonth));
 
         long maxLateCountByMonth = settingsDto.getMaxLateCountByMonth();
         long maxEarlyLivingCountByMonth = settingsDto.getMaxEarlyLivingCountByMonth();
@@ -50,41 +51,13 @@ public class DeviationServiceImpl implements DeviationService {
         List<PrivilegeDto> allPrivileges = privilegeService.findAll();
         List<String> currentPrivileges = employeeDto.getPrivileges();
 
-        int increasedLate = allPrivileges.stream()
-                .filter(p -> p.getName().equals(LATE_COUNT.getName()))
-                .findFirst()
-                .map(PrivilegeDto::getIncreasedLate)
-                .orElseThrow();
-        int increasedEarlyLeaving = allPrivileges.stream()
-                .filter(p -> p.getName().equals(EARLY_LIVING_COUNT.getName()))
-                .findFirst()
-                .map(PrivilegeDto::getIncreasedEarlyLeaving)
-                .orElseThrow();
-        int increasedAbsence = allPrivileges.stream()
-                .filter(p -> p.getName().equals(ABSENCE.getName()))
-                .findFirst()
-                .map(PrivilegeDto::getIncreasedAbsence)
-                .orElseThrow();
-        int increasedSkip = allPrivileges.stream()
-                .filter(p -> p.getName().equals(SKIP.getName()))
-                .findFirst()
-                .map(PrivilegeDto::getIncreasedSkip)
-                .orElseThrow();
-        long increasedRestTime = allPrivileges.stream()
-                .filter(p -> p.getName().equals(REST_TIME.getName()))
-                .findFirst()
-                .map(PrivilegeDto::getIncreasedRestTime)
-                .orElseThrow();
-        long increasedLunchTime = allPrivileges.stream()
-                .filter(p -> p.getName().equals(LUNCH_TIME.getName()))
-                .findFirst()
-                .map(PrivilegeDto::getIncreasedLunchTime)
-                .orElseThrow();
-        long increasedDistractionTime = allPrivileges.stream()
-                .filter(p -> p.getName().equals(DISTRACTION_TIME.getName()))
-                .findFirst()
-                .map(PrivilegeDto::getIncreasedDistractionTime)
-                .orElseThrow();
+        long increasedLate = DeviationFormatter.getIncreasedAmount(LATE_COUNT, allPrivileges);
+        long increasedEarlyLeaving = DeviationFormatter.getIncreasedAmount(EARLY_LIVING_COUNT, allPrivileges);
+        long increasedAbsence = DeviationFormatter.getIncreasedAmount(ABSENCE, allPrivileges);
+        long increasedSkip = DeviationFormatter.getIncreasedAmount(SKIP, allPrivileges);
+        long increasedRestTime = DeviationFormatter.getIncreasedAmount(REST_TIME, allPrivileges);
+        long increasedLunchTime = DeviationFormatter.getIncreasedAmount(LUNCH_TIME, allPrivileges);
+        long increasedDistractionTime = DeviationFormatter.getIncreasedAmount(DISTRACTION_TIME, allPrivileges);
 
         maxAbsenceCountByMonth = currentPrivileges.contains(ABSENCE.getName()) ?
                 maxAbsenceCountByMonth + increasedAbsence : maxAbsenceCountByMonth;
@@ -103,16 +76,16 @@ public class DeviationServiceImpl implements DeviationService {
                 maxRestTimeByDay + increasedRestTime : maxRestTimeByDay;
 
         long excessDistractionTimeCount = deviationRepository.excessDistractionTimeCountByEmployeeAndPeriod(employeeId,
-                YearMonth.from(filter.getYearMonth()), maxDistractionTimeByDay);
+                YearMonth.from(yearMonth), maxDistractionTimeByDay);
         long excessLunchTimeCount = deviationRepository.excessLunchTimeCountByEmployeeAndPeriod(employeeId,
-                YearMonth.from(filter.getYearMonth()), maxLunchTimeByDay);
+                YearMonth.from(yearMonth), maxLunchTimeByDay);
         long excessRestTimeCount = deviationRepository.excessRestTimeCountByEmployeeAndPeriod(employeeId,
-                YearMonth.from(filter.getYearMonth()), maxRestTimeByDay);
+                YearMonth.from(yearMonth), maxRestTimeByDay);
         long deviationCount = lateCount + earlyLeavingCount + absenceCount + skipCount + excessDistractionTimeCount +
                 excessLunchTimeCount + excessRestTimeCount;
 
-        long workingDaysByMonth = SummaryFormatter.getWorkingDays(filter.getYearMonth().withDayOfMonth(1),
-                filter.getYearMonth().withDayOfMonth(filter.getYearMonth().getMonth().length(filter.getYearMonth().isLeapYear())));
+        long workingDaysByMonth = SummaryFormatter.getWorkingDays(yearMonth.withDayOfMonth(1),
+                yearMonth.withDayOfMonth(yearMonth.getMonth().length(yearMonth.isLeapYear())));
 
 
         double latePercent = (double) lateCount * 100 / maxLateCountByMonth;
@@ -139,11 +112,11 @@ public class DeviationServiceImpl implements DeviationService {
     }
 
     @Override
-    public List<DeviationDto> deviationAllEmployeesByMonth(FilterDto filter) {
+    public List<DeviationDto> deviationAllEmployeesByMonth(LocalDate yearMonth) {
         List<DeviationDto> deviations = new ArrayList<>();
         List<EmployeeDto> employees = employeeService.findAll();
         employees.forEach(e -> {
-            deviations.add(deviationEmployeeByMonth(filter, e.getId()));
+            deviations.add(deviationEmployeeByMonth(yearMonth, e.getId()));
         });
         return deviations;
     }

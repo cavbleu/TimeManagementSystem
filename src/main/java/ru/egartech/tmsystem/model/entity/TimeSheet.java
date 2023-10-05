@@ -38,7 +38,7 @@ public class TimeSheet {
     @Column(name = "end_work")
     private LocalTime endWork;
     @Column(name = "work_time")
-    private long workTime;
+    private Long workTime;
 
     @ManyToMany(mappedBy = "timeSheet", cascade = { CascadeType.ALL })
     @JsonIgnoreProperties("timeSheet")

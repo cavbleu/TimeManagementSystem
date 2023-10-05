@@ -6,6 +6,7 @@ import ru.egartech.tmsystem.model.dto.EmployeeRestDto;
 import ru.egartech.tmsystem.model.dto.FilterDto;
 import ru.egartech.tmsystem.model.repository.RestRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -14,8 +15,7 @@ public class EmployeeRestServiceImpl implements EmployeeRestService{
 
     private final RestRepository restRepository;
     @Override
-    public List<EmployeeRestDto> employeeRestsByPeriod(FilterDto filter) {
-        return restRepository.employeeRestsByPeriod(filter.getStartPeriod().toLocalDate(),
-                filter.getEndPeriod().toLocalDate());
+    public List<EmployeeRestDto> employeeRestsByPeriod(LocalDate startDate, LocalDate endDate) {
+        return restRepository.employeeRestsByPeriod(startDate, endDate);
     }
 }

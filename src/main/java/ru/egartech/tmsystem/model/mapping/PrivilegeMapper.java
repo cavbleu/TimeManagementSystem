@@ -7,4 +7,5 @@ import ru.egartech.tmsystem.utils.BaseMapper;
 
 @Mapper(componentModel = "spring")
 public interface PrivilegeMapper extends BaseMapper<PrivilegeDto, Privilege> {
+
 }

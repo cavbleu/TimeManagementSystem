@@ -5,18 +5,19 @@ import ru.egartech.tmsystem.utils.BaseService;
 import ru.egartech.tmsystem.model.dto.PositionDto;
 import ru.egartech.tmsystem.model.dto.PositionSummaryDto;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface PositionService extends BaseService<PositionDto, Long> {
 
-    List<PositionSummaryDto> positionsSummary(FilterDto filter);
+    List<PositionSummaryDto> positionsSummaryByPeriod(LocalDate startDate, LocalDate endDate);
 
-    long positionWorkTimeByPeriod(FilterDto filter, Long id);
+    long positionWorkTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id);
 
-    long positionDistractionTimeByPeriod(FilterDto filter, Long id);
+    long positionDistractionTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id);
 
-    long positionRestTimeByPeriod(FilterDto filter, Long id);
+    long positionRestTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id);
 
 
-    long positionLunchTimeByPeriod(FilterDto filter, Long id);
+    long positionLunchTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id);
 }

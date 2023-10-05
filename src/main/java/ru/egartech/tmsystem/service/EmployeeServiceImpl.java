@@ -12,6 +12,7 @@ import ru.egartech.tmsystem.model.dto.FilterDto;
 import ru.egartech.tmsystem.model.dto.SettingsDto;
 import ru.egartech.tmsystem.utils.SummaryFormatter;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -60,7 +61,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeSummaryDto> employeesSummary(FilterDto filter) {
+    public List<EmployeeSummaryDto> employeesSummary(LocalDate startDate, LocalDate endDate) {
         List<EmployeeSummaryDto> employeesSummary = new ArrayList<>();
         List<EmployeeDto> employees = findAll();
         SettingsDto settings = settingsService.findByCurrentSettingsProfile();
@@ -68,12 +69,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         for (EmployeeDto employee : employees) {
 
             EmployeeSummaryDto employeeSummaryDto = new EmployeeSummaryDto();
-            long workTime = employeeWorkTimeByPeriod(filter, employee.getId());
-            long distractionTime = employeeDistractionTimeByPeriod(filter, employee.getId());
-            long restTime = employeeRestTimeByPeriod(filter, employee.getId());
-            long lunchTime = employeeLunchTimeByPeriod(filter, employee.getId());
+            long workTime = employeeWorkTimeByPeriod(startDate, endDate, employee.getId());
+            long distractionTime = employeeDistractionTimeByPeriod(startDate, endDate, employee.getId());
+            long restTime = employeeRestTimeByPeriod(startDate, endDate, employee.getId());
+            long lunchTime = employeeLunchTimeByPeriod(startDate, endDate, employee.getId());
             SummaryFormatter.toSummaryDto(workTime, distractionTime, restTime, lunchTime,
-                    employeeSummaryDto, employee, filter,settings);
+                    employeeSummaryDto, employee, startDate, endDate, settings);
             employeeSummaryDto.setPositionName(employee.getPosition().getName());
             employeeSummaryDto.setDepartmentName(employee.getDepartment().getName());
             employeeSummaryDto.setPrivileges(String.join(" ;", employee.getPrivileges()));
@@ -84,26 +85,22 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public long employeeWorkTimeByPeriod(FilterDto filter, Long id) {
-        return repository.employeeWorkTimeByPeriod(filter.getStartPeriod().toLocalDate(),
-                filter.getEndPeriod().toLocalDate(), id);
+    public long employeeWorkTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id) {
+        return repository.employeeWorkTimeByPeriod(startDate, endDate, id);
     }
 
     @Override
-    public long employeeDistractionTimeByPeriod(FilterDto filter, Long id) {
-        return repository.employeeDistractionTimeByPeriod(filter.getStartPeriod().toLocalDate(),
-                filter.getEndPeriod().toLocalDate(), id);
+    public long employeeDistractionTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id) {
+        return repository.employeeDistractionTimeByPeriod(startDate, endDate, id);
     }
 
     @Override
-    public long employeeRestTimeByPeriod(FilterDto filter, Long id) {
-        return repository.employeeRestTimeByPeriod(filter.getStartPeriod().toLocalDate(),
-                filter.getEndPeriod().toLocalDate(), id);
+    public long employeeRestTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id) {
+        return repository.employeeRestTimeByPeriod(startDate, endDate, id);
     }
 
     @Override
-    public long employeeLunchTimeByPeriod(FilterDto filter, Long id) {
-        return repository.employeeLunchTimeByPeriod(filter.getStartPeriod().toLocalDate(),
-                filter.getEndPeriod().toLocalDate(), id);
+    public long employeeLunchTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id) {
+        return repository.employeeLunchTimeByPeriod(startDate, endDate, id);
     }
 }

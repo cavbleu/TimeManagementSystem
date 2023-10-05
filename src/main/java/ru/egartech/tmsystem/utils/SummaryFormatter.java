@@ -37,9 +37,9 @@ public class SummaryFormatter {
     }
 
     public void toSummaryDto(long workTime, long distractionTime, long restTime, long lunchTime,
-                             SummaryDto summaryDto, EntityDto entityDto, FilterDto filter, SettingsDto settings) {
+                             SummaryDto summaryDto, EntityDto entityDto, LocalDate startDate, LocalDate endDate, SettingsDto settings) {
         long productiveTime = workTime - distractionTime - restTime - lunchTime;
-        long days = getWorkingDays(filter.getStartPeriod().toLocalDate(), filter.getEndPeriod().toLocalDate());
+        long days = getWorkingDays(startDate, endDate);
         long overTime = workTime - settings.getDefaultWorkTime() * days;
         long overTimeMinutes = overTime > 0 ? overTime : -overTime;
 

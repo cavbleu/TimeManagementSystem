@@ -5,15 +5,16 @@ import ru.egartech.tmsystem.model.dto.EmployeeSummaryDto;
 import ru.egartech.tmsystem.model.dto.FilterDto;
 import ru.egartech.tmsystem.utils.BaseService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface EmployeeService extends BaseService<EmployeeDto, Long> {
-    List<EmployeeSummaryDto> employeesSummary(FilterDto filter);
-    long employeeWorkTimeByPeriod(FilterDto filter, Long id);
+    List<EmployeeSummaryDto> employeesSummary(LocalDate startDate, LocalDate endDate);
+    long employeeWorkTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id);
 
-    long employeeDistractionTimeByPeriod(FilterDto filter, Long id);
+    long employeeDistractionTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id);
 
-    long employeeRestTimeByPeriod(FilterDto filter, Long id);
+    long employeeRestTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id);
 
-    long employeeLunchTimeByPeriod(FilterDto filter, Long id);
+    long employeeLunchTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id);
 }

@@ -34,4 +34,11 @@ public class PrivilegeServiceImpl implements PrivilegeService{
                 .map(p -> mapper.toDto(repository.save(p)))
                 .orElseThrow();
     }
+
+    @Override
+    public PrivilegeDto increasedAmountByPrivilege(String privilegeName) {
+        return repository.increasedAmountByPrivilege(privilegeName)
+                .map(mapper::toDto)
+                .orElseThrow();
+    }
 }

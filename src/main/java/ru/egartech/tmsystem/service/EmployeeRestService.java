@@ -3,9 +3,10 @@ package ru.egartech.tmsystem.service;
 import ru.egartech.tmsystem.model.dto.EmployeeRestDto;
 import ru.egartech.tmsystem.model.dto.FilterDto;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface EmployeeRestService {
 
-    List<EmployeeRestDto> employeeRestsByPeriod(FilterDto filterDto);
+    List<EmployeeRestDto> employeeRestsByPeriod(LocalDate startDate, LocalDate endDate);
 }

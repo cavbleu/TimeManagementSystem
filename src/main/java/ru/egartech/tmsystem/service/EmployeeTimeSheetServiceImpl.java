@@ -6,6 +6,7 @@ import ru.egartech.tmsystem.model.dto.EmployeeTimeSheetDto;
 import ru.egartech.tmsystem.model.dto.FilterDto;
 import ru.egartech.tmsystem.model.repository.TimeSheetRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -16,8 +17,7 @@ public class EmployeeTimeSheetServiceImpl implements EmployeeTimeSheetService{
 
 
     @Override
-    public List<EmployeeTimeSheetDto> employeeTimeSheets(FilterDto filter) {
-        return timeSheetRepository.employeeTimeSheetsByPeriod(filter.getStartPeriod().toLocalDate(),
-                filter.getEndPeriod().toLocalDate());
+    public List<EmployeeTimeSheetDto> employeeTimeSheetsByPeriod(LocalDate startDate, LocalDate endDate) {
+        return timeSheetRepository.employeeTimeSheetsByPeriod(startDate, endDate);
     }
 }

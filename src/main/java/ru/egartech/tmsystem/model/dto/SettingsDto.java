@@ -9,6 +9,7 @@ import java.time.LocalTime;
 @Getter
 public class SettingsDto extends EntityDto{
 
+    Long id;
     //Является ли текущим профилем
     private boolean isCurrentSettingsProfile;
     //Норма рабочего времени за день

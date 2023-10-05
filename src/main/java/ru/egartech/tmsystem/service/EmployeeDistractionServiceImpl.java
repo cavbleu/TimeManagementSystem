@@ -8,6 +8,7 @@ import ru.egartech.tmsystem.model.dto.FilterDto;
 import ru.egartech.tmsystem.model.entity.Employee;
 import ru.egartech.tmsystem.model.repository.DistractionRepository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 @RequiredArgsConstructor
@@ -17,9 +18,8 @@ public class EmployeeDistractionServiceImpl implements EmployeeDistractionServic
     private final DistractionRepository distractionRepository;
 
     @Override
-    public List<EmployeeDistractionDto> employeeDistractionsByPeriod(FilterDto filter) {
-        return distractionRepository.employeeDistractionsByPeriod(filter.getStartPeriod().toLocalDate(),
-                filter.getEndPeriod().toLocalDate());
+    public List<EmployeeDistractionDto> employeeDistractionsByPeriod(LocalDate startDate, LocalDate endDate) {
+        return distractionRepository.employeeDistractionsByPeriod(startDate, endDate);
     }
 
 }

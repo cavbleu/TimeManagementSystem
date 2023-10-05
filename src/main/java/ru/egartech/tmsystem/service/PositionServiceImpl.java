@@ -2,16 +2,15 @@ package ru.egartech.tmsystem.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.egartech.tmsystem.model.dto.FilterDto;
 import ru.egartech.tmsystem.model.dto.PositionDto;
 import ru.egartech.tmsystem.model.dto.PositionSummaryDto;
+import ru.egartech.tmsystem.model.dto.SettingsDto;
 import ru.egartech.tmsystem.model.entity.Position;
 import ru.egartech.tmsystem.model.mapping.PositionMapper;
 import ru.egartech.tmsystem.model.repository.PositionRepository;
-import ru.egartech.tmsystem.model.dto.SettingsDto;
 import ru.egartech.tmsystem.utils.SummaryFormatter;
 
-import java.time.Duration;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -56,7 +55,7 @@ public class PositionServiceImpl implements PositionService {
     }
 
     @Override
-    public List<PositionSummaryDto> positionsSummary(FilterDto filter) {
+    public List<PositionSummaryDto> positionsSummaryByPeriod(LocalDate startDate, LocalDate endDate) {
 
         List<PositionSummaryDto> positionsSummary = new ArrayList<>();
         List<PositionDto> positions = findAll();
@@ -65,12 +64,12 @@ public class PositionServiceImpl implements PositionService {
         for (PositionDto position : positions) {
 
             PositionSummaryDto positionSummaryDto = new PositionSummaryDto();
-            long workTime = positionWorkTimeByPeriod(filter, position.getId());
-            long distractionTime = positionDistractionTimeByPeriod(filter, position.getId());
-            long restTime = positionRestTimeByPeriod(filter, position.getId());
-            long lunchTime = positionLunchTimeByPeriod(filter, position.getId());
+            long workTime = positionWorkTimeByPeriod(startDate, endDate, position.getId());
+            long distractionTime = positionDistractionTimeByPeriod(startDate, endDate, position.getId());
+            long restTime = positionRestTimeByPeriod(startDate, endDate, position.getId());
+            long lunchTime = positionLunchTimeByPeriod(startDate, endDate, position.getId());
             SummaryFormatter.toSummaryDto(workTime, distractionTime, restTime, lunchTime,
-                    positionSummaryDto, position, filter,settings);
+                    positionSummaryDto, position, startDate, endDate, settings);
             positionSummaryDto.setDepartmentName(position.getDepartment().getName());
             positionsSummary.add(positionSummaryDto);
         }
@@ -79,26 +78,22 @@ public class PositionServiceImpl implements PositionService {
     }
 
     @Override
-    public long positionWorkTimeByPeriod(FilterDto filter, Long id) {
-        return repository.positionWorkTimeByPeriod(filter.getStartPeriod().toLocalDate(),
-                filter.getEndPeriod().toLocalDate(), id);
+    public long positionWorkTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id) {
+        return repository.positionWorkTimeByPeriod(startDate, endDate, id);
     }
 
     @Override
-    public long positionDistractionTimeByPeriod(FilterDto filter, Long id) {
-        return repository.positionDistractionTimeByPeriod(filter.getStartPeriod().toLocalDate(),
-                filter.getEndPeriod().toLocalDate(), id);
+    public long positionDistractionTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id) {
+        return repository.positionDistractionTimeByPeriod(startDate, endDate, id);
     }
 
     @Override
-    public long positionRestTimeByPeriod(FilterDto filter, Long id) {
-        return repository.positionRestTimeByPeriod(filter.getStartPeriod().toLocalDate(),
-                filter.getEndPeriod().toLocalDate(), id);
+    public long positionRestTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id) {
+        return repository.positionRestTimeByPeriod(startDate, endDate, id);
     }
 
     @Override
-    public long positionLunchTimeByPeriod(FilterDto filter, Long id) {
-        return repository.positionLunchTimeByPeriod(filter.getStartPeriod().toLocalDate(),
-                filter.getEndPeriod().toLocalDate(), id);
+    public long positionLunchTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id) {
+        return repository.positionLunchTimeByPeriod(startDate, endDate, id);
     }
 }
