@@ -1,5 +1,6 @@
 package ru.egartech.tmsystem.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,6 +28,6 @@ public class RestDto {
     private LocalTime endLunch;
     //Суммарное время обеда
     private long lunchTime;
-    //Табель рабочего времени
-    private TimeSheet timeSheet;
+//    //Табель времени сотрудника
+//    private TimeSheet timeSheet;
 }

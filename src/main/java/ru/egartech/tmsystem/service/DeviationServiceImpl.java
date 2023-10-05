@@ -3,13 +3,12 @@ package ru.egartech.tmsystem.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.model.dto.*;
-import ru.egartech.tmsystem.model.repository.DeviationRepository;
+import ru.egartech.tmsystem.model.repository.EmployeeRepository;
 import ru.egartech.tmsystem.utils.DeviationFormatter;
 import ru.egartech.tmsystem.utils.SummaryFormatter;
 
 import java.time.YearMonth;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static ru.egartech.tmsystem.model.enumeration.EmployeePrivilegesEnum.*;
@@ -20,8 +19,9 @@ public class DeviationServiceImpl implements DeviationService {
 
     private final EmployeeService employeeService;
     private final PrivilegeService privilegeService;
-    private final DeviationRepository deviationRepository;
     private final SettingsService settingsService;
+    private final EmployeeRepository employeeRepository;
+//    private final DeviationRepository deviationRepository;
 
     @Override
     public DeviationDto deviationEmployeeByMonth(FilterDto filter, Long employeeId) {
@@ -31,12 +31,12 @@ public class DeviationServiceImpl implements DeviationService {
                 .orElseThrow();
         SettingsDto settingsDto = settingsService.findByCurrentSettingsProfile();
 
-        long lateCount = deviationRepository.employeeLateCountByMonth(settingsService.findByCurrentSettingsProfile().getDefaultStartWork(),
+        long lateCount = employeeRepository.employeeLateCountByMonth(settingsService.findByCurrentSettingsProfile().getDefaultStartWork(),
                 employeeId, YearMonth.from(filter.getYearMonth()));
-        long earlyLeavingCount = deviationRepository.earlyLeavingCountByEmployeeAndPeriod(settingsService.findByCurrentSettingsProfile().getDefaultWorkTime(),
+        long earlyLeavingCount = employeeRepository.earlyLeavingCountByEmployeeAndPeriod(settingsService.findByCurrentSettingsProfile().getDefaultWorkTime(),
                 employeeId, YearMonth.from(filter.getYearMonth()));
-        long absenceCount = deviationRepository.absenceCountByEmployeeAndPeriod(employeeId, YearMonth.from(filter.getYearMonth()));
-        long skipCount = deviationRepository.skipCountByEmployeeAndPeriod(employeeId, YearMonth.from(filter.getYearMonth()));
+        long absenceCount = employeeRepository.absenceCountByEmployeeAndPeriod(employeeId, YearMonth.from(filter.getYearMonth()));
+        long skipCount = employeeRepository.skipCountByEmployeeAndPeriod(employeeId, YearMonth.from(filter.getYearMonth()));
 
         long maxLateCountByMonth = settingsDto.getMaxLateCountByMonth();
         long maxEarlyLivingCountByMonth = settingsDto.getMaxEarlyLivingCountByMonth();
@@ -48,7 +48,7 @@ public class DeviationServiceImpl implements DeviationService {
 
 
         List<PrivilegeDto> allPrivileges = privilegeService.findAll();
-        List<String> currentPrivileges = Arrays.stream(employeeDto.getPrivileges().split("; ")).toList();
+        List<String> currentPrivileges = employeeDto.getPrivileges();
 
         int increasedLate = allPrivileges.stream()
                 .filter(p -> p.getName().equals(LATE_COUNT.getName()))
@@ -102,11 +102,11 @@ public class DeviationServiceImpl implements DeviationService {
         maxRestTimeByDay = currentPrivileges.contains(REST_TIME.getName()) ?
                 maxRestTimeByDay + increasedRestTime : maxRestTimeByDay;
 
-        long excessDistractionTimeCount = deviationRepository.excessDistractionTimeCountByEmployeeAndPeriod(employeeId,
+        long excessDistractionTimeCount = employeeRepository.excessDistractionTimeCountByEmployeeAndPeriod(employeeId,
                 YearMonth.from(filter.getYearMonth()), maxDistractionTimeByDay);
-        long excessLunchTimeCount = deviationRepository.excessLunchTimeCountByEmployeeAndPeriod(employeeId,
+        long excessLunchTimeCount = employeeRepository.excessLunchTimeCountByEmployeeAndPeriod(employeeId,
                 YearMonth.from(filter.getYearMonth()), maxLunchTimeByDay);
-        long excessRestTimeCount = deviationRepository.excessRestTimeCountByEmployeeAndPeriod(employeeId,
+        long excessRestTimeCount = employeeRepository.excessRestTimeCountByEmployeeAndPeriod(employeeId,
                 YearMonth.from(filter.getYearMonth()), maxRestTimeByDay);
         long deviationCount = lateCount + earlyLeavingCount + absenceCount + skipCount + excessDistractionTimeCount +
                 excessLunchTimeCount + excessRestTimeCount;

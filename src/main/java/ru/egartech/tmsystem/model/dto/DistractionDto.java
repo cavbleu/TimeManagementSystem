@@ -1,5 +1,6 @@
 package ru.egartech.tmsystem.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,5 +22,6 @@ public class DistractionDto {
     private LocalTime endDistraction;
     //Суммарное время отвлечения от целевых программ
     private long distractionTime;
-    private TimeSheet timeSheet;
+//    //Табель времени сотрудника
+//    private TimeSheet timeSheet;
 }

@@ -4,15 +4,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.model.dto.DepartmentDto;
 import ru.egartech.tmsystem.model.dto.DepartmentSummaryDto;
+import ru.egartech.tmsystem.model.dto.FilterDto;
+import ru.egartech.tmsystem.model.dto.SettingsDto;
 import ru.egartech.tmsystem.model.entity.Department;
 import ru.egartech.tmsystem.model.mapping.DepartmentMapper;
 import ru.egartech.tmsystem.model.repository.DepartmentRepository;
-import ru.egartech.tmsystem.model.dto.FilterDto;
-import ru.egartech.tmsystem.model.dto.SettingsDto;
-import ru.egartech.tmsystem.model.repository.SummaryRepository;
+import ru.egartech.tmsystem.model.repository.DistractionRepository;
+import ru.egartech.tmsystem.model.repository.RestRepository;
+import ru.egartech.tmsystem.model.repository.TimeSheetRepository;
 import ru.egartech.tmsystem.utils.SummaryFormatter;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,9 +23,12 @@ import java.util.Optional;
 public class DepartmentServiceImpl implements DepartmentService {
 
     private final DepartmentRepository repository;
-    private final SummaryRepository summaryRepository;
     private final SettingsService settingsService;
     private final DepartmentMapper mapper;
+    private final DistractionRepository distractionRepository;
+    private final RestRepository restRepository;
+    private final TimeSheetRepository timeSheetRepository;
+//    private final SummaryRepository summaryRepository;
 
     @Override
     public List<DepartmentDto> findAll() {
@@ -106,25 +110,25 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public long summaryWorkTimeByDate(FilterDto filter) {
-        return summaryRepository.summaryWorkTimeByPeriod(filter.getStartPeriod().toLocalDate(),
+        return timeSheetRepository.summaryWorkTimeByPeriod(filter.getStartPeriod().toLocalDate(),
                 filter.getEndPeriod().toLocalDate());
     }
 
     @Override
     public long summaryDistractionTimeByDate(FilterDto filter) {
-        return summaryRepository.summaryDistractionTimeByPeriod(filter.getStartPeriod().toLocalDate(),
+        return distractionRepository.summaryDistractionTimeByPeriod(filter.getStartPeriod().toLocalDate(),
                 filter.getEndPeriod().toLocalDate());
     }
 
     @Override
     public long summaryRestTimeByDate(FilterDto filter) {
-        return summaryRepository.summaryRestTimeByPeriod(filter.getStartPeriod().toLocalDate(),
+        return restRepository.summaryRestTimeByPeriod(filter.getStartPeriod().toLocalDate(),
                 filter.getEndPeriod().toLocalDate());
     }
 
     @Override
     public long summaryLunchTimeByDate(FilterDto filter) {
-        return summaryRepository.summaryLunchTimeByPeriod(filter.getStartPeriod().toLocalDate(),
+        return restRepository.summaryLunchTimeByPeriod(filter.getStartPeriod().toLocalDate(),
                 filter.getEndPeriod().toLocalDate());
     }
 }

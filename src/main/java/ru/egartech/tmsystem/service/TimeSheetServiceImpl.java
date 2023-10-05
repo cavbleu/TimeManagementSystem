@@ -1,6 +1,7 @@
 package ru.egartech.tmsystem.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.model.dto.TimeSheetDto;
 import ru.egartech.tmsystem.model.entity.TimeSheet;
@@ -11,11 +12,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class TimeSheetServiceImpl implements TimeSheetService{
 
     private final TimeSheetRepository repository;
     private final TimeSheetMapper mapper;
+
+    public TimeSheetServiceImpl(@Qualifier("timeSheetRepository") TimeSheetRepository repository, TimeSheetMapper mapper) {
+        this.repository = repository;
+        this.mapper = mapper;
+    }
 
     @Override
     public List<TimeSheetDto> findAll() {

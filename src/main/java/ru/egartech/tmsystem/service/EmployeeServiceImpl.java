@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.model.dto.EmployeeDto;
 import ru.egartech.tmsystem.model.dto.EmployeeSummaryDto;
 import ru.egartech.tmsystem.model.entity.Employee;
-import ru.egartech.tmsystem.model.enumeration.EmployeePrivilegesEnum;
 import ru.egartech.tmsystem.model.mapping.EmployeeMapper;
 import ru.egartech.tmsystem.model.repository.EmployeeRepository;
 import ru.egartech.tmsystem.model.dto.FilterDto;
@@ -63,10 +62,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         for (EmployeeDto employee : employees) {
 
             EmployeeSummaryDto employeeSummaryDto = new EmployeeSummaryDto();
-            long workTime = employeeWorkTimeByDate(filter, employee.getId());
-            long distractionTime = employeeDistractionTimeByDate(filter, employee.getId());
-            long restTime = employeeRestTimeByDate(filter, employee.getId());
-            long lunchTime = employeeLunchTimeByDate(filter, employee.getId());
+            long workTime = employeeWorkTimeByPeriod(filter, employee.getId());
+            long distractionTime = employeeDistractionTimeByPeriod(filter, employee.getId());
+            long restTime = employeeRestTimeByPeriod(filter, employee.getId());
+            long lunchTime = employeeLunchTimeByPeriod(filter, employee.getId());
             SummaryFormatter.toSummaryDto(workTime, distractionTime, restTime, lunchTime,
                     employeeSummaryDto, employee, filter,settings);
             employeeSummaryDto.setPositionName(employee.getPosition().getName());
@@ -79,25 +78,25 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public long employeeWorkTimeByDate(FilterDto filter, Long id) {
+    public long employeeWorkTimeByPeriod(FilterDto filter, Long id) {
         return repository.employeeWorkTimeByPeriod(filter.getStartPeriod().toLocalDate(),
                 filter.getEndPeriod().toLocalDate(), id);
     }
 
     @Override
-    public long employeeDistractionTimeByDate(FilterDto filter, Long id) {
+    public long employeeDistractionTimeByPeriod(FilterDto filter, Long id) {
         return repository.employeeDistractionTimeByPeriod(filter.getStartPeriod().toLocalDate(),
                 filter.getEndPeriod().toLocalDate(), id);
     }
 
     @Override
-    public long employeeRestTimeByDate(FilterDto filter, Long id) {
+    public long employeeRestTimeByPeriod(FilterDto filter, Long id) {
         return repository.employeeRestTimeByPeriod(filter.getStartPeriod().toLocalDate(),
                 filter.getEndPeriod().toLocalDate(), id);
     }
 
     @Override
-    public long employeeLunchTimeByDate(FilterDto filter, Long id) {
+    public long employeeLunchTimeByPeriod(FilterDto filter, Long id) {
         return repository.employeeLunchTimeByPeriod(filter.getStartPeriod().toLocalDate(),
                 filter.getEndPeriod().toLocalDate(), id);
     }

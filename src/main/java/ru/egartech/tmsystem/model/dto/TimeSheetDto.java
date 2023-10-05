@@ -1,5 +1,6 @@
 package ru.egartech.tmsystem.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,12 +28,12 @@ public class TimeSheetDto {
     private long workTime;
     //Продуктивное время
     private long productiveTime;
-    //Список всех сотрудников
-    private List<Employee> employees;
-    //Список всех перерывов
-    private List<Rest> rests;
-    //Список всех отвлечений от целевых программ
-    private List<Rest> distractions;
-    //Список всех отклонений от норм рабочего времени
-    private List<Rest> deviations;
+//    //Список всех сотрудников
+//    private List<Employee> employees;
+//    //Список всех перерывов
+//    private List<Rest> rests;
+//    //Список всех отвлечений от целевых программ
+//    private List<Rest> distractions;
+//    //Список всех отклонений от норм рабочего времени
+//    private List<Rest> deviations;
 }

@@ -23,7 +23,7 @@ public class Settings {
     private boolean currentSettingsProfile;
     @Column(name = "default_work_time", nullable = false)
     private long defaultWorkTime;
-    @Column(name = "default_work_time", nullable = false)
+    @Column(name = "default_start_work", nullable = false)
     private LocalTime defaultStartWork;
     @Column(name = "max_late_count_by_month", nullable = false)
     private int maxLateCountByMonth;

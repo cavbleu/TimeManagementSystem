@@ -1,5 +1,6 @@
 package ru.egartech.tmsystem.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import ru.egartech.tmsystem.model.entity.Department;
@@ -19,7 +20,7 @@ public class EmployeeDto extends EntityDto{
     //Отдел
     private Department department;
     //Список привилегий
-    private String privileges;
-    //Список табелей рабочего времени
-    private List<TimeSheet> timeSheet;
+    private List<String> privileges;
+//    //Табель времени сотрудника
+//    private List<TimeSheet> timeSheet;
 }
