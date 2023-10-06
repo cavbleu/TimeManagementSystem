@@ -12,14 +12,6 @@ import java.util.List;
 
 public interface RestRepository extends JpaRepository<Rest, Long> {
 
-//    @Query("select sum(r.restTime) from TimeSheet t join t.rests r join t.employees e " +
-//            "where t.date >= :startDate and t.date <= :endDate")
-//    long summaryRestTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
-//
-//    @Query("select sum(r.lunchTime) from TimeSheet t join t.rests r join t.employees e " +
-//            "where t.date >= :startDate and t.date <= :endDate")
-//    long summaryLunchTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
-
     @Query("select e.name, e.age, e.position.name, e.department.name, t.rests  " +
             "from Employee e join e.timeSheet t " +
             "where e.id = :id " +

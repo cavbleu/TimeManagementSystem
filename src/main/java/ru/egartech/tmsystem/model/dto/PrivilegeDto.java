@@ -8,7 +8,6 @@ import lombok.Setter;
 @Setter
 public class PrivilegeDto extends EntityDto{
 
-    private Long id;
-    private String name;
+    //Увеличенное значение, которое дает привилегия
     private Long increasedAmount;
 }

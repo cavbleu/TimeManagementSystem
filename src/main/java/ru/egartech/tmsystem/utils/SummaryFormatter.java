@@ -2,7 +2,6 @@ package ru.egartech.tmsystem.utils;
 
 import lombok.experimental.UtilityClass;
 import ru.egartech.tmsystem.model.dto.EntityDto;
-import ru.egartech.tmsystem.model.dto.FilterDto;
 import ru.egartech.tmsystem.model.dto.SettingsDto;
 import ru.egartech.tmsystem.model.dto.SummaryDto;
 
@@ -14,51 +13,56 @@ import java.util.Calendar;
 @UtilityClass
 public class SummaryFormatter {
 
-    public String format(long time, double percent) {
+    private final String WORK_TIME = "от отработанного времени";
+    private final String DEFAULT_WORK_TIME = "от нормы рабочего времени";
+
+    public String format(long time, double percent, String percentFrom) {
         return String
-                .format("%d ч %02d мин (%.1f ",
+                .format("%d ч %02d мин (%.1f%% %s)",
                         Duration.ofMinutes(time).toHoursPart(),
                         Duration.ofMinutes(time).toMinutesPart(),
-                        percent)
-                .concat("%)");
+                        percent,
+                        percentFrom);
     }
 
-    public String format(long hoursPart, long minutesPart, double percent) {
+    public String format(long hoursPart, long minutesPart, double percent, String percentFrom) {
         return String
-                .format("%d ч %02d мин (%.1f ",
+                .format("%d ч %02d мин (%.1f%% %s)",
                         Duration.ofMinutes(hoursPart).toHoursPart(),
                         Duration.ofMinutes(minutesPart).toMinutesPart(),
-                        percent)
-                .concat("%)");
+                        percent,
+                        percentFrom);
     }
 
     public double percentFormat(long minutes, long percentFrom) {
-        return (double) minutes * 100 / percentFrom;
+        return (double) percentFrom == 0 ? 0 : (double) minutes * 100 / percentFrom;
     }
 
-    public void toSummaryDto(long workTime, long distractionTime, long restTime, long lunchTime,
-                             SummaryDto summaryDto, EntityDto entityDto, LocalDate startDate, LocalDate endDate, SettingsDto settings) {
-        long productiveTime = workTime - distractionTime - restTime - lunchTime;
-        long days = getWorkingDays(startDate, endDate);
-        long overTime = workTime - settings.getDefaultWorkTime() * days;
+    public void toSummaryDto(long workTime, long distractionTime, long restTime, SummaryDto
+            summaryDto, EntityDto entityDto, LocalDate startDate, LocalDate endDate, SettingsDto settings) {
+        long productiveTime = workTime - distractionTime - restTime;
+        long workingDays = getWorkingDays(startDate, endDate);
+        long overTime = workTime - settings.getDefaultWorkTime() * workingDays;
         long overTimeMinutes = overTime > 0 ? overTime : -overTime;
 
-        double workTimePercent = percentFormat(workTime, settings.getDefaultWorkTime() * days);
+        double workTimePercent = percentFormat(workTime, settings.getDefaultWorkTime() * workingDays);
         double productiveTimePercent = percentFormat(productiveTime, workTime);
         double distractionTimePercent = percentFormat(distractionTime, workTime);
         double restTimePercent = percentFormat(restTime, workTime);
-        double lunchTimePercent = percentFormat(lunchTime, workTime);
-        double overTimePercent = percentFormat(overTime, settings.getDefaultWorkTime() * days);
-        overTimePercent = overTimePercent > 0 ? overTimePercent : -overTime;
+        double overTimePercent = 0;
+        if (overTime > 0) {
+            overTimePercent = percentFormat(overTime, settings.getDefaultWorkTime() * workingDays);
+        } else {
+            overTimePercent = percentFormat(settings.getDefaultWorkTime() * workingDays, overTime);
+        }
 
-        summaryDto.setId(entityDto.getId());
-        summaryDto.setName(entityDto.getName());
-        summaryDto.setWorkTime(format(workTime, workTimePercent));
-        summaryDto.setProductiveTime(format(productiveTime, productiveTimePercent));
-        summaryDto.setDistractionTime(format(distractionTime, distractionTimePercent));
-        summaryDto.setRestTime(format(restTime, restTimePercent));
-        summaryDto.setLunchTime(format(lunchTime, lunchTimePercent));
-        summaryDto.setOverTime(format(overTime, overTimeMinutes, overTimePercent));
+
+        summaryDto.setDepartmentName(entityDto.getName());
+        summaryDto.setWorkTime(format(workTime, workTimePercent, DEFAULT_WORK_TIME));
+        summaryDto.setProductiveTime(format(productiveTime, productiveTimePercent, WORK_TIME));
+        summaryDto.setDistractionTime(format(distractionTime, distractionTimePercent, WORK_TIME));
+        summaryDto.setRestTime(format(restTime, restTimePercent, WORK_TIME));
+        summaryDto.setOverTime(format(overTime, overTimeMinutes, overTimePercent, DEFAULT_WORK_TIME));
     }
 
     public static long getWorkingDays(LocalDate startDate, LocalDate endDate) {

@@ -72,8 +72,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             long workTime = employeeWorkTimeByPeriod(startDate, endDate, employee.getId());
             long distractionTime = employeeDistractionTimeByPeriod(startDate, endDate, employee.getId());
             long restTime = employeeRestTimeByPeriod(startDate, endDate, employee.getId());
-            long lunchTime = employeeLunchTimeByPeriod(startDate, endDate, employee.getId());
-            SummaryFormatter.toSummaryDto(workTime, distractionTime, restTime, lunchTime,
+            SummaryFormatter.toSummaryDto(workTime, distractionTime, restTime,
                     employeeSummaryDto, employee, startDate, endDate, settings);
             employeeSummaryDto.setPositionName(employee.getPosition().getName());
             employeeSummaryDto.setDepartmentName(employee.getDepartment().getName());
@@ -86,21 +85,19 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public long employeeWorkTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id) {
-        return repository.employeeWorkTimeByPeriod(startDate, endDate, id);
+        return repository.employeeWorkTimeByPeriod(startDate, endDate, id)
+                .orElse(0L);
     }
 
     @Override
     public long employeeDistractionTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id) {
-        return repository.employeeDistractionTimeByPeriod(startDate, endDate, id);
+        return repository.employeeDistractionTimeByPeriod(startDate, endDate, id)
+                .orElse(0L);
     }
 
     @Override
     public long employeeRestTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id) {
-        return repository.employeeRestTimeByPeriod(startDate, endDate, id);
-    }
-
-    @Override
-    public long employeeLunchTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id) {
-        return repository.employeeLunchTimeByPeriod(startDate, endDate, id);
+        return repository.employeeRestTimeByPeriod(startDate, endDate, id)
+                .orElse(0L);
     }
 }

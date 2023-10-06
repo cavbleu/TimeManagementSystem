@@ -37,6 +37,4 @@ public class Settings {
     private Long maxRestTimeByDay;
     @Column(name = "max_distraction_time_by_day", nullable = false)
     private Long maxDistractionTimeByDay;
-    @Column(name = "max_lunch_time_by_day", nullable = false)
-    private Long maxLunchTimeByDay;
 }

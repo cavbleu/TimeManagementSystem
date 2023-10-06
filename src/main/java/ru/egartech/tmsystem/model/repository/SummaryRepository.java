@@ -5,23 +5,26 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Repository
 public interface SummaryRepository extends TimeSheetRepository{
 
-    @Query("select sum(t.workTime) from TimeSheet t join t.employees e where t.date >= :startDate " +
+    @Query("select sum(t.workTime) " +
+            "from TimeSheet t join t.employees e " +
+            "where t.date >= :startDate " +
             "and t.date <= :endDate")
-    long summaryWorkTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+    Optional<Long> summaryWorkTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 
-    @Query("select sum(d.distractionTime) from TimeSheet t join t.distractions d join t.employees e " +
-            "where t.date >= :startDate and t.date <= :endDate")
-    long summaryDistractionTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+    @Query("select sum(d.distractionTime) " +
+            "from TimeSheet t join t.distractions d join t.employees e " +
+            "where t.date >= :startDate " +
+            "and t.date <= :endDate")
+    Optional<Long> summaryDistractionTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 
     @Query("select sum(r.restTime) from TimeSheet t join t.rests r join t.employees e " +
-            "where t.date >= :startDate and t.date <= :endDate")
-    long summaryRestTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+            "where t.date >= :startDate " +
+            "and t.date <= :endDate")
+    Optional<Long> summaryRestTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 
-    @Query("select sum(r.lunchTime) from TimeSheet t join t.rests r join t.employees e " +
-            "where t.date >= :startDate and t.date <= :endDate")
-    long summaryLunchTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 }

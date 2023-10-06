@@ -17,7 +17,4 @@ public interface PositionService extends BaseService<PositionDto, Long> {
     long positionDistractionTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id);
 
     long positionRestTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id);
-
-
-    long positionLunchTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id);
 }

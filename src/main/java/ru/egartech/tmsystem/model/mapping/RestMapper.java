@@ -16,10 +16,7 @@ public abstract class RestMapper {
         rest.setDate(dto.getDate());
         rest.setStartRest(dto.getStartRest());
         rest.setEndRest(dto.getEndRest());
-        rest.setStartLunch(dto.getStartLunch());
-        rest.setEndLunch(dto.getEndLunch());
         rest.setRestTime(Duration.between(dto.getStartRest(), dto.getEndRest()).toMinutes());
-        rest.setLunchTime(Duration.between(dto.getStartLunch(), dto.getEndLunch()).toMinutes());
 
         return rest;
     }

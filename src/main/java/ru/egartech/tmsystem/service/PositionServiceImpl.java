@@ -67,8 +67,7 @@ public class PositionServiceImpl implements PositionService {
             long workTime = positionWorkTimeByPeriod(startDate, endDate, position.getId());
             long distractionTime = positionDistractionTimeByPeriod(startDate, endDate, position.getId());
             long restTime = positionRestTimeByPeriod(startDate, endDate, position.getId());
-            long lunchTime = positionLunchTimeByPeriod(startDate, endDate, position.getId());
-            SummaryFormatter.toSummaryDto(workTime, distractionTime, restTime, lunchTime,
+            SummaryFormatter.toSummaryDto(workTime, distractionTime, restTime,
                     positionSummaryDto, position, startDate, endDate, settings);
             positionSummaryDto.setDepartmentName(position.getDepartment().getName());
             positionsSummary.add(positionSummaryDto);
@@ -79,21 +78,19 @@ public class PositionServiceImpl implements PositionService {
 
     @Override
     public long positionWorkTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id) {
-        return repository.positionWorkTimeByPeriod(startDate, endDate, id);
+        return repository.positionWorkTimeByPeriod(startDate, endDate, id)
+                .orElse(0L);
     }
 
     @Override
     public long positionDistractionTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id) {
-        return repository.positionDistractionTimeByPeriod(startDate, endDate, id);
+        return repository.positionDistractionTimeByPeriod(startDate, endDate, id)
+                .orElse(0L);
     }
 
     @Override
     public long positionRestTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id) {
-        return repository.positionRestTimeByPeriod(startDate, endDate, id);
-    }
-
-    @Override
-    public long positionLunchTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id) {
-        return repository.positionLunchTimeByPeriod(startDate, endDate, id);
+        return repository.positionRestTimeByPeriod(startDate, endDate, id)
+                .orElse(0L);
     }
 }

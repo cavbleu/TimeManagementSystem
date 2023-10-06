@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.model.dto.DepartmentDto;
 import ru.egartech.tmsystem.model.dto.DepartmentSummaryDto;
-import ru.egartech.tmsystem.model.dto.FilterDto;
 import ru.egartech.tmsystem.model.dto.SettingsDto;
 import ru.egartech.tmsystem.model.entity.Department;
 import ru.egartech.tmsystem.model.mapping.DepartmentMapper;
@@ -23,9 +22,6 @@ public class DepartmentServiceImpl implements DepartmentService {
     private final DepartmentRepository repository;
     private final SettingsService settingsService;
     private final DepartmentMapper mapper;
-//    private final DistractionRepository distractionRepository;
-//    private final RestRepository restRepository;
-//    private final TimeSheetRepository timeSheetRepository;
     private final SummaryRepository summaryRepository;
 
     @Override
@@ -69,11 +65,10 @@ public class DepartmentServiceImpl implements DepartmentService {
         for (DepartmentDto department : departments) {
 
             DepartmentSummaryDto departmentSummaryDto = new DepartmentSummaryDto();
-            long workTime = departmentWorkTimeByDate(startDate, endDate, department.getId());
-            long distractionTime = departmentDistractionTimeByDate(startDate, endDate, department.getId());
-            long restTime = departmentRestTimeByDate(startDate, endDate, department.getId());
-            long lunchTime = departmentLunchTimeByDate(startDate, endDate, department.getId());
-            SummaryFormatter.toSummaryDto(workTime, distractionTime, restTime, lunchTime,
+            long workTime = departmentWorkTimeByPeriod(startDate, endDate, department.getId());
+            long distractionTime = departmentDistractionTimeByPeriod(startDate, endDate, department.getId());
+            long restTime = departmentRestTimeByPeriod(startDate, endDate, department.getId());
+            SummaryFormatter.toSummaryDto(workTime, distractionTime, restTime,
                     departmentSummaryDto, department, startDate, endDate, settings);
 
             departmentsSummary.add(departmentSummaryDto);
@@ -83,42 +78,21 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public long departmentWorkTimeByDate(LocalDate startDate, LocalDate endDate, Long id) {
-        return repository.departmentWorkTimeByPeriod(startDate, endDate, id);
+    public long departmentWorkTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id) {
+
+        return repository.departmentWorkTimeByPeriod(startDate, endDate, id)
+                .orElse(0L);
     }
 
     @Override
-    public long departmentDistractionTimeByDate(LocalDate startDate, LocalDate endDate, Long id) {
-        return repository.departmentDistractionTimeByPeriod(startDate, endDate, id);
+    public long departmentDistractionTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id) {
+        return repository.departmentDistractionTimeByPeriod(startDate, endDate, id)
+                .orElse(0L);
     }
 
     @Override
-    public long departmentRestTimeByDate(LocalDate startDate, LocalDate endDate, Long id) {
-        return repository.departmentRestTimeByPeriod(startDate, endDate, id);
-    }
-
-    @Override
-    public long departmentLunchTimeByDate(LocalDate startDate, LocalDate endDate, Long id) {
-        return repository.departmentLunchTimeByPeriod(startDate, endDate, id);
-    }
-
-    @Override
-    public long summaryWorkTimeByDate(LocalDate startDate, LocalDate endDate) {
-        return summaryRepository.summaryWorkTimeByPeriod(startDate, endDate);
-    }
-
-    @Override
-    public long summaryDistractionTimeByDate(LocalDate startDate, LocalDate endDate) {
-        return summaryRepository.summaryDistractionTimeByPeriod(startDate, endDate);
-    }
-
-    @Override
-    public long summaryRestTimeByDate(LocalDate startDate, LocalDate endDate) {
-        return summaryRepository.summaryRestTimeByPeriod(startDate, endDate);
-    }
-
-    @Override
-    public long summaryLunchTimeByDate(LocalDate startDate, LocalDate endDate) {
-        return summaryRepository.summaryLunchTimeByPeriod(startDate, endDate);
+    public long departmentRestTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id) {
+        return repository.departmentRestTimeByPeriod(startDate, endDate, id)
+                .orElse(0L);
     }
 }

@@ -24,8 +24,6 @@ public class DeviationDto {
     private String skipCount;
     //Суммарное количество превышений времени отвлечений
     private String excessDistractionTimeCount;
-    //Суммарное количество превышений обеденного времени
-    private String excessLunchTimeCount;
     //Суммарное количество превышений времени отвлечений
     private String excessRestTimeCount;
     //Список привилегий

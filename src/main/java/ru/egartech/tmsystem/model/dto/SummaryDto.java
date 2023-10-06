@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public abstract class SummaryDto extends EntityDto{
+public abstract class SummaryDto {
 
     //Наименование отдела
     private String departmentName;
@@ -17,8 +17,6 @@ public abstract class SummaryDto extends EntityDto{
     private String distractionTime;
     //Суммарное время перерывов
     private String restTime;
-    //Суммарное время, потраченное на обед
-    private String lunchTime;
     //Переработки - разница между отработанным временем и нормой рабочего времени.
     //Может быть как положительным так и отрицательным
     private String overTime;

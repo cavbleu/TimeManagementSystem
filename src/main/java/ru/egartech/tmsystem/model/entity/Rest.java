@@ -34,15 +34,6 @@ public class Rest {
     @Column(name = "rest_time")
     private long restTime;
 
-    @Temporal(TemporalType.TIME)
-    @Column(name = "start_lunch")
-    private LocalTime startLunch;
-    @Temporal(TemporalType.TIME)
-    @Column(name = "end_lunch")
-    private LocalTime endLunch;
-    @Column(name = "lunch_time")
-    private long lunchTime;
-
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnoreProperties("rests")
     @Setter(AccessLevel.NONE)

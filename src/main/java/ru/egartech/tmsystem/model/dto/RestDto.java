@@ -22,12 +22,6 @@ public class RestDto {
     private LocalTime endRest;
     //Суммарное время перерыва
     private long restTime;
-    //Время начала обеда
-    private LocalTime startLunch;
-    //Время окончания обеда
-    private LocalTime endLunch;
-    //Суммарное время обеда
-    private long lunchTime;
 //    //Табель времени сотрудника
 //    private TimeSheet timeSheet;
 }

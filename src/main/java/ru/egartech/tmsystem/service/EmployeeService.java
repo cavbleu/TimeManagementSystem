@@ -16,5 +16,4 @@ public interface EmployeeService extends BaseService<EmployeeDto, Long> {
 
     long employeeRestTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id);
 
-    long employeeLunchTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id);
 }

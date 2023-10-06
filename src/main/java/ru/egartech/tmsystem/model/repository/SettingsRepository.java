@@ -6,5 +6,5 @@ import ru.egartech.tmsystem.model.entity.Settings;
 import java.util.Optional;
 
 public interface SettingsRepository extends JpaRepository<Settings, Long> {
-    public Optional<Settings> findByCurrentSettingsProfileIsTrue();
+    Optional<Settings> findByCurrentSettingsProfileIsTrue();
 }

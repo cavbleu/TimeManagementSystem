@@ -10,8 +10,10 @@ import java.time.LocalTime;
 public class SettingsDto extends EntityDto{
 
     Long id;
+    //Наименование профиля
+    private String settingsProfile;
     //Является ли текущим профилем
-    private boolean isCurrentSettingsProfile;
+    private boolean currentSettingsProfile;
     //Норма рабочего времени за день
     private long defaultWorkTime;
     //Норма начала рабочего дня
@@ -26,8 +28,6 @@ public class SettingsDto extends EntityDto{
     private long maxSkipWorkCountByMonth;
     //Максимальное суммарное время отвлечений в день
     private long maxDistractionTimeByDay;
-    //Максимальное суммарное время, потраченное на обед в день
-    private long maxLunchTimeByDay;
     //Максимальное суммарное время перерывов в день
     private long maxRestTimeByDay;
 }
