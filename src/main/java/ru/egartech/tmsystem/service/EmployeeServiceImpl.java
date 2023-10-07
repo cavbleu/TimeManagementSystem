@@ -61,7 +61,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeSummaryDto> employeesSummary(LocalDate startDate, LocalDate endDate) {
+    public List<EmployeeSummaryDto> employeesSummaryByPeriod(LocalDate startDate, LocalDate endDate) {
         List<EmployeeSummaryDto> employeesSummary = new ArrayList<>();
         List<EmployeeDto> employees = findAll();
         SettingsDto settings = settingsService.findByCurrentSettingsProfile();
@@ -74,9 +74,10 @@ public class EmployeeServiceImpl implements EmployeeService {
             long restTime = employeeRestTimeByPeriod(startDate, endDate, employee.getId());
             SummaryFormatter.toSummaryDto(workTime, distractionTime, restTime,
                     employeeSummaryDto, employee, startDate, endDate, settings);
+            employeeSummaryDto.setName(employee.getName());
             employeeSummaryDto.setPositionName(employee.getPosition().getName());
             employeeSummaryDto.setDepartmentName(employee.getDepartment().getName());
-            employeeSummaryDto.setPrivileges(String.join(" ;", employee.getPrivileges()));
+            employeeSummaryDto.setPrivileges(String.join("; ", employee.getPrivileges()));
             employeesSummary.add(employeeSummaryDto);
         }
 

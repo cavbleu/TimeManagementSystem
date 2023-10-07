@@ -25,12 +25,12 @@ public class Department {
     @Column(unique = true, nullable = false, name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "department")
+    @OneToMany(mappedBy = "department", fetch = FetchType.EAGER)
     @JsonIgnoreProperties("department")
     @Setter(AccessLevel.NONE)
     private List<Position> positions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "department")
+    @OneToMany(mappedBy = "department", fetch = FetchType.EAGER)
     @JsonIgnoreProperties("department")
     @Setter(AccessLevel.NONE)
     private List<Employee> employees = new ArrayList<>();

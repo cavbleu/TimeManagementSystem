@@ -13,8 +13,6 @@ public class PositionDto extends EntityDto {
 
     //Наименование отдела
     Department department;
-//    //Список сотрудников
-//    private List<Employee> employees;
 }
 
 

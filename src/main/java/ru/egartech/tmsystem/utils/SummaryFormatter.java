@@ -17,25 +17,25 @@ public class SummaryFormatter {
     private final String DEFAULT_WORK_TIME = "от нормы рабочего времени";
 
     public String format(long time, double percent, String percentFrom) {
-        return String
-                .format("%d ч %02d мин (%.1f%% %s)",
-                        Duration.ofMinutes(time).toHoursPart(),
-                        Duration.ofMinutes(time).toMinutesPart(),
-                        percent,
-                        percentFrom);
+        if (time < 0) {
+            return String
+                    .format("%d ч %02d мин (%.1f%% %s)",
+                            time / 60,
+                            -time % 60,
+                            percent,
+                            percentFrom);
+        } else {
+            return String
+                    .format("%d ч %02d мин (%.1f%% %s)",
+                            time / 60,
+                            time % 60,
+                            percent,
+                            percentFrom);
+        }
     }
 
-    public String format(long hoursPart, long minutesPart, double percent, String percentFrom) {
-        return String
-                .format("%d ч %02d мин (%.1f%% %s)",
-                        Duration.ofMinutes(hoursPart).toHoursPart(),
-                        Duration.ofMinutes(minutesPart).toMinutesPart(),
-                        percent,
-                        percentFrom);
-    }
-
-    public double percentFormat(long minutes, long percentFrom) {
-        return (double) percentFrom == 0 ? 0 : (double) minutes * 100 / percentFrom;
+    public double percentFormat(long count, long percentFrom) {
+        return percentFrom == 0 ? count * 100 : (double) count * 100 / percentFrom;
     }
 
     public void toSummaryDto(long workTime, long distractionTime, long restTime, SummaryDto
@@ -43,18 +43,12 @@ public class SummaryFormatter {
         long productiveTime = workTime - distractionTime - restTime;
         long workingDays = getWorkingDays(startDate, endDate);
         long overTime = workTime - settings.getDefaultWorkTime() * workingDays;
-        long overTimeMinutes = overTime > 0 ? overTime : -overTime;
 
         double workTimePercent = percentFormat(workTime, settings.getDefaultWorkTime() * workingDays);
         double productiveTimePercent = percentFormat(productiveTime, workTime);
         double distractionTimePercent = percentFormat(distractionTime, workTime);
         double restTimePercent = percentFormat(restTime, workTime);
-        double overTimePercent = 0;
-        if (overTime > 0) {
-            overTimePercent = percentFormat(overTime, settings.getDefaultWorkTime() * workingDays);
-        } else {
-            overTimePercent = percentFormat(settings.getDefaultWorkTime() * workingDays, overTime);
-        }
+        double overTimePercent = percentFormat(overTime, settings.getDefaultWorkTime() * workingDays);
 
 
         summaryDto.setDepartmentName(entityDto.getName());
@@ -62,7 +56,7 @@ public class SummaryFormatter {
         summaryDto.setProductiveTime(format(productiveTime, productiveTimePercent, WORK_TIME));
         summaryDto.setDistractionTime(format(distractionTime, distractionTimePercent, WORK_TIME));
         summaryDto.setRestTime(format(restTime, restTimePercent, WORK_TIME));
-        summaryDto.setOverTime(format(overTime, overTimeMinutes, overTimePercent, DEFAULT_WORK_TIME));
+        summaryDto.setOverTime(format(overTime, overTimePercent, DEFAULT_WORK_TIME));
     }
 
     public static long getWorkingDays(LocalDate startDate, LocalDate endDate) {
@@ -90,6 +84,6 @@ public class SummaryFormatter {
             }
         } while (startCal.getTimeInMillis() < endCal.getTimeInMillis());
 
-        return workDays;
+        return ++workDays;
     }
 }

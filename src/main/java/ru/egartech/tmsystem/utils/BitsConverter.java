@@ -17,17 +17,23 @@ public class BitsConverter {
         List<String> employeePrivileges = new ArrayList<>();
         if ((privilegesBit & BIT_LATE_COUNT) != 0) {
             employeePrivileges.add(LATE_COUNT.getName());
-        } else if ((privilegesBit & BIT_EARLY_LIVING_COUNT) != 0) {
+        }
+        if ((privilegesBit & BIT_EARLY_LIVING_COUNT) != 0) {
             employeePrivileges.add(EARLY_LIVING_COUNT.getName());
-        } else if ((privilegesBit & BIT_ABSENCE) != 0) {
+        }
+        if ((privilegesBit & BIT_ABSENCE) != 0) {
             employeePrivileges.add(ABSENCE.getName());
-        } else if ((privilegesBit & BIT_SKIP) != 0) {
+        }
+        if ((privilegesBit & BIT_SKIP) != 0) {
             employeePrivileges.add(SKIP.getName());
-        } else if ((privilegesBit & BIT_REST_TIME) != 0) {
+        }
+        if ((privilegesBit & BIT_REST_TIME) != 0) {
             employeePrivileges.add(REST_TIME.getName());
-        } else if ((privilegesBit & BIT_LUNCH_TIME) != 0) {
+        }
+        if ((privilegesBit & BIT_LUNCH_TIME) != 0) {
             employeePrivileges.add(LUNCH_TIME.getName());
-        } else if ((privilegesBit & BIT_DISTRACTION_TIME) != 0) {
+        }
+        if ((privilegesBit & BIT_DISTRACTION_TIME) != 0) {
             employeePrivileges.add(DISTRACTION_TIME.getName());
         }
 

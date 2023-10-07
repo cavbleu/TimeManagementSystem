@@ -14,16 +14,16 @@ public interface DeviationService {
     DeviationDto deviationEmployeeByMonth(LocalDate yearMonth, Long employeeId);
     List<DeviationDto> deviationAllEmployeesByMonth(LocalDate yearMonth);
 
-    long employeeLateCountByMonth(LocalTime defaultStartWork, Long id, YearMonth yearMonth);
+    long employeeLateCountByMonth(LocalTime defaultStartWork, Long id, LocalDate yearMonth);
 
-    long earlyLeavingCountByEmployeeAndPeriod(long defaultWorkTime, @Param("id") Long id, YearMonth yearMonth);
+    long earlyLeavingCountByEmployeeAndPeriod(long defaultWorkTime, Long id, LocalDate yearMonth);
 
-    long absenceCountByEmployeeAndPeriod(Long id, YearMonth yearMonth);
+    long absenceCountByEmployeeAndPeriod(Long id, LocalDate yearMonth);
 
-    long skipCountByEmployeeAndPeriod(Long id, YearMonth yearMonth);
+    long skipCountByEmployeeAndPeriod(Long id, LocalDate yearMonth);
 
-    long excessDistractionTimeCountByEmployeeAndPeriod(Long id, YearMonth yearMonth, long maxDistractionTimeByDay);
+    long excessDistractionTimeCountByEmployeeAndPeriod(Long id, LocalDate yearMonth, long maxDistractionTimeByDay);
 
-    long excessRestTimeCountByEmployeeAndPeriod(Long id, YearMonth yearMonth, long maxRestTimeByDay);
+    long excessRestTimeCountByEmployeeAndPeriod(Long id, LocalDate yearMonth, long maxRestTimeByDay);
 
 }

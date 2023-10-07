@@ -8,13 +8,15 @@ import ru.egartech.tmsystem.model.entity.Employee;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.YearMonth;
+import java.util.List;
 import java.util.Optional;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     @Query("select sum(t.workTime) " +
             "from TimeSheet t join t.employees e " +
             "where t.date >= :startDate " +
-            "and t.date <= :endDate and e.id = :id")
+            "and t.date <= :endDate " +
+            "and e.id = :id")
     Optional<Long> employeeWorkTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate,
                                             @Param("id") Long id);
 

@@ -14,12 +14,12 @@ import static ru.egartech.tmsystem.model.enumeration.EmployeePrivilegesEnum.EARL
 @UtilityClass
 public class DeviationFormatter {
 
-    public String format(long count, double percent) {
+    public String format(long count, double percent, String percentFrom) {
         return String
-                .format("%d (%.1f) ",
+                .format("%d (%.1f %% %s) ",
                         count,
-                        percent)
-                .concat("%)");
+                        percent,
+                        percentFrom);
     }
 
     public String format(long count) {

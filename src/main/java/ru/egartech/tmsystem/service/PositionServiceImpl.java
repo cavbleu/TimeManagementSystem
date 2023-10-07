@@ -70,6 +70,7 @@ public class PositionServiceImpl implements PositionService {
             SummaryFormatter.toSummaryDto(workTime, distractionTime, restTime,
                     positionSummaryDto, position, startDate, endDate, settings);
             positionSummaryDto.setDepartmentName(position.getDepartment().getName());
+            positionSummaryDto.setPositionName(position.getName());
             positionsSummary.add(positionSummaryDto);
         }
 

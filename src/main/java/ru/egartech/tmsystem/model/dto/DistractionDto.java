@@ -22,6 +22,4 @@ public class DistractionDto {
     private LocalTime endDistraction;
     //Суммарное время отвлечения от целевых программ
     private long distractionTime;
-//    //Табель времени сотрудника
-//    private TimeSheet timeSheet;
 }

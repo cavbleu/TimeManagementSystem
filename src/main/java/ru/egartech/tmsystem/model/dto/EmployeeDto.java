@@ -21,6 +21,4 @@ public class EmployeeDto extends EntityDto{
     private Department department;
     //Список привилегий
     private List<String> privileges;
-//    //Табель времени сотрудника
-//    private List<TimeSheet> timeSheet;
 }

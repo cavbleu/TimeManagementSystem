@@ -8,5 +8,5 @@ import lombok.Setter;
 public class PositionSummaryDto extends SummaryDto{
 
     //Наименование отдела
-    private String departmentName;
+    private String positionName;
 }

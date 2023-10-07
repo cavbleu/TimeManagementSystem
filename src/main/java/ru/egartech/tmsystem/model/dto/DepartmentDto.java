@@ -12,7 +12,5 @@ import java.util.List;
 public class DepartmentDto extends EntityDto{
 
     //Сотрудники отдела
-    private List<Employee> employees;
-//    //Должности отдела
-//    private List<Position> positions;
+    private List<EmployeeDto> employees;
 }
