@@ -15,15 +15,12 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmployeeDto extends EntityDto{
+public class EmployeeDto extends EntityDto {
 
     //Возраст
     private int age;
+    //Список привилегий
+    private String privileges;
     //Должность
     private Position position;
-    //Отдел
-    private Department department;
-    @JsonIgnore
-    //Список привилегий
-    private List<String> privileges;
 }

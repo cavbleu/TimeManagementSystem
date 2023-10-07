@@ -15,14 +15,13 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/v1/deviations")
+@RequestMapping("api/v1/deviation")
 public class DeviationsController {
 
     private final DeviationService deviationService;
 
     @GetMapping()
-    public ResponseEntity<List<DeviationDto>> getDeviations(@RequestParam LocalDate yearMonth) {
-        YearMonth yearMonth1 = YearMonth.from(yearMonth);
+    public ResponseEntity<List<DeviationDto>> getDeviationsByEmployee(@RequestParam LocalDate yearMonth) {
         return ResponseEntity.ok(deviationService.deviationAllEmployeesByMonth(yearMonth));
     }
 

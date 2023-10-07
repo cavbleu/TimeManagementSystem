@@ -19,7 +19,6 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class PositionServiceImpl implements PositionService {
 
     private final PositionRepository repository;

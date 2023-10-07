@@ -12,7 +12,6 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class PrivilegeServiceImpl implements PrivilegeService{
 
     private final PrivilegeRepository repository;

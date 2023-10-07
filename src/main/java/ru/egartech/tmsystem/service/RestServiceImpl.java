@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Optional;
 @RequiredArgsConstructor
 @Service
-@Transactional
 public class RestServiceImpl implements RestService{
 
     private final RestRepository repository;

@@ -11,7 +11,6 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class EmployeeTimeSheetServiceImpl implements EmployeeTimeSheetService{
 
     private final TimeSheetRepository timeSheetRepository;

@@ -20,7 +20,6 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class DepartmentServiceImpl implements DepartmentService {
 
     private final DepartmentRepository repository;

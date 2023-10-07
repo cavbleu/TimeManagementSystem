@@ -1,37 +1,34 @@
 package ru.egartech.tmsystem.service;
 
-import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.model.dto.EmployeeDto;
 import ru.egartech.tmsystem.model.dto.EmployeeSummaryDto;
+import ru.egartech.tmsystem.model.dto.SettingsDto;
 import ru.egartech.tmsystem.model.entity.Employee;
 import ru.egartech.tmsystem.model.mapping.EmployeeMapper;
 import ru.egartech.tmsystem.model.repository.EmployeeRepository;
-import ru.egartech.tmsystem.model.dto.SettingsDto;
 import ru.egartech.tmsystem.utils.SummaryFormatter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 @Service
-@Transactional
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository repository;
     private final EmployeeMapper mapper;
     private final SettingsService settingsService;
-    private final DepartmentService departmentService;
     private final PositionService positionService;
 
-    public EmployeeServiceImpl(@Qualifier("employeeRepository") EmployeeRepository repository, EmployeeMapper mapper, SettingsService settingsService,
-                               DepartmentService departmentService, PositionService positionService) {
+    public EmployeeServiceImpl(@Qualifier("employeeRepository") EmployeeRepository repository, EmployeeMapper mapper,
+                               SettingsService settingsService, PositionService positionService) {
         this.repository = repository;
         this.mapper = mapper;
         this.settingsService = settingsService;
-        this.departmentService = departmentService;
         this.positionService = positionService;
     }
 
@@ -113,14 +110,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeDto save(EmployeeDto employeeDto, String positionName, String departmentName) {
-        employeeDto.setDepartment(departmentService.findByName(departmentName));
         employeeDto.setPosition(positionService.findByName(positionName));
         return save(employeeDto);
     }
 
     @Override
     public EmployeeDto update(Long employeeId, EmployeeDto employeeDto, String positionName, String departmentName) {
-        employeeDto.setDepartment(departmentService.findByName(departmentName));
         employeeDto.setPosition(positionService.findByName(positionName));
         return updateById(employeeId, employeeDto);
     }

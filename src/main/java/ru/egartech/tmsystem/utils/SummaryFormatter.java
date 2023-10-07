@@ -48,8 +48,7 @@ public class SummaryFormatter {
         double productiveTimePercent = percentFormat(productiveTime, workTime);
         double distractionTimePercent = percentFormat(distractionTime, workTime);
         double restTimePercent = percentFormat(restTime, workTime);
-        double overTimePercent = percentFormat(overTime, settings.getDefaultWorkTime() * workingDays);
-
+        double overTimePercent = percentFormat(overTime, settings.getDefaultWorkTime());
 
         summaryDto.setDepartmentName(entityDto.getName());
         summaryDto.setWorkTime(format(workTime, workTimePercent, DEFAULT_WORK_TIME));

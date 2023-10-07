@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import java.util.List;
 @RequiredArgsConstructor
 @Service
-@Transactional
 public class EmployeeDistractionServiceImpl implements EmployeeDistractionService{
 
     private final DistractionRepository distractionRepository;

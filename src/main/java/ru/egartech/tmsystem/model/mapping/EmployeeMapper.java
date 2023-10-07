@@ -7,6 +7,8 @@ import ru.egartech.tmsystem.model.dto.EmployeeDto;
 import ru.egartech.tmsystem.model.entity.Employee;
 import ru.egartech.tmsystem.utils.BitsConverter;
 
+import java.util.Arrays;
+
 @Mapper(componentModel = "spring")
 public abstract class EmployeeMapper {
 
@@ -15,7 +17,7 @@ public abstract class EmployeeMapper {
         employee.setName(dto.getName());
         employee.setAge(dto.getAge());
         employee.setPosition(dto.getPosition());
-        employee.setPrivilegesNumber(BitsConverter.getEmployeePrivilegesNumber(dto.getPrivileges()));
+        employee.setPrivilegesNumber(BitsConverter.getEmployeePrivilegesNumber(Arrays.asList(dto.getPrivileges().split("; "))));
 
         return employee;
     }
@@ -26,10 +28,10 @@ public abstract class EmployeeMapper {
         dto.setName(employee.getName());
         dto.setAge(employee.getAge());
         dto.setPosition(employee.getPosition());
-        if(employee.getPrivilegesNumber() == null){
-            dto.setPrivileges(BitsConverter.getEmployeePrivileges(0));
+        if (employee.getPrivilegesNumber() == null) {
+            dto.setPrivileges("");
         } else {
-            dto.setPrivileges(BitsConverter.getEmployeePrivileges(employee.getPrivilegesNumber()));
+            dto.setPrivileges(String.join("; ", BitsConverter.getEmployeePrivileges(employee.getPrivilegesNumber())));
         }
 
         return dto;

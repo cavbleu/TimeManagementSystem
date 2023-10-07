@@ -14,7 +14,6 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class DistractionServiceImpl implements DistractionService {
 
     private final DistractionRepository repository;

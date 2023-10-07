@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +20,6 @@ import static ru.egartech.tmsystem.model.enumeration.EmployeePrivilegesEnum.*;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class DeviationServiceImpl implements DeviationService {
 
     private final EmployeeService employeeService;
@@ -53,7 +53,7 @@ public class DeviationServiceImpl implements DeviationService {
 
 
         List<PrivilegeDto> allPrivileges = privilegeService.findAll();
-        List<String> currentPrivileges = employeeDto.getPrivileges();
+        List<String> currentPrivileges = Arrays.asList(employeeDto.getPrivileges().split("; "));
 
         long increasedLate = DeviationFormatter.getIncreasedAmount(LATE_COUNT, allPrivileges);
         long increasedEarlyLeaving = DeviationFormatter.getIncreasedAmount(EARLY_LIVING_COUNT, allPrivileges);

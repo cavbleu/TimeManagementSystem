@@ -11,7 +11,6 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class EmployeeRestServiceImpl implements EmployeeRestService{
 
     private final RestRepository restRepository;

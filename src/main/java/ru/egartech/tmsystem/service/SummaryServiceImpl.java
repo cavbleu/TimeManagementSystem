@@ -9,7 +9,6 @@ import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class SummaryServiceImpl implements SummaryService{
 
     private final SummaryRepository summaryRepository;
