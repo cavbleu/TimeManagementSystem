@@ -1,6 +1,7 @@
 package ru.egartech.tmsystem.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.model.dto.DepartmentDto;
 import ru.egartech.tmsystem.model.dto.DepartmentSummaryDto;
@@ -46,7 +47,10 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public DepartmentDto updateById(Long id, DepartmentDto dto) {
         return repository.findById(id)
-                .map(d -> mapper.toDto(repository.save(d)))
+                .map(entity -> {
+            BeanUtils.copyProperties(mapper.toEntity(dto), entity, "id");
+            return mapper.toDto(repository.save(entity));
+        })
                 .orElseThrow();
     }
 

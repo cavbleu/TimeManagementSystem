@@ -19,7 +19,6 @@ public class Rest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
     private Long id;
     @Temporal(TemporalType.DATE)
     @Column(name = "date", nullable = false)

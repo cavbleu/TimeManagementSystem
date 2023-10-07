@@ -1,6 +1,7 @@
 package ru.egartech.tmsystem.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.model.dto.DistractionDto;
 import ru.egartech.tmsystem.model.entity.Distraction;
@@ -39,7 +40,10 @@ public class DistractionServiceImpl implements DistractionService {
     @Override
     public DistractionDto updateById(Long id, DistractionDto dto) {
         return repository.findById(id)
-                .map(d -> mapper.toDto(repository.save(d)))
+                .map(entity -> {
+                    BeanUtils.copyProperties(mapper.toEntity(dto), entity, "id");
+                    return mapper.toDto(repository.save(entity));
+                })
                 .orElseThrow();
     }
 

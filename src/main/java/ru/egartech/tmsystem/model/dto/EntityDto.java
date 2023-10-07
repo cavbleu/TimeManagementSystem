@@ -12,5 +12,6 @@ import lombok.Setter;
 public abstract class EntityDto {
 
     private Long id;
+    //Наименование дто
     private String name;
 }

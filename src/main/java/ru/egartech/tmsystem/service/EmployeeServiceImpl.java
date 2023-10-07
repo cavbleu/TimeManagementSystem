@@ -1,5 +1,6 @@
 package ru.egartech.tmsystem.service;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.model.dto.EmployeeDto;
@@ -49,7 +50,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeDto updateById(Long id, EmployeeDto dto) {
         return repository.findById(id)
-                .map(e -> mapper.toDto(repository.save(e)))
+                .map(entity -> {
+                    BeanUtils.copyProperties(mapper.toEntity(dto), entity, "id");
+                    return mapper.toDto(repository.save(entity));
+                })
                 .orElseThrow();
     }
 

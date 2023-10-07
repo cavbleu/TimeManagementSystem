@@ -1,6 +1,7 @@
 package ru.egartech.tmsystem.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.model.dto.SettingsDto;
 import ru.egartech.tmsystem.model.entity.Settings;
@@ -39,7 +40,10 @@ public class SettingsServiceImpl implements SettingsService {
     @Override
     public SettingsDto updateById(Long id, SettingsDto dto) {
         return repository.findById(id)
-                .map(l -> mapper.toDto(repository.save(l)))
+                .map(entity -> {
+                    BeanUtils.copyProperties(mapper.toEntity(dto), entity, "id");
+                    return mapper.toDto(repository.save(entity));
+                })
                 .orElseThrow();
     }
 

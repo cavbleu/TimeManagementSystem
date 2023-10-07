@@ -1,6 +1,7 @@
 package ru.egartech.tmsystem.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.model.dto.TimeSheetDto;
@@ -44,7 +45,10 @@ public class TimeSheetServiceImpl implements TimeSheetService{
     @Override
     public TimeSheetDto updateById(Long id, TimeSheetDto dto) {
         return repository.findById(id)
-                .map(t -> mapper.toDto(repository.save(t)))
+                .map(entity -> {
+                    BeanUtils.copyProperties(mapper.toEntity(dto), entity, "id");
+                    return mapper.toDto(repository.save(entity));
+                })
                 .orElseThrow();
     }
 

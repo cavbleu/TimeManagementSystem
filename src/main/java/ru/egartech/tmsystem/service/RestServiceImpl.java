@@ -1,6 +1,7 @@
 package ru.egartech.tmsystem.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.model.dto.RestDto;
 import ru.egartech.tmsystem.model.entity.Rest;
@@ -38,7 +39,10 @@ public class RestServiceImpl implements RestService{
     @Override
     public RestDto updateById(Long id, RestDto dto) {
         return repository.findById(id)
-                .map(r -> mapper.toDto(repository.save(r)))
+                .map(entity -> {
+                    BeanUtils.copyProperties(mapper.toEntity(dto), entity, "id");
+                    return mapper.toDto(repository.save(entity));
+                })
                 .orElseThrow();
     }
 

@@ -20,7 +20,6 @@ public class Department {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
     private Long id;
     @Column(unique = true, nullable = false, name = "name")
     private String name;

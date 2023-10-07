@@ -14,8 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DepartmentDto extends EntityDto {
-    //Наименование отдела
-    private String departmentName;
+
     //Сотрудники отдела
     private List<Employee> employees;
     //Должности, входящие в состав отдела

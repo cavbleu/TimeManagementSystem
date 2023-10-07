@@ -15,7 +15,6 @@ import java.time.LocalTime;
 public class Settings {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
     private Long id;
     @Column(name = "name", nullable = false)
     private String name;
