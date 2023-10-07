@@ -44,7 +44,7 @@ public class TimeSheet {
     @JsonIgnore
     private Employee employee;
 
-    @OneToMany(mappedBy = "timeSheet", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "timeSheet", fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE}, orphanRemoval = true)
     private List<Rest> rests = new ArrayList<>();
 
     @OneToMany(mappedBy = "timeSheet", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)

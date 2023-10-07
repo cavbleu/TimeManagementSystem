@@ -27,6 +27,7 @@ public class Position {
     private Department department;
 
     @OneToMany(mappedBy = "position", fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<Employee> employees = new ArrayList<>();
 
     public Position(String names) {

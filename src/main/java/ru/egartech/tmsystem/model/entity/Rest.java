@@ -33,8 +33,7 @@ public class Rest {
     @Column(name = "rest_time")
     private long restTime;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JsonIgnore
-    @Setter(AccessLevel.NONE)
     private TimeSheet timeSheet;
 }

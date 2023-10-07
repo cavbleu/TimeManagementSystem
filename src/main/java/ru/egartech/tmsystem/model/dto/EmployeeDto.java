@@ -23,4 +23,7 @@ public class EmployeeDto extends EntityDto {
     private String privileges;
     //Должность
     private Position position;
+    //Список табелей рабочего времени
+    private List<TimeSheet> timeSheets;
+
 }

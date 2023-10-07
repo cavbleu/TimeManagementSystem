@@ -1,5 +1,6 @@
 package ru.egartech.tmsystem.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import ru.egartech.tmsystem.model.entity.TimeSheet;
@@ -14,6 +15,7 @@ import java.time.LocalTime;
 public class DistractionDto {
 
     private Long id;
+    @JsonFormat(pattern = "dd-MM-yyyy")
     //Дата
     private LocalDate date;
     //Начало отвлечения от целевых программ
