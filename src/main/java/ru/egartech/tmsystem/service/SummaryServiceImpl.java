@@ -1,5 +1,6 @@
 package ru.egartech.tmsystem.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.model.repository.SummaryRepository;
@@ -8,6 +9,7 @@ import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class SummaryServiceImpl implements SummaryService{
 
     private final SummaryRepository summaryRepository;

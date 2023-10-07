@@ -1,5 +1,6 @@
 package ru.egartech.tmsystem.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.model.dto.PrivilegeDto;
@@ -11,6 +12,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class PrivilegeServiceImpl implements PrivilegeService{
 
     private final PrivilegeRepository repository;

@@ -11,8 +11,8 @@ import java.util.List;
 
 public interface TimeSheetRepository extends JpaRepository<TimeSheet, Long> {
 
-    @Query("select e.name, e.age, e.position.name, e.department.name, e.timeSheet  " +
-            "from Employee e join e.timeSheet t " +
+    @Query("select e.name, e.age, e.position.name, d.name, e.timeSheets  " +
+            "from Employee e join e.timeSheets t join e.position p join p.department d " +
             "where e.id = :id " +
             "and t.date >= :startDate " +
             "and t.date <= :endDate")

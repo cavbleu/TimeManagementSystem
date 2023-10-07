@@ -23,15 +23,8 @@ public class Department {
     @Column(unique = true, nullable = false, name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST,
-            CascadeType.DETACH, CascadeType.REFRESH}, orphanRemoval = true)
-    @JsonIgnore
+    @OneToMany(mappedBy = "department", fetch = FetchType.EAGER)
     private List<Position> positions = new ArrayList<>();
-
-    @OneToMany(mappedBy = "department", fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST,
-            CascadeType.DETACH, CascadeType.REFRESH}, orphanRemoval = true)
-    @JsonIgnore
-    private List<Employee> employees = new ArrayList<>();
 
     public Department(String name) {
         this.name = name;

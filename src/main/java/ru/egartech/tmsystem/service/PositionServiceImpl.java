@@ -103,14 +103,20 @@ public class PositionServiceImpl implements PositionService {
     }
 
     @Override
-    public PositionDto saveByDepartName(PositionDto positionDto, String departmentName) {
-        positionDto.setDepartment(departmentService.findDepartmentByName(departmentName));
+    public PositionDto save(PositionDto positionDto, String departmentName) {
+        positionDto.setDepartment(departmentService.findByName(departmentName));
         return save(positionDto);
     }
 
     @Override
     public PositionDto update(PositionDto positionDto, String departmentName, Long id) {
-        positionDto.setDepartment(departmentService.findDepartmentByName(departmentName));
+        positionDto.setDepartment(departmentService.findByName(departmentName));
         return updateById(id, positionDto);
+    }
+
+    @Override
+    public Position findByName(String positionName) {
+        return repository.findByName(positionName)
+                .orElseThrow();
     }
 }

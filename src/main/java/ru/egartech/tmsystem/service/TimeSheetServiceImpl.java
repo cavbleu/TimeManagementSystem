@@ -1,5 +1,6 @@
 package ru.egartech.tmsystem.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class TimeSheetServiceImpl implements TimeSheetService{
 
     private final TimeSheetRepository repository;

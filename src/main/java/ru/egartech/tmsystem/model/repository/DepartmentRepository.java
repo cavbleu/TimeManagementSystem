@@ -12,26 +12,26 @@ import java.util.Optional;
 
 public interface DepartmentRepository extends JpaRepository<Department, Long> {
     @Query("select sum(t.workTime) " +
-            "from TimeSheet t join t.employees e join e.department d " +
+            "from TimeSheet t join t.employee e join e.position p join p.department d " +
             "where t.date >= :startDate " +
             "and t.date <= :endDate " +
             "and d.id = :id")
     Optional<Long> departmentWorkTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate,
                                               @Param("id") Long id);
 
-    @Query("select sum(d.distractionTime) " +
-            "from TimeSheet t join t.distractions d join t.employees e " +
+    @Query("select sum(distr.distractionTime) " +
+            "from TimeSheet t join t.distractions distr join t.employee e join e.position p join p.department d " +
             "where t.date >= :startDate " +
             "and t.date <= :endDate " +
-            "and e.department.id = :id")
+            "and d.id = :id")
     Optional<Long> departmentDistractionTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate,
                                                      @Param("id") Long id);
 
     @Query("select sum(r.restTime) " +
-            "from TimeSheet t join t.rests r join t.employees e " +
+            "from TimeSheet t join t.rests r join t.employee e join e.position p join p.department d " +
             "where t.date >= :startDate " +
             "and t.date <= :endDate " +
-            "and e.department.id = :id")
+            "and d.id = :id")
     Optional<Long> departmentRestTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate,
                                               @Param("id") Long id);
 

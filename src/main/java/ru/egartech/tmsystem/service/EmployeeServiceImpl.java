@@ -1,5 +1,6 @@
 package ru.egartech.tmsystem.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -16,16 +17,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 @Service
+@Transactional
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository repository;
     private final EmployeeMapper mapper;
     private final SettingsService settingsService;
+    private final DepartmentService departmentService;
+    private final PositionService positionService;
 
-    public EmployeeServiceImpl(@Qualifier("employeeRepository") EmployeeRepository repository, EmployeeMapper mapper, SettingsService settingsService) {
+    public EmployeeServiceImpl(@Qualifier("employeeRepository") EmployeeRepository repository, EmployeeMapper mapper, SettingsService settingsService,
+                               DepartmentService departmentService, PositionService positionService) {
         this.repository = repository;
         this.mapper = mapper;
         this.settingsService = settingsService;
+        this.departmentService = departmentService;
+        this.positionService = positionService;
     }
 
     @Override
@@ -78,7 +85,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                     employeeSummaryDto, employee, startDate, endDate, settings);
             employeeSummaryDto.setName(employee.getName());
             employeeSummaryDto.setPositionName(employee.getPosition().getName());
-            employeeSummaryDto.setDepartmentName(employee.getDepartment().getName());
+            employeeSummaryDto.setDepartmentName(employee.getPosition().getDepartment().getName());
             employeeSummaryDto.setPrivileges(String.join("; ", employee.getPrivileges()));
             employeesSummary.add(employeeSummaryDto);
         }
@@ -102,5 +109,19 @@ public class EmployeeServiceImpl implements EmployeeService {
     public long employeeRestTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id) {
         return repository.employeeRestTimeByPeriod(startDate, endDate, id)
                 .orElse(0L);
+    }
+
+    @Override
+    public EmployeeDto save(EmployeeDto employeeDto, String positionName, String departmentName) {
+        employeeDto.setDepartment(departmentService.findByName(departmentName));
+        employeeDto.setPosition(positionService.findByName(positionName));
+        return save(employeeDto);
+    }
+
+    @Override
+    public EmployeeDto update(Long employeeId, EmployeeDto employeeDto, String positionName, String departmentName) {
+        employeeDto.setDepartment(departmentService.findByName(departmentName));
+        employeeDto.setPosition(positionService.findByName(positionName));
+        return updateById(employeeId, employeeDto);
     }
 }

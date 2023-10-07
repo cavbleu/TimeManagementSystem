@@ -41,6 +41,9 @@ public class BitsConverter {
     }
 
     public static long getEmployeePrivilegesNumber(List<String> employeePrivileges) {
+        if (employeePrivileges == null) {
+            return 0;
+        }
         if (employeePrivileges.isEmpty()) {
             return 0;
         }

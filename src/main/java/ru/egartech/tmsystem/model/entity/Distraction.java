@@ -1,6 +1,6 @@
 package ru.egartech.tmsystem.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -34,7 +34,7 @@ public class Distraction {
     private long distractionTime;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("distractions")
+    @JsonIgnore
     @Setter(AccessLevel.NONE)
     private TimeSheet timeSheet;
 }

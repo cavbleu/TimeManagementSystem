@@ -1,5 +1,6 @@
 package ru.egartech.tmsystem.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.model.dto.*;
@@ -18,6 +19,7 @@ import static ru.egartech.tmsystem.model.enumeration.EmployeePrivilegesEnum.*;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class DeviationServiceImpl implements DeviationService {
 
     private final EmployeeService employeeService;

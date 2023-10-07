@@ -28,25 +28,16 @@ public class Employee {
     private Long privilegesNumber;
 
     @ManyToOne
+    @JsonIgnore
     private Position position;
 
-    @ManyToOne
-    @JsonIgnore
-    private Department department;
+    @OneToMany(mappedBy = "employee", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<TimeSheet> timeSheets;
 
-    @ManyToMany
-    @JoinTable(
-            name = "employee_time_sheet",
-            joinColumns = @JoinColumn(name = "employee_id"),
-            inverseJoinColumns = @JoinColumn(name = "time_sheet_id"))
-    @JsonIgnore
-    private List<TimeSheet> timeSheet;
-
-
-    public Employee(String name, int age, Department department) {
+    public Employee(String name, int age, Position position) {
         this.name = name;
         this.age = age;
-        this.department = department;
+        this.position = position;
     }
 
 }

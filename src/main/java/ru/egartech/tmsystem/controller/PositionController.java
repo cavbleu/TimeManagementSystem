@@ -21,13 +21,13 @@ public class PositionController {
     private final PositionService positionService;
 
     @GetMapping()
-    public ResponseEntity<List<PositionDto>> getAllDepartments() {
+    public ResponseEntity<List<PositionDto>> getAllPositions() {
         return ResponseEntity.ok(positionService.findAll());
     }
 
     @PostMapping()
     public ResponseEntity<PositionDto> savePosition(@RequestBody PositionDto dto, @RequestParam String departmentName) {
-        return ResponseEntity.ok(positionService.saveByDepartName(dto, departmentName));
+        return ResponseEntity.ok(positionService.save(dto, departmentName));
     }
 
     @PutMapping("/{id}")

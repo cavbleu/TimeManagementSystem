@@ -16,10 +16,6 @@ import java.util.List;
 @AllArgsConstructor
 public class DepartmentDto extends EntityDto {
 
-    @JsonIgnore
-    //Сотрудники отдела
-    private List<Employee> employees;
-    @JsonIgnore
     //Должности, входящие в состав отдела
     private List<Position> positions;
 }

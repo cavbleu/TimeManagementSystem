@@ -7,7 +7,6 @@ import ru.egartech.tmsystem.utils.BaseService;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 public interface DepartmentService extends BaseService<DepartmentDto, Long> {
 
@@ -18,6 +17,6 @@ public interface DepartmentService extends BaseService<DepartmentDto, Long> {
     long departmentDistractionTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id);
 
     long departmentRestTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id);
-    Department findDepartmentByName(String name);
+    Department findByName(String name);
 
 }

@@ -26,9 +26,7 @@ public class Position {
     @JsonIgnore
     private Department department;
 
-    @OneToMany(mappedBy = "position", fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE,
-    CascadeType.PERSIST, CascadeType.REFRESH}, orphanRemoval = true)
-    @JsonIgnore
+    @OneToMany(mappedBy = "position", fetch = FetchType.EAGER)
     private List<Employee> employees = new ArrayList<>();
 
     public Position(String names) {

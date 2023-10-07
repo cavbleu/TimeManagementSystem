@@ -17,7 +17,6 @@ public class DepartmentController {
 
     private final DepartmentService departmentService;
 
-
     @GetMapping()
     public ResponseEntity<List<DepartmentDto>> getAllDepartments() {
         return ResponseEntity.ok(departmentService.findAll());

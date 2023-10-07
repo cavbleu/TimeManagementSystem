@@ -26,7 +26,6 @@ public class DepartmentServiceImpl implements DepartmentService {
     private final DepartmentRepository repository;
     private final SettingsService settingsService;
     private final DepartmentMapper mapper;
-    private final SummaryRepository summaryRepository;
 
     @Override
     public List<DepartmentDto> findAll() {
@@ -104,7 +103,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Department findDepartmentByName(String name) {
+    public Department findByName(String name) {
         return repository.findDepartmentByName(name)
                 .orElseThrow();
     }

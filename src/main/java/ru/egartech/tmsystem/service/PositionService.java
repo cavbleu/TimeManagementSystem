@@ -1,5 +1,6 @@
 package ru.egartech.tmsystem.service;
 
+import ru.egartech.tmsystem.model.entity.Position;
 import ru.egartech.tmsystem.utils.BaseService;
 import ru.egartech.tmsystem.model.dto.PositionDto;
 import ru.egartech.tmsystem.model.dto.PositionSummaryDto;
@@ -17,6 +18,8 @@ public interface PositionService extends BaseService<PositionDto, Long> {
 
     long positionRestTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id);
 
-    PositionDto saveByDepartName(PositionDto positionDto, String departmentName);
+    PositionDto save(PositionDto positionDto, String departmentName);
     PositionDto update(PositionDto positionDto, String departmentName, Long id);
+
+    Position findByName(String positionName);
 }

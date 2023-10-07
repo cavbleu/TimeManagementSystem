@@ -12,8 +12,8 @@ import java.util.List;
 
 public interface DistractionRepository extends JpaRepository<Distraction, Long> {
 
-    @Query("select e.name, e.age, e.position.name, e.department.name, t.distractions  " +
-            "from Employee e join e.timeSheet t " +
+    @Query("select e.name, e.age, e.position.name, d.name, t.distractions  " +
+            "from Employee e join e.timeSheets t join e.position p join p.department d " +
             "where e.id = :id " +
             "and t.date >= :startDate " +
             "and t.date <= :endDate")

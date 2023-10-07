@@ -1,5 +1,6 @@
 package ru.egartech.tmsystem.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -39,19 +40,14 @@ public class TimeSheet {
     @Column(name = "work_time")
     private Long workTime;
 
-    @ManyToMany(mappedBy = "timeSheet", cascade = { CascadeType.ALL })
-    @JsonIgnoreProperties("timeSheet")
-    @Setter(AccessLevel.NONE)
-    private List<Employee> employees = new ArrayList<>();
+    @ManyToOne
+    @JsonIgnore
+    private Employee employee;
 
-    @OneToMany(mappedBy = "timeSheet")
-    @JsonIgnoreProperties("timeSheet")
-    @Setter(AccessLevel.NONE)
+    @OneToMany(mappedBy = "timeSheet", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Rest> rests = new ArrayList<>();
 
-    @OneToMany(mappedBy = "timeSheet")
-    @JsonIgnoreProperties("timeSheet")
-    @Setter(AccessLevel.NONE)
+    @OneToMany(mappedBy = "timeSheet", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Distraction> distractions = new ArrayList<>();
 
     public TimeSheet(LocalDate date, String absenceReason, LocalTime startWork, LocalTime endWork) {
