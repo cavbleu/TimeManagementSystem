@@ -17,7 +17,7 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
             "and t.date <= :endDate " +
             "and d.id = :id")
     Optional<Long> departmentWorkTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate,
-                                             @Param("id") Long id);
+                                              @Param("id") Long id);
 
     @Query("select sum(d.distractionTime) " +
             "from TimeSheet t join t.distractions d join t.employees e " +
@@ -25,7 +25,7 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
             "and t.date <= :endDate " +
             "and e.department.id = :id")
     Optional<Long> departmentDistractionTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate,
-                                           @Param("id") Long id);
+                                                     @Param("id") Long id);
 
     @Query("select sum(r.restTime) " +
             "from TimeSheet t join t.rests r join t.employees e " +
@@ -33,5 +33,7 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
             "and t.date <= :endDate " +
             "and e.department.id = :id")
     Optional<Long> departmentRestTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate,
-                                    @Param("id") Long id);
+                                              @Param("id") Long id);
+
+    Optional<Department> findDepartmentByName(String name);
 }

@@ -1,8 +1,10 @@
 package ru.egartech.tmsystem.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.egartech.tmsystem.model.entity.Department;
 import ru.egartech.tmsystem.model.entity.Employee;
 
 import java.util.List;
@@ -13,13 +15,14 @@ import java.util.List;
 public class PositionDto extends EntityDto {
 
     //Наименование отдела
-    private String departmentName;
+    private Department department;
+    @JsonIgnore
     //Список сотрудников
     List<Employee> employees;
 
-    public PositionDto(Long id, String name, String departmentName) {
-        super(id, name);
-        this.departmentName = departmentName;
+    public PositionDto(String name, Department department) {
+        super(name);
+        this.department = department;
     }
 }
 

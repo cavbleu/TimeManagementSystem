@@ -1,8 +1,10 @@
 package ru.egartech.tmsystem.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import ru.egartech.tmsystem.model.dto.DepartmentDto;
 import ru.egartech.tmsystem.model.dto.DepartmentSummaryDto;
 import ru.egartech.tmsystem.model.dto.SettingsDto;
@@ -18,6 +20,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class DepartmentServiceImpl implements DepartmentService {
 
     private final DepartmentRepository repository;
@@ -98,5 +101,11 @@ public class DepartmentServiceImpl implements DepartmentService {
     public long departmentRestTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id) {
         return repository.departmentRestTimeByPeriod(startDate, endDate, id)
                 .orElse(0L);
+    }
+
+    @Override
+    public Department findDepartmentByName(String name) {
+        return repository.findDepartmentByName(name)
+                .orElseThrow();
     }
 }

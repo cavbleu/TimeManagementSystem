@@ -16,4 +16,7 @@ public interface PositionService extends BaseService<PositionDto, Long> {
     long positionDistractionTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id);
 
     long positionRestTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id);
+
+    PositionDto saveByDepartName(PositionDto positionDto, String departmentName);
+    PositionDto update(PositionDto positionDto, String departmentName, Long id);
 }

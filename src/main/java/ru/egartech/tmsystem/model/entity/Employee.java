@@ -1,5 +1,6 @@
 package ru.egartech.tmsystem.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -26,14 +27,11 @@ public class Employee {
     @Column(name = "privileges_number")
     private Long privilegesNumber;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("employees")
-    @Setter(AccessLevel.NONE)
+    @ManyToOne
     private Position position;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("employees")
-    @Setter(AccessLevel.NONE)
+    @ManyToOne
+    @JsonIgnore
     private Department department;
 
     @ManyToMany
@@ -41,8 +39,7 @@ public class Employee {
             name = "employee_time_sheet",
             joinColumns = @JoinColumn(name = "employee_id"),
             inverseJoinColumns = @JoinColumn(name = "time_sheet_id"))
-    @JsonIgnoreProperties("employees")
-    @Setter(AccessLevel.NONE)
+    @JsonIgnore
     private List<TimeSheet> timeSheet;
 
 

@@ -2,10 +2,12 @@ package ru.egartech.tmsystem.service;
 
 import ru.egartech.tmsystem.model.dto.DepartmentDto;
 import ru.egartech.tmsystem.model.dto.DepartmentSummaryDto;
+import ru.egartech.tmsystem.model.entity.Department;
 import ru.egartech.tmsystem.utils.BaseService;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface DepartmentService extends BaseService<DepartmentDto, Long> {
 
@@ -16,4 +18,6 @@ public interface DepartmentService extends BaseService<DepartmentDto, Long> {
     long departmentDistractionTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id);
 
     long departmentRestTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id);
+    Department findDepartmentByName(String name);
+
 }

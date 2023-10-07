@@ -1,5 +1,6 @@
 package ru.egartech.tmsystem.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -18,11 +19,13 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class PositionServiceImpl implements PositionService {
 
     private final PositionRepository repository;
     private final PositionMapper mapper;
     private final SettingsService settingsService;
+    private final DepartmentService departmentService;
 
     @Override
     public List<PositionDto> findAll() {
@@ -73,7 +76,7 @@ public class PositionServiceImpl implements PositionService {
             long restTime = positionRestTimeByPeriod(startDate, endDate, position.getId());
             SummaryFormatter.toSummaryDto(workTime, distractionTime, restTime,
                     positionSummaryDto, position, startDate, endDate, settings);
-            positionSummaryDto.setDepartmentName(position.getDepartmentName());
+            positionSummaryDto.setDepartmentName(position.getDepartment().getName());
             positionSummaryDto.setPositionName(position.getName());
             positionsSummary.add(positionSummaryDto);
         }
@@ -97,5 +100,17 @@ public class PositionServiceImpl implements PositionService {
     public long positionRestTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id) {
         return repository.positionRestTimeByPeriod(startDate, endDate, id)
                 .orElse(0L);
+    }
+
+    @Override
+    public PositionDto saveByDepartName(PositionDto positionDto, String departmentName) {
+        positionDto.setDepartment(departmentService.findDepartmentByName(departmentName));
+        return save(positionDto);
+    }
+
+    @Override
+    public PositionDto update(PositionDto positionDto, String departmentName, Long id) {
+        positionDto.setDepartment(departmentService.findDepartmentByName(departmentName));
+        return updateById(id, positionDto);
     }
 }

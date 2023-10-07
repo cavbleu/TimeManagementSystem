@@ -7,11 +7,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public abstract class EntityDto {
 
     private Long id;
     //Наименование дто
     private String name;
+
+    public EntityDto(String name) {
+        this.name = name;
+    }
 }

@@ -1,12 +1,11 @@
 package ru.egartech.tmsystem.model.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.transaction.Transactional;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,17 +23,17 @@ public class Department {
     @Column(unique = true, nullable = false, name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "department", fetch = FetchType.EAGER)
-    @JsonIgnoreProperties("department")
-    @Setter(AccessLevel.NONE)
+    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST,
+            CascadeType.DETACH, CascadeType.REFRESH}, orphanRemoval = true)
+    @JsonIgnore
     private List<Position> positions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "department", fetch = FetchType.EAGER)
-    @JsonIgnoreProperties("department")
-    @Setter(AccessLevel.NONE)
+    @OneToMany(mappedBy = "department", fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST,
+            CascadeType.DETACH, CascadeType.REFRESH}, orphanRemoval = true)
+    @JsonIgnore
     private List<Employee> employees = new ArrayList<>();
 
-    public Department(String names) {
+    public Department(String name) {
         this.name = name;
     }
 }

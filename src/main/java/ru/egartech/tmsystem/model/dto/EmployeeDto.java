@@ -23,6 +23,7 @@ public class EmployeeDto extends EntityDto{
     private Position position;
     //Отдел
     private Department department;
+    @JsonIgnore
     //Список привилегий
     private List<String> privileges;
 }

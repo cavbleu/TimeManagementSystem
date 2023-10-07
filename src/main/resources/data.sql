@@ -23,8 +23,8 @@ VALUES (1, 2, 'Увеличенное количество опозданий н
        (7, 10, 'Увеличенное суммарное время отвлечений');
 
 INSERT INTO settings (id, current_settings_profile, default_start_work, default_work_time,
-                      max_absence_work_count_by_month, max_distraction_time_by_day, max_early_living_count_by_month,
-                      max_late_count_by_month, max_rest_time_by_day, max_skip_work_count_by_month, settings_profile)
+                      max_absence_count_by_month, max_distraction_time_by_day, max_early_living_count_by_month,
+                      max_late_count_by_month, max_rest_time_by_day, max_skip_count_by_month, name)
 VALUES (1, 0, '09:00', 540, 1, 30, 3, 3, 30, 0, 'стандартный'),
        (2, 1, '08:00', 540, 0, 15, 0, 0, 15, 0, 'строгий');
 
