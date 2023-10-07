@@ -17,8 +17,8 @@ public class Settings {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long id;
-    @Column(name = "settings_profile", nullable = false)
-    private String settingsProfile;
+    @Column(name = "name", nullable = false)
+    private String name;
     @Column(name = "current_settings_profile", nullable = false)
     private Boolean currentSettingsProfile;
     @Column(name = "default_work_time", nullable = false)
@@ -29,10 +29,10 @@ public class Settings {
     private Integer maxLateCountByMonth;
     @Column(name = "max_early_living_count_by_month", nullable = false)
     private Integer maxEarlyLivingCountByMonth;
-    @Column(name = "max_absence_work_count_by_month", nullable = false)
-    private Integer maxAbsenceWorkCountByMonth;
-    @Column(name = "max_skip_work_count_by_month", nullable = false)
-    private Integer maxSkipWorkCountByMonth;
+    @Column(name = "max_absence_count_by_month", nullable = false)
+    private Integer maxAbsenceCountByMonth;
+    @Column(name = "max_skip_count_by_month", nullable = false)
+    private Integer maxSkipCountByMonth;
     @Column(name = "max_rest_time_by_day", nullable = false)
     private Long maxRestTimeByDay;
     @Column(name = "max_distraction_time_by_day", nullable = false)

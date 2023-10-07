@@ -1,9 +1,7 @@
 package ru.egartech.tmsystem.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import ru.egartech.tmsystem.model.entity.TimeSheet;
 
 import java.time.LocalDate;
@@ -11,6 +9,8 @@ import java.time.LocalTime;
 
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class DistractionDto {
 
     private Long id;

@@ -69,7 +69,7 @@ public class PositionServiceImpl implements PositionService {
             long restTime = positionRestTimeByPeriod(startDate, endDate, position.getId());
             SummaryFormatter.toSummaryDto(workTime, distractionTime, restTime,
                     positionSummaryDto, position, startDate, endDate, settings);
-            positionSummaryDto.setDepartmentName(position.getDepartment().getName());
+            positionSummaryDto.setDepartmentName(position.getDepartmentName());
             positionSummaryDto.setPositionName(position.getName());
             positionsSummary.add(positionSummaryDto);
         }

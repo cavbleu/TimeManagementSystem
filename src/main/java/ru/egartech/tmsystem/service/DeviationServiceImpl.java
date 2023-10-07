@@ -45,7 +45,7 @@ public class DeviationServiceImpl implements DeviationService {
         long maxLateCountByMonth = settingsDto.getMaxLateCountByMonth();
         long maxEarlyLivingCountByMonth = settingsDto.getMaxEarlyLivingCountByMonth();
         long maxAbsenceCountByMonth = settingsDto.getMaxAbsenceCountByMonth();
-        long maxSkipWorkCountByMonth = settingsDto.getMaxSkipWorkCountByMonth();
+        long maxSkipCountByMonth = settingsDto.getMaxSkipCountByMonth();
         long maxDistractionTimeByDay = settingsDto.getMaxDistractionTimeByDay();
         long maxRestTimeByDay = settingsDto.getMaxRestTimeByDay();
 
@@ -64,8 +64,8 @@ public class DeviationServiceImpl implements DeviationService {
                 maxAbsenceCountByMonth + increasedAbsence : maxAbsenceCountByMonth;
         maxEarlyLivingCountByMonth = currentPrivileges.contains(EARLY_LIVING_COUNT.getName()) ?
                 maxEarlyLivingCountByMonth + increasedEarlyLeaving : maxEarlyLivingCountByMonth;
-        maxSkipWorkCountByMonth = currentPrivileges.contains(SKIP.getName()) ?
-                maxSkipWorkCountByMonth + increasedSkip : maxSkipWorkCountByMonth;
+        maxSkipCountByMonth = currentPrivileges.contains(SKIP.getName()) ?
+                maxSkipCountByMonth + increasedSkip : maxSkipCountByMonth;
         maxLateCountByMonth = currentPrivileges.contains(LATE_COUNT.getName()) ?
                 maxLateCountByMonth + increasedLate : maxLateCountByMonth;
 
@@ -88,7 +88,7 @@ public class DeviationServiceImpl implements DeviationService {
         double latePercent = SummaryFormatter.percentFormat(lateCount, maxLateCountByMonth);
         double earlyLeavingPercent = SummaryFormatter.percentFormat(earlyLeavingCount, maxEarlyLivingCountByMonth);
         double absencePercent = SummaryFormatter.percentFormat(absenceCount, maxAbsenceCountByMonth);
-        double skipPercent = SummaryFormatter.percentFormat(skipCount, maxSkipWorkCountByMonth);
+        double skipPercent = SummaryFormatter.percentFormat(skipCount, maxSkipCountByMonth);
         double excessDistractionTimePercent = SummaryFormatter.percentFormat(excessDistractionTimeCount, excessDistractionTimeCount * workingDaysByMonth);
         double excessRestTimePercent = SummaryFormatter.percentFormat(excessRestTimeCount, settingsService.findByCurrentSettingsProfile()
                 .getMaxRestTimeByDay());

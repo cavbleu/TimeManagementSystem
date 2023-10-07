@@ -1,6 +1,5 @@
 package ru.egartech.tmsystem.service;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.model.dto.EmployeeDto;
@@ -8,7 +7,6 @@ import ru.egartech.tmsystem.model.dto.EmployeeSummaryDto;
 import ru.egartech.tmsystem.model.entity.Employee;
 import ru.egartech.tmsystem.model.mapping.EmployeeMapper;
 import ru.egartech.tmsystem.model.repository.EmployeeRepository;
-import ru.egartech.tmsystem.model.dto.FilterDto;
 import ru.egartech.tmsystem.model.dto.SettingsDto;
 import ru.egartech.tmsystem.utils.SummaryFormatter;
 

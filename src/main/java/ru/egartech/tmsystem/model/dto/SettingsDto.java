@@ -1,17 +1,18 @@
 package ru.egartech.tmsystem.model.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalTime;
 
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class SettingsDto extends EntityDto{
 
-    Long id;
-    //Наименование профиля
-    private String settingsProfile;
     //Является ли текущим профилем
     private boolean currentSettingsProfile;
     //Норма рабочего времени за день
@@ -25,7 +26,7 @@ public class SettingsDto extends EntityDto{
     //Максимальное количество отсутствий за месяц
     private long maxAbsenceCountByMonth;
     //Максимальное количество прогулов в месяц
-    private long maxSkipWorkCountByMonth;
+    private long maxSkipCountByMonth;
     //Максимальное суммарное время отвлечений в день
     private long maxDistractionTimeByDay;
     //Максимальное суммарное время перерывов в день

@@ -3,7 +3,6 @@ package ru.egartech.tmsystem.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.model.dto.EmployeeRestDto;
-import ru.egartech.tmsystem.model.dto.FilterDto;
 import ru.egartech.tmsystem.model.repository.RestRepository;
 
 import java.time.LocalDate;
