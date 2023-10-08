@@ -10,13 +10,12 @@ import ru.egartech.tmsystem.model.dto.DeviationDto;
 import ru.egartech.tmsystem.service.DeviationService;
 
 import java.time.LocalDate;
-import java.time.YearMonth;
 import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/v1/deviation")
-public class DeviationsController {
+public class DeviationController {
 
     private final DeviationService deviationService;
 

@@ -13,9 +13,9 @@ public class RestController {
 
     private final RestService restService;
 
-    @PostMapping("/{id}")
-    public ResponseEntity<RestDto> saveRest(@RequestBody RestDto dto, @PathVariable Long id) {
-        return ResponseEntity.ok(restService.save(id, dto));
+    @PostMapping("/{timeSheetId}")
+    public ResponseEntity<RestDto> saveRest(@RequestBody RestDto dto, @PathVariable Long timeSheetId) {
+        return ResponseEntity.ok(restService.save(timeSheetId, dto));
     }
 
     @PutMapping("/{restId}")
