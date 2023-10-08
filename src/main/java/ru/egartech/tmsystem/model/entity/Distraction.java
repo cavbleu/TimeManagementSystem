@@ -33,8 +33,7 @@ public class Distraction {
     @Column(name = "distraction_time")
     private long distractionTime;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JsonIgnore
-    @Setter(AccessLevel.NONE)
     private TimeSheet timeSheet;
 }

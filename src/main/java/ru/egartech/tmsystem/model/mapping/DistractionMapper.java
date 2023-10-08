@@ -19,6 +19,7 @@ public abstract class DistractionMapper {
         distraction.setDate(dto.getDate());
         distraction.setStartDistraction(dto.getStartDistraction());
         distraction.setEndDistraction(dto.getEndDistraction());
+        distraction.setTimeSheet(dto.getTimeSheet());
         distraction.setDistractionTime(Duration.between(dto.getStartDistraction(),
                 dto.getEndDistraction()).toMinutes());
 
