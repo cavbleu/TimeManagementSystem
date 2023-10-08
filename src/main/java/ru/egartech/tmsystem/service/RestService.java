@@ -6,7 +6,7 @@ import ru.egartech.tmsystem.model.dto.RestDto;
 
 public interface RestService extends BaseService<RestDto, Long> {
 
-    RestDto update(Long timeSheetId, RestDto restDto);
+    RestDto update(Long timeSheetId, Long restId, RestDto restDto);
 
     RestDto save(Long timeSheetId, RestDto restDto);
 }

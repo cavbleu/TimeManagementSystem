@@ -56,10 +56,10 @@ public class RestServiceImpl implements RestService {
     }
 
     @Override
-    public RestDto update(Long timeSheetId, RestDto restDto) {
+    public RestDto update(Long timeSheetId, Long restId, RestDto restDto) {
         restDto.setTimeSheet(timeSheetMapper.toEntity(timeSheetService.findById(timeSheetId)
                 .orElseThrow()));
-        return save(restDto);
+        return updateById(restId, restDto);
     }
 
     @Override

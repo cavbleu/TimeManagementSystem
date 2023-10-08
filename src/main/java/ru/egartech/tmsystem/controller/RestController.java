@@ -14,17 +14,17 @@ public class RestController {
     private final RestService restService;
 
     @PostMapping("/{id}")
-    public ResponseEntity<RestDto> saveDepartment(@RequestBody RestDto dto, @PathVariable Long id) {
+    public ResponseEntity<RestDto> saveRest(@RequestBody RestDto dto, @PathVariable Long id) {
         return ResponseEntity.ok(restService.save(id, dto));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<RestDto> updateDepartment(@RequestBody RestDto dto, @PathVariable Long id) {
-        return ResponseEntity.ok(restService.updateById(id, dto));
+    @PutMapping("/{restId}")
+    public ResponseEntity<RestDto> updateRest(@RequestBody RestDto dto, @RequestParam Long timeSheetId, @PathVariable Long restId  ) {
+        return ResponseEntity.ok(restService.update(timeSheetId, restId, dto));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteDepartment(@PathVariable Long id) {
+    public void deleteRest(@PathVariable Long id) {
         restService.deleteById(id);
     }
 }
