@@ -3,6 +3,7 @@ package ru.egartech.tmsystem.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.egartech.tmsystem.exception.EmployeeNotFoundException;
 import ru.egartech.tmsystem.model.dto.*;
 import ru.egartech.tmsystem.model.repository.DeviationRepository;
 import ru.egartech.tmsystem.utils.DeviationFormatter;
@@ -34,7 +35,7 @@ public class DeviationServiceImpl implements DeviationService {
 
         DeviationDto deviationsSummaryDto = new DeviationDto();
         EmployeeDto employeeDto = employeeService.findById(employeeId)
-                .orElseThrow();
+                .orElseThrow(() -> new EmployeeNotFoundException(employeeId));
         SettingsDto settingsDto = settingsService.findByCurrentSettingsProfile();
 
         long lateCount = employeeLateCountByMonth(settingsService.findByCurrentSettingsProfile().getDefaultStartWork(),
@@ -98,9 +99,9 @@ public class DeviationServiceImpl implements DeviationService {
         deviationsSummaryDto.setEmployeeName(employeeDto.getName());
         deviationsSummaryDto.setDeviationCount(DeviationFormatter.format(deviationCount));
         deviationsSummaryDto.setLateCount(DeviationFormatter.format(lateCount, latePercent, DEFAULT_MAX));
-        deviationsSummaryDto.setEarlyLeavingCount(DeviationFormatter.format(earlyLeavingCount, earlyLeavingPercent,DEFAULT_MAX));
+        deviationsSummaryDto.setEarlyLeavingCount(DeviationFormatter.format(earlyLeavingCount, earlyLeavingPercent, DEFAULT_MAX));
         deviationsSummaryDto.setAbsenceCount(DeviationFormatter.format(absenceCount, absencePercent, DEFAULT_MAX));
-        deviationsSummaryDto.setSkipCount(DeviationFormatter.format(skipCount, skipPercent,DEFAULT_MAX));
+        deviationsSummaryDto.setSkipCount(DeviationFormatter.format(skipCount, skipPercent, DEFAULT_MAX));
         deviationsSummaryDto.setExcessDistractionTimeCount(DeviationFormatter.format(excessDistractionTimeCount, excessDistractionTimePercent, DEFAULT_MAX));
         deviationsSummaryDto.setExcessRestTimeCount(DeviationFormatter.format(excessRestTimeCount, excessRestTimePercent, DEFAULT_MAX));
         deviationsSummaryDto.setPrivileges(String.join("; ", employeeDto.getPrivileges()));

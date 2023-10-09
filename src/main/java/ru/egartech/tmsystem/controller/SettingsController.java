@@ -16,7 +16,7 @@ public class SettingsController {
     private final SettingsService settingsService;
 
     @GetMapping
-    public ResponseEntity<List<SettingsDto>> getAllPrivileges() {
+    public ResponseEntity<List<SettingsDto>> getAllSettings() {
         return ResponseEntity.ok(settingsService.findAll());
     }
 

@@ -1,9 +1,10 @@
 package ru.egartech.tmsystem.service;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import ru.egartech.tmsystem.exception.RestNotFoundException;
+import ru.egartech.tmsystem.exception.TimeSheetNotFoundException;
 import ru.egartech.tmsystem.model.dto.RestDto;
 import ru.egartech.tmsystem.model.entity.Rest;
 import ru.egartech.tmsystem.model.mapping.RestMapper;
@@ -47,7 +48,7 @@ public class RestServiceImpl implements RestService {
                     BeanUtils.copyProperties(mapper.toEntity(dto), entity, "id");
                     return mapper.toDto(repository.save(entity));
                 })
-                .orElseThrow();
+                .orElseThrow(RestNotFoundException::new);
     }
 
     @Override
@@ -58,13 +59,13 @@ public class RestServiceImpl implements RestService {
     @Override
     public RestDto update(Long timeSheetId, Long restId, RestDto restDto) {
         restDto.setTimeSheet(timeSheetMapper.toEntity(timeSheetService.findById(timeSheetId)
-                .orElseThrow()));
+                .orElseThrow(RestNotFoundException::new)));
         return updateById(restId, restDto);
     }
 
     @Override
     public RestDto save(Long timeSheetId, RestDto dto) {
-        dto.setTimeSheet(timeSheetMapper.toEntity(timeSheetService.findById(timeSheetId).orElseThrow()));
+        dto.setTimeSheet(timeSheetMapper.toEntity(timeSheetService.findById(timeSheetId).orElseThrow(TimeSheetNotFoundException::new)));
         return save(dto);
     }
 }
