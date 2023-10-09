@@ -3,6 +3,7 @@ package ru.egartech.tmsystem.service;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import ru.egartech.tmsystem.exception.TimeSheetNotFoundException;
 import ru.egartech.tmsystem.model.dto.TimeSheetDto;
 import ru.egartech.tmsystem.model.entity.TimeSheet;
 import ru.egartech.tmsystem.model.mapping.TimeSheetMapper;
@@ -48,7 +49,7 @@ public class TimeSheetServiceImpl implements TimeSheetService{
                     BeanUtils.copyProperties(mapper.toEntity(dto), entity, "id");
                     return mapper.toDto(repository.save(entity));
                 })
-                .orElseThrow();
+                .orElseThrow(TimeSheetNotFoundException::new);
     }
 
     @Override

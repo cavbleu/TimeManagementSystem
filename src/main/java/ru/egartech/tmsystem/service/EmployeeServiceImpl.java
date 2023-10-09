@@ -3,6 +3,7 @@ package ru.egartech.tmsystem.service;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import ru.egartech.tmsystem.exception.EmployeeNotFoundException;
 import ru.egartech.tmsystem.model.dto.EmployeeDto;
 import ru.egartech.tmsystem.model.dto.EmployeeSummaryDto;
 import ru.egartech.tmsystem.model.dto.SettingsDto;
@@ -58,7 +59,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                     BeanUtils.copyProperties(mapper.toEntity(dto), entity, "id");
                     return mapper.toDto(repository.save(entity));
                 })
-                .orElseThrow();
+                .orElseThrow(() -> new EmployeeNotFoundException(id));
     }
 
     @Override

@@ -3,8 +3,10 @@ package ru.egartech.tmsystem.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.parsing.BeanDefinitionParsingException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
+import ru.egartech.tmsystem.exception.DepartmentNotFoundException;
 import ru.egartech.tmsystem.model.dto.DepartmentDto;
 import ru.egartech.tmsystem.model.dto.DepartmentSummaryDto;
 import ru.egartech.tmsystem.model.dto.SettingsDto;
@@ -52,7 +54,7 @@ public class DepartmentServiceImpl implements DepartmentService {
             BeanUtils.copyProperties(mapper.toEntity(dto), entity, "id");
             return mapper.toDto(repository.save(entity));
         })
-                .orElseThrow();
+                .orElseThrow(() -> new DepartmentNotFoundException(id));
     }
 
     @Override
@@ -104,6 +106,6 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public Department findByName(String name) {
         return repository.findDepartmentByName(name)
-                .orElseThrow();
+                .orElseThrow(() -> new DepartmentNotFoundException(name));
     }
 }

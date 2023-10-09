@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import ru.egartech.tmsystem.exception.PositionNotFoundException;
 import ru.egartech.tmsystem.model.dto.PositionDto;
 import ru.egartech.tmsystem.model.dto.PositionSummaryDto;
 import ru.egartech.tmsystem.model.dto.SettingsDto;
@@ -52,7 +53,7 @@ public class PositionServiceImpl implements PositionService {
                     BeanUtils.copyProperties(mapper.toEntity(dto), entity, "id");
                     return mapper.toDto(repository.save(entity));
                 })
-                .orElseThrow();
+                .orElseThrow(() -> new PositionNotFoundException(id));
     }
 
     @Override
@@ -116,6 +117,6 @@ public class PositionServiceImpl implements PositionService {
     @Override
     public Position findByName(String positionName) {
         return repository.findByName(positionName)
-                .orElseThrow();
+                .orElseThrow(() -> new PositionNotFoundException(positionName));
     }
 }

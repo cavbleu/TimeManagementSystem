@@ -2,6 +2,7 @@ package ru.egartech.tmsystem.utils;
 
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.UtilityClass;
+import ru.egartech.tmsystem.exception.DepartmentNotFoundException;
 import ru.egartech.tmsystem.model.dto.PrivilegeDto;
 import ru.egartech.tmsystem.model.enumeration.EmployeePrivilegesEnum;
 import ru.egartech.tmsystem.service.PrivilegeService;
@@ -31,6 +32,6 @@ public class DeviationFormatter {
                 .filter(p -> p.getName().equals(privilege.getName()))
                 .findFirst()
                 .map(PrivilegeDto::getIncreasedAmount)
-                .orElseThrow();
+                .orElseThrow(DepartmentNotFoundException::new);
     }
 }

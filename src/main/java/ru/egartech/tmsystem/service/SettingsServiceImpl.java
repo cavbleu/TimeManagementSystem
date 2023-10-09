@@ -4,6 +4,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import ru.egartech.tmsystem.exception.CurrentSettingsNotFoundException;
+import ru.egartech.tmsystem.exception.SettingsNotFoundException;
+import ru.egartech.tmsystem.exception.SettingsOneProfileException;
 import ru.egartech.tmsystem.model.dto.SettingsDto;
 import ru.egartech.tmsystem.model.entity.Settings;
 import ru.egartech.tmsystem.model.mapping.SettingsMapper;
@@ -59,15 +62,15 @@ public class SettingsServiceImpl implements SettingsService {
                     BeanUtils.copyProperties(mapper.toEntity(dto), entity, "id");
                     return mapper.toDto(repository.save(entity));
                 })
-                .orElseThrow();
+                .orElseThrow(() -> new SettingsNotFoundException(id));
     }
 
     @Override
     public void deleteById(Long id) {
         if (findAll().size() == 1) {
-            throw new RuntimeException();
-        } else if (findById(id).orElseThrow().isCurrentSettingsProfile()) {
-            throw new RuntimeException();
+            throw new SettingsOneProfileException();
+        } else if (findById(id).orElseThrow(() -> new SettingsNotFoundException(id)).isCurrentSettingsProfile()) {
+            throw new CurrentSettingsNotFoundException();
         } else {
             repository.deleteById(id);
         }
@@ -77,6 +80,6 @@ public class SettingsServiceImpl implements SettingsService {
     public SettingsDto findByCurrentSettingsProfile() {
         return repository.findByCurrentSettingsProfileIsTrue()
                 .map(mapper::toDto)
-                .orElseThrow();
+                .orElseThrow(CurrentSettingsNotFoundException::new);
     }
 }

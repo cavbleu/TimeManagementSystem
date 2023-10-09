@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import ru.egartech.tmsystem.exception.PrivilegeNotFoundException;
 import ru.egartech.tmsystem.model.dto.PrivilegeDto;
 import ru.egartech.tmsystem.model.mapping.PrivilegeMapper;
 import ru.egartech.tmsystem.model.repository.PrivilegeRepository;
@@ -37,13 +38,13 @@ public class PrivilegeServiceImpl implements PrivilegeService{
                     BeanUtils.copyProperties(mapper.toEntity(dto), entity, "id");
                     return mapper.toDto(repository.save(entity));
                 })
-                .orElseThrow();
+                .orElseThrow(() -> new PrivilegeNotFoundException(id));
     }
 
     @Override
     public PrivilegeDto increasedAmountByPrivilege(String privilegeName) {
         return repository.increasedAmountByPrivilege(privilegeName)
                 .map(mapper::toDto)
-                .orElseThrow();
+                .orElseThrow(() -> new PrivilegeNotFoundException(privilegeName));
     }
 }
