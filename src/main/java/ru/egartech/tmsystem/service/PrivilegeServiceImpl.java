@@ -2,6 +2,7 @@ package ru.egartech.tmsystem.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.model.dto.PrivilegeDto;
 import ru.egartech.tmsystem.model.mapping.PrivilegeMapper;
@@ -32,7 +33,10 @@ public class PrivilegeServiceImpl implements PrivilegeService{
     @Override
     public PrivilegeDto updateById(Long id, PrivilegeDto dto) {
         return repository.findById(id)
-                .map(p -> mapper.toDto(repository.save(p)))
+                .map(entity -> {
+                    BeanUtils.copyProperties(mapper.toEntity(dto), entity, "id");
+                    return mapper.toDto(repository.save(entity));
+                })
                 .orElseThrow();
     }
 
