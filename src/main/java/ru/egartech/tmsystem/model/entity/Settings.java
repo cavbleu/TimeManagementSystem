@@ -1,6 +1,8 @@
 package ru.egartech.tmsystem.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +19,10 @@ public class Settings {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "name", nullable = false, unique = true)
+    @Pattern(regexp = "^[Я-аА-яa-zA-Z0-9 ]*$", message = "{name.only.letters.digits}")
+    @Pattern(regexp = "^\\S+(?: \\S+)*$", message = "{name.start.end.no.spaces}")
+    @Size(min = 1, message = "Наименование должно быть не менее 1 символа")
+    @Size(max = 30, message = "Наименование должно быть не более 30 символов")
     private String name;
     @Column(name = "current_settings_profile", nullable = false)
     private Boolean currentSettingsProfile;

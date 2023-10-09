@@ -1,5 +1,6 @@
 package ru.egartech.tmsystem.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,12 +15,12 @@ public class RestsController {
     private final RestService restService;
 
     @PostMapping("/{timeSheetId}")
-    public ResponseEntity<RestDto> saveRest(@RequestBody RestDto dto, @PathVariable Long timeSheetId) {
+    public ResponseEntity<RestDto> saveRest(@Valid @RequestBody RestDto dto, @PathVariable Long timeSheetId) {
         return ResponseEntity.ok(restService.save(timeSheetId, dto));
     }
 
     @PutMapping("/{restId}")
-    public ResponseEntity<RestDto> updateRest(@RequestBody RestDto dto, @RequestParam Long timeSheetId, @PathVariable Long restId  ) {
+    public ResponseEntity<RestDto> updateRest(@Valid  @RequestBody RestDto dto, @RequestParam Long timeSheetId, @PathVariable Long restId  ) {
         return ResponseEntity.ok(restService.update(timeSheetId, restId, dto));
     }
 

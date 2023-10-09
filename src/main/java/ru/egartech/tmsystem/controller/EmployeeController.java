@@ -1,5 +1,6 @@
 package ru.egartech.tmsystem.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,13 +24,13 @@ public class EmployeeController {
     }
 
     @PostMapping()
-    public ResponseEntity<EmployeeDto> saveEmployee(@RequestBody EmployeeDto dto, @RequestParam String departmentName,
+    public ResponseEntity<EmployeeDto> saveEmployee(@Valid  @RequestBody EmployeeDto dto, @RequestParam String departmentName,
                                                     @RequestParam String positionName) {
         return ResponseEntity.ok(employeeService.save(dto, positionName, departmentName));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<EmployeeDto> updateEmployee(@RequestBody EmployeeDto dto, @PathVariable Long id,
+    public ResponseEntity<EmployeeDto> updateEmployee(@Valid @RequestBody EmployeeDto dto, @PathVariable Long id,
                                                       @RequestParam String departmentName, @RequestParam String positionName) {
         return ResponseEntity.ok(employeeService.update(id, dto, positionName, departmentName));
     }

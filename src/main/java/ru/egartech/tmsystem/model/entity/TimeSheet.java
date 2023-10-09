@@ -3,6 +3,7 @@ package ru.egartech.tmsystem.model.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,14 +29,17 @@ public class TimeSheet {
     private Long id;
     @Temporal(TemporalType.DATE)
     @Column(name = "date")
+    @Pattern(regexp = "(^0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-(\\d{4}$)", message = "{date.pattern}")
     private LocalDate date;
     @Column(name = "absence_reason")
     private String absenceReason;
     @Temporal(TemporalType.TIME)
     @Column(name = "start_work")
+    @Pattern(regexp = "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$", message = "{time.pattern}")
     private LocalTime startWork;
     @Temporal(TemporalType.TIME)
     @Column(name = "end_work")
+    @Pattern(regexp = "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$", message = "{time.pattern}")
     private LocalTime endWork;
     @Column(name = "work_time")
     private Long workTime;
@@ -45,9 +49,11 @@ public class TimeSheet {
     private Employee employee;
 
     @OneToMany(mappedBy = "timeSheet", fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    @OrderBy("date ASC")
     private List<Rest> rests = new ArrayList<>();
 
     @OneToMany(mappedBy = "timeSheet", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OrderBy("date ASC")
     private List<Distraction> distractions = new ArrayList<>();
 
     public TimeSheet(LocalDate date, String absenceReason, LocalTime startWork, LocalTime endWork) {

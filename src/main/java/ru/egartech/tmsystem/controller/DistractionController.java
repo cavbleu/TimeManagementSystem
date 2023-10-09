@@ -1,5 +1,6 @@
 package ru.egartech.tmsystem.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,12 +15,12 @@ public class DistractionController {
     private final DistractionService distractionService;
 
     @PostMapping("/{timeSheetId}")
-    public ResponseEntity<DistractionDto> saveDistraction(@RequestBody DistractionDto dto, @PathVariable Long timeSheetId) {
+    public ResponseEntity<DistractionDto> saveDistraction(@Valid  @RequestBody DistractionDto dto, @PathVariable Long timeSheetId) {
         return ResponseEntity.ok(distractionService.save(timeSheetId, dto));
     }
 
     @PutMapping("/{distractionId}")
-    public ResponseEntity<DistractionDto> updateDistraction(@RequestBody DistractionDto dto, @RequestParam Long timeSheetId,
+    public ResponseEntity<DistractionDto> updateDistraction(@Valid @RequestBody DistractionDto dto, @RequestParam Long timeSheetId,
                                                      @PathVariable Long distractionId) {
         return ResponseEntity.ok(distractionService.update(timeSheetId, distractionId, dto));
     }

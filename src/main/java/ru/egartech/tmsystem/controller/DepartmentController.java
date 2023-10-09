@@ -1,5 +1,6 @@
 package ru.egartech.tmsystem.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,12 +23,12 @@ public class DepartmentController {
     }
 
     @PostMapping()
-    public ResponseEntity<DepartmentDto> saveDepartment(@RequestBody DepartmentDto dto) {
+    public ResponseEntity<DepartmentDto> saveDepartment(@Valid @RequestBody DepartmentDto dto) {
         return ResponseEntity.ok(departmentService.save(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DepartmentDto> updateDepartment(@RequestBody DepartmentDto dto, @PathVariable Long id
+    public ResponseEntity<DepartmentDto> updateDepartment(@Valid @RequestBody DepartmentDto dto, @PathVariable Long id
     ) {
         return ResponseEntity.ok(departmentService.updateById(id, dto));
     }

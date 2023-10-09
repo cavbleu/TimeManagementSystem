@@ -1,5 +1,6 @@
 package ru.egartech.tmsystem.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,12 +22,12 @@ public class SettingsController {
     }
 
     @PostMapping()
-    public ResponseEntity<SettingsDto> createSettings(@RequestBody SettingsDto settingsDto) {
+    public ResponseEntity<SettingsDto> createSettings(@Valid @RequestBody SettingsDto settingsDto) {
         return ResponseEntity.ok(settingsService.save(settingsDto));
     }
 
     @PutMapping("/{settingsId}")
-    public ResponseEntity<SettingsDto> updateSettings(@RequestBody SettingsDto settingsDto, @PathVariable Long settingsId) {
+    public ResponseEntity<SettingsDto> updateSettings(@Valid @RequestBody SettingsDto settingsDto, @PathVariable Long settingsId) {
         return ResponseEntity.ok(settingsService.updateById(settingsId, settingsDto));
     }
 
