@@ -34,12 +34,26 @@ public class SettingsServiceImpl implements SettingsService {
 
     @Override
     public SettingsDto save(SettingsDto dto) {
+        if (dto.isCurrentSettingsProfile()) {
+            for (SettingsDto settingsDto : findAll()) {
+                settingsDto.setCurrentSettingsProfile(false);
+                repository.save(mapper.toEntity(settingsDto));
+            }
+        }
+
         Settings settings = repository.save(mapper.toEntity(dto));
         return mapper.toDto(settings);
     }
 
     @Override
     public SettingsDto updateById(Long id, SettingsDto dto) {
+        if (dto.isCurrentSettingsProfile()) {
+            for (SettingsDto settingsDto : findAll()) {
+                settingsDto.setCurrentSettingsProfile(false);
+                repository.save(mapper.toEntity(settingsDto));
+            }
+        }
+
         return repository.findById(id)
                 .map(entity -> {
                     BeanUtils.copyProperties(mapper.toEntity(dto), entity, "id");
@@ -50,7 +64,13 @@ public class SettingsServiceImpl implements SettingsService {
 
     @Override
     public void deleteById(Long id) {
-        repository.deleteById(id);
+        if (findAll().size() == 1) {
+            throw new RuntimeException();
+        } else if (findById(id).orElseThrow().isCurrentSettingsProfile()) {
+            throw new RuntimeException();
+        } else {
+            repository.deleteById(id);
+        }
     }
 
     @Override
