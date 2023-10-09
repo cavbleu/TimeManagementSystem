@@ -1,5 +1,6 @@
 package ru.egartech.tmsystem.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,12 +16,12 @@ public class TimeSheetController {
     private final TimeSheetService timeSheetService;
 
     @PostMapping
-    public ResponseEntity<TimeSheetDto> saveDepartment(@RequestBody TimeSheetDto dto) {
+    public ResponseEntity<TimeSheetDto> saveDepartment(@Valid  @RequestBody TimeSheetDto dto) {
         return ResponseEntity.ok(timeSheetService.save(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TimeSheetDto> updateDepartment(@RequestBody TimeSheetDto dto, @PathVariable Long id
+    public ResponseEntity<TimeSheetDto> updateDepartment(@Valid @RequestBody TimeSheetDto dto, @PathVariable Long id
     ) {
         return ResponseEntity.ok(timeSheetService.updateById(id, dto));
     }

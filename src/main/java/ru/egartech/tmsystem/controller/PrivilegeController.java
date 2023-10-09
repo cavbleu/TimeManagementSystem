@@ -1,5 +1,6 @@
 package ru.egartech.tmsystem.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +23,7 @@ public class PrivilegeController {
     }
 
     @PutMapping("/{privilegeId}")
-    public ResponseEntity<PrivilegeDto> updatePrivilege(@RequestBody PrivilegeDto privilegeDto, @PathVariable Long privilegeId) {
+    public ResponseEntity<PrivilegeDto> updatePrivilege(@Valid  @RequestBody PrivilegeDto privilegeDto, @PathVariable Long privilegeId) {
         return ResponseEntity.ok(privilegeService.updateById(privilegeId, privilegeDto));
     }
 

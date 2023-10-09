@@ -1,5 +1,6 @@
 package ru.egartech.tmsystem.controller;
 
+import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -26,12 +27,12 @@ public class PositionController {
     }
 
     @PostMapping()
-    public ResponseEntity<PositionDto> savePosition(@RequestBody PositionDto dto, @RequestParam String departmentName) {
+    public ResponseEntity<PositionDto> savePosition(@Valid  @RequestBody PositionDto dto, @RequestParam String departmentName) {
         return ResponseEntity.ok(positionService.save(dto, departmentName));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PositionDto> updatePosition(@RequestBody PositionDto dto, @PathVariable Long id,
+    public ResponseEntity<PositionDto> updatePosition(@Valid @RequestBody PositionDto dto, @PathVariable Long id,
                                                       @RequestParam String departmentName) {
         return ResponseEntity.ok(positionService.update(dto, departmentName, id));
     }

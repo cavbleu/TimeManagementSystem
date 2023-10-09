@@ -2,8 +2,6 @@ package ru.egartech.tmsystem.model.entity;
 
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -24,8 +22,8 @@ public class Department {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true, nullable = false, name = "name")
-    @Pattern(regexp = "[Я-аА-яa-zA-Z\\s]*$", message = "{name.only.russian}")
-    @Pattern(regexp = "^\\S+(?: \\S+)*$", message = "{name.start.end.letters}")
+    @Pattern(regexp = "[Я-аА-яa-zA-Z\\s]*$", message = "{name.only.letters}")
+    @Pattern(regexp = "^\\S+(?: \\S+)*$", message = "{name.start.end.no.spaces}")
     @Size(min = 2, message = "Наименование должно быть не менее 2 символов")
     @Size(max = 30, message = "Наименование должно быть не более 30 символов")
     private String name;

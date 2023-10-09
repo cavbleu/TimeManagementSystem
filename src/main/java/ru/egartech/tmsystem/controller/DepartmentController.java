@@ -28,7 +28,7 @@ public class DepartmentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DepartmentDto> updateDepartment(@RequestBody DepartmentDto dto, @PathVariable Long id
+    public ResponseEntity<DepartmentDto> updateDepartment(@Valid @RequestBody DepartmentDto dto, @PathVariable Long id
     ) {
         return ResponseEntity.ok(departmentService.updateById(id, dto));
     }
