@@ -7,9 +7,9 @@ import ru.egartech.tmsystem.model.dto.RestDto;
 import ru.egartech.tmsystem.service.RestService;
 
 @RequiredArgsConstructor
-@org.springframework.web.bind.annotation.RestController
+@RestController
 @RequestMapping("api/v1/rest")
-public class RestController {
+public class RestsController {
 
     private final RestService restService;
 

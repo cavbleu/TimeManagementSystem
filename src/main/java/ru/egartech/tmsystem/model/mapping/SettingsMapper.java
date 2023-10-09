@@ -5,6 +5,8 @@ import ru.egartech.tmsystem.utils.BaseMapper;
 import ru.egartech.tmsystem.model.dto.SettingsDto;
 import ru.egartech.tmsystem.model.entity.Settings;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface SettingsMapper extends BaseMapper<SettingsDto, Settings> {
 }
