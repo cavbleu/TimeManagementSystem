@@ -19,11 +19,11 @@ public class Privilege {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, length = 120)
     @Pattern(regexp = "[Я-аА-яa-zA-Z\\s]*$", message = "{name.only.letters}")
     @Pattern(regexp = "^\\S+(?: \\S+)*$", message = "{name.start.end.no.spaces}")
     @Size(min = 1, message = "Наименование должно быть не менее 1 символа")
-    @Size(max = 30, message = "Наименование должно быть не более 30 символов")
+    @Size(max = 120, message = "Наименование должно быть не более 120 символов")
     private String name;
     @Column(name = "increased_amount", nullable = false)
     private Long increasedAmount;
