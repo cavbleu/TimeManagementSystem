@@ -21,11 +21,11 @@ public class Position {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "name", nullable = false, unique = true)
+    @Column(name = "name", nullable = false, unique = true, length = 60)
     @Pattern(regexp = "[Я-аА-яa-zA-Z\\s]*$", message = "{name.only.letters}")
     @Pattern(regexp = "^\\S+(?: \\S+)*$", message = "{name.start.end.no.spaces}")
     @Size(min = 1, message = "Наименование должно быть не менее 1 символа")
-    @Size(max = 30, message = "Наименование должно быть не более 30 символов")
+    @Size(max = 60, message = "Наименование должно быть не более 60 символов")
     private String name;
 
     @ManyToOne

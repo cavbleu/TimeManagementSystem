@@ -23,11 +23,11 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, length = 60)
     @Pattern(regexp = "[Я-аА-яa-zA-Z\\s]*$", message = "{name.emp.only.letters}")
     @Pattern(regexp = "^\\S+(?: \\S+)*$", message = "{name.emp.start.end.no.spaces}")
     @Size(min = 2, message = "Имя должно быть не менее 10 символов")
-    @Size(max = 30, message = "Имя должно быть не более 50 символов")
+    @Size(max = 60, message = "Имя должно быть не более 60 символов")
     private String name;
     @Column(name = "age", nullable = false)
     @Min(value = 18, message = "{Минимальный возраст сотрудника 18}")
