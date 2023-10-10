@@ -11,7 +11,7 @@
 * PostgreSQL
 * Stream API
 * Collections
-* Spring data JPA
+* Spring data JPA с использованием @Query множественных join запросов
 * Hibernate
 * Jakarta Bean Validation
 * Docker compose
