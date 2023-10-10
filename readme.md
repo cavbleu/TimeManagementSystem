@@ -8,6 +8,7 @@
 
 **Стек технологий**
 * Spring boot 3
+* PostgreSQL
 * Stream API
 * Collections
 * Spring data JPA
