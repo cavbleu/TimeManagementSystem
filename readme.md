@@ -4,7 +4,7 @@
 Целью работы системы является мониторинг рабочего времени сотрудников.
 
 **Сводная диаграмма БД**
-![](src/main/resources/readme/diagram.png)
+![](backend-springboot/src/main/resources/readme/diagram.png)
 
 **Стек технологий**
 * Spring boot 3
