@@ -1,41 +1,42 @@
 import React, {Component} from 'react';
-import VehicleService from '../services/VehicleService';
+import DepartmentService from '../services/DepartmentService';
 
-class ListVehicleComponent extends Component {
+class DepartmentSummaryComponent extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            vehicles: [],
-            brand: '',
-            model: '',
-            category: '',
-            gosNumber: '',
-            productionYear: '',
-            vehicleType: ''
+            departments: [],
+            id: '',
+            departmentName: '',
+            workTime: '',
+            productiveTime: '',
+            distractionTime: '',
+            restTime: '',
+            overTime: ''
         }
         this.changeBrandHandler = this.changeBrandHandler.bind(this);
-        this.addVehicle = this.addVehicle.bind(this);
-        this.editVehicle = this.editVehicle.bind(this);
-        this.deleteVehicle = this.deleteVehicle.bind(this);
+        this.addDepartment = this.addDepartment.bind(this);
+        this.editDepartment = this.editDepartment.bind(this);
+        this.deleteDepartment = this.deleteDepartment.bind(this);
     }
 
     componentDidMount() {
-        VehicleService.getVehicles().then((res) => {
-            this.setState({vehicles: res.data});
+        DepartmentService.getDepartmentSummary().then((res) => {
+            this.setState({departments: res.data});
         });
     }
 
-    addVehicle() {
+    addDepartment() {
         this.props.history.push('/add-vehicle/_add');
     }
 
-    editVehicle(id) {
+    editDepartment(id) {
         this.props.history.push(`/add-vehicle/${id}`)
     }
 
-    deleteVehicle(id) {
-        VehicleService.deleteVehicle(id).then(res => {
+    deleteDepartment(id) {
+        DepartmentService.deleteVehicle(id).then(res => {
             this.setState({
                 vehicles: this.state.vehicles.filter(vehicle => vehicle.id !== id)
             });
@@ -45,30 +46,15 @@ class ListVehicleComponent extends Component {
     changeBrandHandler = (event) => {
         this.setState({brand: event.target.value});
     }
-    changeModelHandler = (event) => {
-        this.setState({model: event.target.value});
-    }
-    changeCategoryHandler = (event) => {
-        this.setState({category: event.target.value});
-    }
-    changeGosNumberHandler = (event) => {
-        this.setState({gosNumber: event.target.value});
-    }
-    changeProductionYearHandler = (event) => {
-        this.setState({productionYear: event.target.value});
-    }
-    changeVehicleType = (event) => {
-        this.setState({vehicleType: event.target.value});
-    }
 
     handleKeyDownBrand = (event) => {
         if (event.key === 'Enter') {
             if (this.state.brand !== "") {
-                VehicleService.getBrandFilter(this.state.brand).then((res) => {
+                DepartmentService.getBrandFilter(this.state.brand).then((res) => {
                     this.setState({vehicles: res.data});
                 });
             } else {
-                VehicleService.getVehicles().then((res) => {
+                DepartmentService.getVehicles().then((res) => {
                     this.setState({vehicles: res.data});
                 });
             }
@@ -77,11 +63,11 @@ class ListVehicleComponent extends Component {
     handleKeyDownModel = (event) => {
         if (event.key === 'Enter') {
             if (this.state.model !== "") {
-                VehicleService.getModelFilter(this.state.model).then((res) => {
+                DepartmentService.getModelFilter(this.state.model).then((res) => {
                     this.setState({vehicles: res.data});
                 });
             } else {
-                VehicleService.getVehicles().then((res) => {
+                DepartmentService.getVehicles().then((res) => {
                     this.setState({vehicles: res.data});
                 });
             }
@@ -90,11 +76,11 @@ class ListVehicleComponent extends Component {
     handleKeyDownCategory = (event) => {
         if (event.key === 'Enter') {
             if (this.state.category !== "") {
-                VehicleService.getCategoryFilter(this.state.category).then((res) => {
+                DepartmentService.getCategoryFilter(this.state.category).then((res) => {
                     this.setState({vehicles: res.data});
                 });
             } else {
-                VehicleService.getVehicles().then((res) => {
+                DepartmentService.getVehicles().then((res) => {
                     this.setState({vehicles: res.data});
                 });
             }
@@ -103,11 +89,11 @@ class ListVehicleComponent extends Component {
     handleKeyDownGosNumber = (event) => {
         if (event.key === 'Enter') {
             if (this.state.gosNumber !== "") {
-                VehicleService.getGosNumberFilter(this.state.gosNumber).then((res) => {
+                DepartmentService.getGosNumberFilter(this.state.gosNumber).then((res) => {
                     this.setState({vehicles: res.data});
                 });
             } else {
-                VehicleService.getVehicles().then((res) => {
+                DepartmentService.getVehicles().then((res) => {
                     this.setState({vehicles: res.data});
                 });
             }
@@ -116,11 +102,11 @@ class ListVehicleComponent extends Component {
     handleKeyDownProductionYear = (event) => {
         if (event.key === 'Enter') {
             if (this.state.productionYear !== "") {
-                VehicleService.getProductionYearFilter(this.state.productionYear).then((res) => {
+                DepartmentService.getProductionYearFilter(this.state.productionYear).then((res) => {
                     this.setState({vehicles: res.data});
                 });
             } else {
-                VehicleService.getVehicles().then((res) => {
+                DepartmentService.getVehicles().then((res) => {
                     this.setState({vehicles: res.data});
                 });
             }
@@ -129,11 +115,11 @@ class ListVehicleComponent extends Component {
     handleKeyVehicleType = (event) => {
         if (event.key === 'Enter') {
             if (this.state.vehicleType !== "") {
-                VehicleService.getVehicleTypeFilter(this.state.vehicleType).then((res) => {
+                DepartmentService.getVehicleTypeFilter(this.state.vehicleType).then((res) => {
                     this.setState({vehicles: res.data});
                 });
             } else {
-                VehicleService.getVehicles().then((res) => {
+                DepartmentService.getVehicles().then((res) => {
                     this.setState({vehicles: res.data});
                 });
             }
@@ -144,87 +130,88 @@ class ListVehicleComponent extends Component {
     render() {
         return (
             <div>
-                <h2 className='text-center'>Транспортные средства</h2>
+                <h2 className='text-center'>Система мониторинга рабочего времени сотрудников</h2>
                 <div className='row'>
-                    <table className='table table-stripped table-bordered'>
+                    <table className='table table-striped table-bordered'>
                         <thead>
 
                         <tr>
                             <th className='text-center'>
                                 <input name='brand' className='form-control'
-                                       value={this.state.brand}
+                                       value={this.state.departmentName}
                                        onChange={this.changeBrandHandler}
                                        onKeyDown={this.handleKeyDownBrand}
                                 /></th>
-                            <th className='text-center'>
+                            <th>
                                 <input name='model' className='form-control'
-                                       value={this.state.model}
+                                       value={this.state.workTime}
                                        onChange={this.changeModelHandler}
                                        onKeyDown={this.handleKeyDownModel}
                                 />
                             </th>
-                            <th className='text-center'>
+                            <th>
                                 <input name='category' className='form-control'
-                                       value={this.state.category}
+                                       value={this.state.productiveTime}
                                        onChange={this.changeCategoryHandler}
                                        onKeyDown={this.handleKeyDownCategory}
                                 />
                             </th>
-                            <th className='text-center'>
+                            <th>
                                 <input name='gosNumber' className='form-control'
-                                       value={this.state.gosNumber}
+                                       value={this.state.distractionTime}
                                        onChange={this.changeGosNumberHandler}
                                        onKeyDown={this.handleKeyDownGosNumber}
                                 />
                             </th>
-                            <th className='text-center'>
+                            <th>
                                 <input name='productionYear' className='form-control'
-                                       value={this.state.productionYear}
+                                       value={this.state.restTime}
                                        onChange={this.changeProductionYearHandler}
                                        onKeyDown={this.handleKeyDownProductionYear}
                                 />
                             </th>
-                            <th className='text-center'>
+                            <th>
                                 <input name='vehicleType' className='form-control'
-                                       value={this.state.vehicleType}
+                                       value={this.state.overTime}
                                        onChange={this.changeVehicleType}
                                        onKeyDown={this.handleKeyVehicleType}
                                 />
                             </th>
+                            <th>Действия</th>
 
                         </tr>
                         <tr>
-                            <th className='text-center'>Марка</th>
-                            <th className='text-center'>Модель</th>
-                            <th className='text-center'>Категория</th>
-                            <th className='text-center'>Гос. номер</th>
-                            <th className='text-center'>Год выпуска</th>
-                            <th className='text-center'>Тип ТС</th>
+                            <th>Наименование отдела</th>
+                            <th>Суммарное отработанное время</th>
+                            <th>Суммарное продуктивное время</th>
+                            <th>Суммарное время отвлечений</th>
+                            <th>Суммарное время перерывов</th>
+                            <th>Переработки</th>
                             <th className='text-center'>
-                                <button style={{marginBottom: '5px'}} className='btn btn-primary'
-                                        onClick={this.addVehicle}>Добавить
-                                    ТС
+                                <button className='btn btn-primary'
+                                        onClick={this.addDepartment}>Добавить
+                                    отдел
                                 </button>
                             </th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody style={{textAlign: "center"}}>
                         {
-                            this.state.vehicles.map(
-                                vehicle =>
-                                    <tr key={vehicle.id}>
-                                        <td>{vehicle.brand}</td>
-                                        <td>{vehicle.model}</td>
-                                        <td>{vehicle.category}</td>
-                                        <td>{vehicle.gosNumber}</td>
-                                        <td>{vehicle.productionYear}</td>
-                                        <td>{vehicle.vehicleType}</td>
+                            this.state.departments.map(
+                                department =>
+                                    <tr key={department.id}>
+                                        <td>{department.departmentName}</td>
+                                        <td>{department.workTime}</td>
+                                        <td>{department.productiveTime}</td>
+                                        <td>{department.distractionTime}</td>
+                                        <td>{department.restTime}</td>
+                                        <td>{department.overTime}</td>
                                         <td style={{width: '250px'}}>
-                                            <button onClick={() => this.editVehicle(vehicle.id)}
+                                            <button onClick={() => this.editDepartment(department.id)}
                                                     className='btn btn-success btn-sm'>Редактировать
                                             </button>
                                             <button style={{marginLeft: '10px'}}
-                                                    onClick={() => this.deleteVehicle(vehicle.id)}
+                                                    onClick={() => this.deleteDepartment(department.id)}
                                                     className='btn btn-danger btn-sm'>Удалить
                                             </button>
                                         </td>
@@ -239,4 +226,4 @@ class ListVehicleComponent extends Component {
     }
 }
 
-export default ListVehicleComponent;
+export default DepartmentSummaryComponent;

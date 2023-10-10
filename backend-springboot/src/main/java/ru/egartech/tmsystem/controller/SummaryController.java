@@ -2,10 +2,7 @@ package ru.egartech.tmsystem.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.egartech.tmsystem.model.dto.DepartmentSummaryDto;
 import ru.egartech.tmsystem.model.dto.EmployeeSummaryDto;
 import ru.egartech.tmsystem.model.dto.PositionSummaryDto;
@@ -18,6 +15,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
+@CrossOrigin(origins = "http://localhost:3000/")
 @RequestMapping("api/v1/summary")
 public class SummaryController {
 
@@ -25,10 +23,15 @@ public class SummaryController {
     private final PositionService positionService;
     private final EmployeeService employeeService;
 
-    @GetMapping("/department")
+    @GetMapping("/departmentByPeriod")
     public ResponseEntity<List<DepartmentSummaryDto>> getDepartmentsSummary(@RequestParam LocalDate startDate,
                                                                             @RequestParam LocalDate endDate) {
         return ResponseEntity.ok(departmentService.departmentsSummary(startDate, endDate));
+    }
+
+    @GetMapping("/department")
+    public ResponseEntity<List<DepartmentSummaryDto>> getDepartmentsSummary() {
+        return ResponseEntity.ok(departmentService.departmentsSummary());
     }
 
     @GetMapping("/position")

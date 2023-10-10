@@ -13,6 +13,7 @@ import ru.egartech.tmsystem.model.repository.DepartmentRepository;
 import ru.egartech.tmsystem.utils.SummaryFormatter;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -64,11 +65,12 @@ public class DepartmentServiceImpl implements DepartmentService {
 
         List<DepartmentSummaryDto> departmentsSummary = new ArrayList<>();
         List<DepartmentDto> departments = findAll();
-        SettingsDto settings = settingsService.findByCurrentSettingsProfile();
+            SettingsDto settings = settingsService.findByCurrentSettingsProfile();
 
         for (DepartmentDto department : departments) {
 
             DepartmentSummaryDto departmentSummaryDto = new DepartmentSummaryDto();
+            departmentSummaryDto.setId(department.getId());
             long workTime = departmentWorkTimeByPeriod(startDate, endDate, department.getId());
             long distractionTime = departmentDistractionTimeByPeriod(startDate, endDate, department.getId());
             long restTime = departmentRestTimeByPeriod(startDate, endDate, department.getId());
@@ -79,6 +81,11 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
 
         return departmentsSummary;
+    }
+
+    @Override
+    public List<DepartmentSummaryDto> departmentsSummary() {
+        return departmentsSummary(YearMonth.now().atDay(1), YearMonth.now().atEndOfMonth());
     }
 
     @Override

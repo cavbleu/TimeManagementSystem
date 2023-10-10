@@ -1,6 +1,6 @@
 import CreateVehicleComponent from './components/CreateVehicleComponent';
 import HeaderComponent from './components/HeaderComponent';
-import ListVehicleComponent from './components/ListVehicleComponent';
+import DepartmentSummaryComponent from './components/DepartmentSummaryComponent';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 function App() {
@@ -10,8 +10,8 @@ function App() {
           <HeaderComponent />
           <div className='container'>
             <Switch>
-              <Route path  = "/" exact component={ListVehicleComponent} />
-              <Route path = "/vehicles" component={ListVehicleComponent} />
+              <Route path  = "/" exact component={DepartmentSummaryComponent} />
+              <Route path = "/department" component={DepartmentSummaryComponent} />
               <Route path = "/add-vehicle/:id" component={CreateVehicleComponent} />
             </Switch>
           </div>
