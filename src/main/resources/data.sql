@@ -1,6 +1,6 @@
-CREATE SCHEMA IF NOT EXISTS time_management_system;
-
-SET SCHEMA 'time_management_system';
+-- CREATE SCHEMA IF NOT EXISTS time_management_system;
+--
+-- SET SCHEMA 'time_management_system';
 
 INSERT INTO department (id, name)
 VALUES (1, 'Маркетинг'),
