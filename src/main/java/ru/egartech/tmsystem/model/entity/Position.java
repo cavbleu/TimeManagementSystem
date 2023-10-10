@@ -1,12 +1,12 @@
 package ru.egartech.tmsystem.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.*;
-import ru.egartech.tmsystem.model.entity.Employee;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,7 @@ public class Position {
     @OrderBy("name ASC")
     private List<Employee> employees = new ArrayList<>();
 
-    public Position(String names) {
+    public Position(String name) {
         this.name = name;
     }
 

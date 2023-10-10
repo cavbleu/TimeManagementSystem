@@ -3,7 +3,6 @@ package ru.egartech.tmsystem.model.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import ru.egartech.tmsystem.model.dto.DistractionDto;
 import ru.egartech.tmsystem.model.dto.EmployeeDistractionDto;
 import ru.egartech.tmsystem.model.entity.Distraction;
 

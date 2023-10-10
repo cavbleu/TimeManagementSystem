@@ -1,16 +1,11 @@
 package ru.egartech.tmsystem.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.egartech.tmsystem.model.entity.Distraction;
-import ru.egartech.tmsystem.model.entity.Rest;
-import ru.egartech.tmsystem.model.entity.Employee;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

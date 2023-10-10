@@ -3,7 +3,6 @@ package ru.egartech.tmsystem.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 import ru.egartech.tmsystem.model.dto.PrivilegeDto;
 import ru.egartech.tmsystem.service.PrivilegeService;

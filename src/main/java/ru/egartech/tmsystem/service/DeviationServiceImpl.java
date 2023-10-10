@@ -1,21 +1,21 @@
 package ru.egartech.tmsystem.service;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.exception.EmployeeNotFoundException;
-import ru.egartech.tmsystem.model.dto.*;
+import ru.egartech.tmsystem.model.dto.DeviationDto;
+import ru.egartech.tmsystem.model.dto.EmployeeDto;
+import ru.egartech.tmsystem.model.dto.PrivilegeDto;
+import ru.egartech.tmsystem.model.dto.SettingsDto;
 import ru.egartech.tmsystem.model.repository.DeviationRepository;
 import ru.egartech.tmsystem.utils.DeviationFormatter;
 import ru.egartech.tmsystem.utils.SummaryFormatter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import static ru.egartech.tmsystem.model.enumeration.EmployeePrivilegesEnum.*;
 
@@ -113,9 +113,7 @@ public class DeviationServiceImpl implements DeviationService {
     public List<DeviationDto> deviationAllEmployeesByMonth(LocalDate yearMonth) {
         List<DeviationDto> deviations = new ArrayList<>();
         List<EmployeeDto> employees = employeeService.findAll();
-        employees.forEach(e -> {
-            deviations.add(deviationEmployeeByMonth(yearMonth, e.getId()));
-        });
+        employees.forEach(e -> deviations.add(deviationEmployeeByMonth(yearMonth, e.getId())));
         return deviations;
     }
 

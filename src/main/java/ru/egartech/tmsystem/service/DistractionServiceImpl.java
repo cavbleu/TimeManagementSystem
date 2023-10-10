@@ -1,13 +1,11 @@
 package ru.egartech.tmsystem.service;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.exception.DistractionNotFoundException;
 import ru.egartech.tmsystem.exception.TimeSheetNotFoundException;
 import ru.egartech.tmsystem.model.dto.DistractionDto;
-import ru.egartech.tmsystem.model.dto.RestDto;
 import ru.egartech.tmsystem.model.entity.Distraction;
 import ru.egartech.tmsystem.model.mapping.DistractionMapper;
 import ru.egartech.tmsystem.model.mapping.TimeSheetMapper;

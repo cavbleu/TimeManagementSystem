@@ -1,8 +1,6 @@
 package ru.egartech.tmsystem.model.mapping;
 
-import org.hibernate.annotations.Comment;
 import org.mapstruct.Mapper;
-import org.springframework.stereotype.Component;
 import ru.egartech.tmsystem.model.dto.EmployeeDto;
 import ru.egartech.tmsystem.model.entity.Employee;
 import ru.egartech.tmsystem.utils.BitsConverter;

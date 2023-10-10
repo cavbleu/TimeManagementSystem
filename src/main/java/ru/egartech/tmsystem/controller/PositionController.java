@@ -1,15 +1,10 @@
 package ru.egartech.tmsystem.controller;
 
 import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RestController;
-import ru.egartech.tmsystem.model.dto.DepartmentDto;
 import ru.egartech.tmsystem.model.dto.PositionDto;
-import ru.egartech.tmsystem.service.DepartmentService;
 import ru.egartech.tmsystem.service.PositionService;
 
 import java.util.List;
