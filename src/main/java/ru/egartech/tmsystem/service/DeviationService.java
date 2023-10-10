@@ -1,13 +1,10 @@
 package ru.egartech.tmsystem.service;
 
-import org.springframework.data.repository.query.Param;
 import ru.egartech.tmsystem.model.dto.DeviationDto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.YearMonth;
 import java.util.List;
-import java.util.Optional;
 
 public interface DeviationService {
 

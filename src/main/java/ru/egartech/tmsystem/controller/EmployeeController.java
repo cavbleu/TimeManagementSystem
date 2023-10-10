@@ -4,9 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RestController;
 import ru.egartech.tmsystem.model.dto.EmployeeDto;
-import ru.egartech.tmsystem.model.dto.PositionDto;
 import ru.egartech.tmsystem.service.EmployeeService;
 
 import java.util.List;

@@ -1,8 +1,7 @@
 package ru.egartech.tmsystem.service;
 
-import ru.egartech.tmsystem.model.entity.Rest;
-import ru.egartech.tmsystem.utils.BaseService;
 import ru.egartech.tmsystem.model.dto.RestDto;
+import ru.egartech.tmsystem.utils.BaseService;
 
 public interface RestService extends BaseService<RestDto, Long> {
 

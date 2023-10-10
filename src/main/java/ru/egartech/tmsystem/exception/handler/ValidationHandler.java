@@ -1,6 +1,5 @@
 package ru.egartech.tmsystem.exception.handler;
 
-import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,12 +32,6 @@ public class ValidationHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     ResponseEntity<List<String>> handleConstraintViolationException(ConstraintViolationException e) {
-//        for (ConstraintViolation<?> constraintViolation : e.getConstraintViolations()) {
-//            if (constraintViolation.getMessage().equals("Наименование не может быть пустым") {
-//                return new ResponseEntity<>("Наименование не может быть пустым", HttpStatus.BAD_REQUEST);
-//            }
-//        }
-//
         return new ResponseEntity<>(e.getConstraintViolations().stream()
                 .map(v -> String.format("Ошибка - %s", v.getMessage()))
                 .toList(), HttpStatus.BAD_REQUEST);

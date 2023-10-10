@@ -3,8 +3,6 @@ package ru.egartech.tmsystem.model.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 //Отклонения от нормы по каждому сотруднику, рассчитывается за месяц

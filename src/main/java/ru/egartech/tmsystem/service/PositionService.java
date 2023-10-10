@@ -1,9 +1,9 @@
 package ru.egartech.tmsystem.service;
 
-import ru.egartech.tmsystem.model.entity.Position;
-import ru.egartech.tmsystem.utils.BaseService;
 import ru.egartech.tmsystem.model.dto.PositionDto;
 import ru.egartech.tmsystem.model.dto.PositionSummaryDto;
+import ru.egartech.tmsystem.model.entity.Position;
+import ru.egartech.tmsystem.utils.BaseService;
 
 import java.time.LocalDate;
 import java.util.List;

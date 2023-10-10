@@ -1,18 +1,15 @@
 package ru.egartech.tmsystem.service;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.parsing.BeanDefinitionParsingException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import ru.egartech.tmsystem.exception.DepartmentNotFoundException;
 import ru.egartech.tmsystem.model.dto.DepartmentDto;
 import ru.egartech.tmsystem.model.dto.DepartmentSummaryDto;
 import ru.egartech.tmsystem.model.dto.SettingsDto;
 import ru.egartech.tmsystem.model.entity.Department;
 import ru.egartech.tmsystem.model.mapping.DepartmentMapper;
-import ru.egartech.tmsystem.model.repository.*;
+import ru.egartech.tmsystem.model.repository.DepartmentRepository;
 import ru.egartech.tmsystem.utils.SummaryFormatter;
 
 import java.time.LocalDate;

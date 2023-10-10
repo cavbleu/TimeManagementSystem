@@ -2,10 +2,13 @@ package ru.egartech.tmsystem.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.egartech.tmsystem.model.dto.*;
-import ru.egartech.tmsystem.model.entity.Position;
+import ru.egartech.tmsystem.model.dto.DepartmentSummaryDto;
+import ru.egartech.tmsystem.model.dto.EmployeeSummaryDto;
+import ru.egartech.tmsystem.model.dto.PositionSummaryDto;
 import ru.egartech.tmsystem.service.DepartmentService;
 import ru.egartech.tmsystem.service.EmployeeService;
 import ru.egartech.tmsystem.service.PositionService;
