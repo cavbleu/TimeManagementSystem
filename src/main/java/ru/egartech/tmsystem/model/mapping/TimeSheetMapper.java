@@ -1,9 +1,6 @@
 package ru.egartech.tmsystem.model.mapping;
 
 import org.mapstruct.Mapper;
-import ru.egartech.tmsystem.model.dto.DistractionDto;
-import ru.egartech.tmsystem.model.entity.Distraction;
-import ru.egartech.tmsystem.utils.BaseMapper;
 import ru.egartech.tmsystem.model.dto.TimeSheetDto;
 import ru.egartech.tmsystem.model.entity.TimeSheet;
 

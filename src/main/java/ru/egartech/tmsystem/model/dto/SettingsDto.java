@@ -25,7 +25,7 @@ public class SettingsDto extends EntityDto{
     private long maxEarlyLivingCountByMonth;
     //Максимальное количество отсутствий за месяц
     private long maxAbsenceCountByMonth;
-    //Максимальное количество прогулов в месяц
+    //Максимальное количество прогулов за месяц
     private long maxSkipCountByMonth;
     //Максимальное суммарное время отвлечений в день
     private long maxDistractionTimeByDay;

@@ -20,11 +20,11 @@ public class DeviationDto {
     private String earlyLeavingCount;
     //Суммарное количество отсутствий
     private String absenceCount;
-    //Суммарное количество пропусков
+    //Суммарное количество прогулов
     private String skipCount;
     //Суммарное количество превышений времени отвлечений
     private String excessDistractionTimeCount;
-    //Суммарное количество превышений времени отвлечений
+    //Суммарное количество превышений времени перерывов
     private String excessRestTimeCount;
     //Список привилегий
     private String privileges;
