@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.exception.DepartmentNotFoundException;
+import ru.egartech.tmsystem.exception.DurationException;
+import ru.egartech.tmsystem.exception.StartDateEarlierException;
 import ru.egartech.tmsystem.model.dto.DepartmentDto;
 import ru.egartech.tmsystem.model.dto.DepartmentSummaryDto;
 import ru.egartech.tmsystem.model.dto.SettingsDto;
@@ -12,7 +14,9 @@ import ru.egartech.tmsystem.model.mapping.DepartmentMapper;
 import ru.egartech.tmsystem.model.repository.DepartmentRepository;
 import ru.egartech.tmsystem.utils.SummaryFormatter;
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,9 +53,9 @@ public class DepartmentServiceImpl implements DepartmentService {
     public DepartmentDto updateById(Long id, DepartmentDto dto) {
         return repository.findById(id)
                 .map(entity -> {
-            BeanUtils.copyProperties(mapper.toEntity(dto), entity, "id");
-            return mapper.toDto(repository.save(entity));
-        })
+                    BeanUtils.copyProperties(mapper.toEntity(dto), entity, "id");
+                    return mapper.toDto(repository.save(entity));
+                })
                 .orElseThrow(() -> new DepartmentNotFoundException(id));
     }
 
@@ -61,21 +65,29 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public List<DepartmentSummaryDto> departmentsSummary(LocalDate startDate, LocalDate endDate) {
+    public List<DepartmentSummaryDto> departmentsSummary(LocalDateTime startDate, LocalDateTime endDate) {
+
+        if (Duration.between(startDate, endDate).toDays() > 30) {
+            throw new DurationException(30);
+        }
+
+        if (startDate.isAfter(endDate)) {
+            throw new StartDateEarlierException();
+        }
 
         List<DepartmentSummaryDto> departmentsSummary = new ArrayList<>();
         List<DepartmentDto> departments = findAll();
-            SettingsDto settings = settingsService.findByCurrentSettingsProfile();
+        SettingsDto settings = settingsService.findByCurrentSettingsProfile();
 
         for (DepartmentDto department : departments) {
 
             DepartmentSummaryDto departmentSummaryDto = new DepartmentSummaryDto();
             departmentSummaryDto.setId(department.getId());
-            long workTime = departmentWorkTimeByPeriod(startDate, endDate, department.getId());
-            long distractionTime = departmentDistractionTimeByPeriod(startDate, endDate, department.getId());
-            long restTime = departmentRestTimeByPeriod(startDate, endDate, department.getId());
+            long workTime = departmentWorkTimeByPeriod(startDate.toLocalDate(), endDate.toLocalDate(), department.getId());
+            long distractionTime = departmentDistractionTimeByPeriod(startDate.toLocalDate(), endDate.toLocalDate(), department.getId());
+            long restTime = departmentRestTimeByPeriod(startDate.toLocalDate(), endDate.toLocalDate(), department.getId());
             SummaryFormatter.toSummaryDto(workTime, distractionTime, restTime,
-                    departmentSummaryDto, department, startDate, endDate, settings);
+                    departmentSummaryDto, department, startDate.toLocalDate(), endDate.toLocalDate(), settings);
 
             departmentsSummary.add(departmentSummaryDto);
         }
@@ -83,9 +95,11 @@ public class DepartmentServiceImpl implements DepartmentService {
         return departmentsSummary;
     }
 
+    //Если не выбран никакой период, задает по умолчанию текущий месяц
     @Override
     public List<DepartmentSummaryDto> departmentsSummary() {
-        return departmentsSummary(YearMonth.now().atDay(1), YearMonth.now().atEndOfMonth());
+        return departmentsSummary(LocalDateTime.of(YearMonth.now().getYear(), YearMonth.now().getMonth(), 1, 0, 0, 0),
+                LocalDateTime.of(YearMonth.now().getYear(), YearMonth.now().getMonth(), YearMonth.now().atEndOfMonth().getDayOfMonth(), 0, 0, 0));
     }
 
     @Override
