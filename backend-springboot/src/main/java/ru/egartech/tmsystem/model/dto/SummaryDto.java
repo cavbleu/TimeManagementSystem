@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 public abstract class SummaryDto {
 
+    Long id;
     //Наименование отдела
     private String departmentName;
     //Суммарное отработанное время
