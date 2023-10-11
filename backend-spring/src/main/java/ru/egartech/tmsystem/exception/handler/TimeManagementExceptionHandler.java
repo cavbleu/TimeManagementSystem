@@ -80,4 +80,18 @@ public class TimeManagementExceptionHandler {
         return ex.getMessage();
     }
 
+    @ResponseBody
+    @ExceptionHandler(DurationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    String timeManagementHandler(DurationException ex) {
+        return ex.getMessage();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(StartDateEarlierException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    String timeManagementHandler(StartDateEarlierException ex) {
+        return ex.getMessage();
+    }
+
 }
