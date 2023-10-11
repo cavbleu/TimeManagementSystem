@@ -64,9 +64,15 @@ class HeaderComponent extends Component {
 												</a>
 											</li>
 											<li>
+												<hr class='dropdown-divider' />
+											</li>
+											<li>
 												<a className='dropdown-item' href='#'>
 													Должности
 												</a>
+											</li>
+											<li>
+												<hr class='dropdown-divider' />
 											</li>
 											<li>
 												<a className='dropdown-item' href='#'>
