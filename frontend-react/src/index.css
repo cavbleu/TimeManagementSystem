@@ -28,14 +28,13 @@ body {
 
 th, td, tr {
   text-align: center;
-  vertical-align: middle;
 }
 
-.navbar-brand {
-  display: flex;
- align-content: center;
+.table > tbody > tr > td {
+  vertical-align: middle;
 }
 
 .sr-only {
   display: none;
 }
+    /*"react-bootstrap": "^2.9.0",*/

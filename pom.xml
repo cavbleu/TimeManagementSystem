@@ -15,7 +15,8 @@
     <name>TimeManagementSystem</name>
     <description>TimeManagementSystem</description>
     <modules>
-        <module>backend-springboot</module>
+        <module>frontend-react</module>
+        <module>backend-spring</module>
     </modules>
     <properties>
         <java.version>17</java.version>
@@ -72,7 +73,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.200</version>
+        </dependency>
     </dependencies>
 
     <build>
