@@ -35,3 +35,7 @@ th, td, tr {
   display: flex;
  align-content: center;
 }
+
+.sr-only {
+  display: none;
+}

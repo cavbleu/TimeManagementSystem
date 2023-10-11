@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import DepartmentService from '../services/DepartmentService';
 
+
 class DepartmentSummaryComponent extends Component {
     constructor(props) {
         super(props)
@@ -227,3 +228,6 @@ class DepartmentSummaryComponent extends Component {
 }
 
 export default DepartmentSummaryComponent;
+
+
+
