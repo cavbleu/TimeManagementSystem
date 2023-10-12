@@ -2,7 +2,6 @@ package ru.egartech.tmsystem.service;
 
 import ru.egartech.tmsystem.model.dto.DepartmentDto;
 import ru.egartech.tmsystem.model.dto.DepartmentSummaryDto;
-import ru.egartech.tmsystem.model.dto.PositionDto;
 import ru.egartech.tmsystem.model.entity.Department;
 import ru.egartech.tmsystem.utils.BaseService;
 
@@ -13,7 +12,6 @@ import java.util.List;
 public interface DepartmentService extends BaseService<DepartmentDto, Long> {
 
     List<DepartmentSummaryDto> departmentsSummary(LocalDateTime startDate, LocalDateTime endDate);
-    List<DepartmentSummaryDto> departmentsSummary();
 
     long departmentWorkTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id);
 

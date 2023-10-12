@@ -1,6 +1,7 @@
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css"
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom"
 import CreateOrEditDepartmentComponent from "./components/CreateOrEditDepartmentComponent"
+import CreateOrUpdatePositionComponent from "./components/CreateOrUpdatePositionComponent"
 import DepartmentSummaryComponent from "./components/DepartmentSummaryComponent"
 import HeaderComponent from "./components/HeaderComponent"
 import PositionSummaryComponent from "./components/PositionSummaryComponent"
@@ -28,6 +29,14 @@ function App() {
 						<Route
 							path='/summary/position'
 							component={PositionSummaryComponent}
+						/>
+						<Route
+							path='/add-position/:id'
+							component={CreateOrUpdatePositionComponent}
+						/>
+						<Route
+							path='/add-position/add'
+							component={CreateOrUpdatePositionComponent}
 						/>
 					</Switch>
 				</div>

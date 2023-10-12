@@ -4,6 +4,10 @@ const SUMMARY_BASE_URL = "http://localhost:8080/api/v1/summary"
 const DEPARTMENT_BASE_URL = "http://localhost:8080/api/v1/department"
 
 class DepartmentService {
+	getAllDepartments() {
+		return axios.get(DEPARTMENT_BASE_URL)
+	}
+
 	getDepartmentSummaryByPeriod(filterDto) {
 		return axios.put(SUMMARY_BASE_URL + "/departmentByPeriod", filterDto)
 	}
@@ -22,6 +26,10 @@ class DepartmentService {
 
 	deleteDepartment(id) {
 		return axios.delete(DEPARTMENT_BASE_URL + "/" + id)
+	}
+
+	getAll() {
+		return axios.get(DEPARTMENT_BASE_URL)
 	}
 }
 

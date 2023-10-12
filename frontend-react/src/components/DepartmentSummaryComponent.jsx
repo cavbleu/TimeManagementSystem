@@ -210,7 +210,7 @@ class DepartmentSummaryComponent extends Component {
 				</div>
 				<BootStrapTable
 					bootstrap4
-					keyField='name'
+					keyField='id'
 					data={this.state.departments}
 					columns={this.columns}
 					filter={filterFactory()}

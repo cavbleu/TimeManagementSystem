@@ -170,7 +170,7 @@ class PositionSummaryComponent extends Component {
 								alert(err.response.data)
 							})
 							.then(res => {
-								// window.location.reload()
+								window.location.reload()
 							})
 					}}
 					className='btn btn-danger btn-sm'
@@ -221,7 +221,7 @@ class PositionSummaryComponent extends Component {
 				</div>
 				<BootStrapTable
 					bootstrap4
-					keyField='name'
+					keyField='id'
 					data={this.state.positions}
 					columns={this.columns}
 					filter={filterFactory()}
