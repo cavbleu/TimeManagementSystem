@@ -18,7 +18,6 @@ import ru.egartech.tmsystem.utils.SummaryFormatter;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,13 +97,6 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
 
         return departmentsSummary;
-    }
-
-    //Если не выбран никакой период, задает по умолчанию текущий месяц
-    @Override
-    public List<DepartmentSummaryDto> departmentsSummary() {
-        return departmentsSummary(LocalDateTime.of(YearMonth.now().getYear(), YearMonth.now().getMonth(), 1, 0, 0, 0),
-                LocalDateTime.of(YearMonth.now().getYear(), YearMonth.now().getMonth(), YearMonth.now().atEndOfMonth().getDayOfMonth(), 0, 0, 0));
     }
 
     @Override

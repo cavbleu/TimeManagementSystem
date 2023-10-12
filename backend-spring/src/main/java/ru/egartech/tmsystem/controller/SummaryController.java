@@ -1,6 +1,5 @@
 package ru.egartech.tmsystem.controller;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,17 +29,10 @@ public class SummaryController {
         return ResponseEntity.ok(departmentService.departmentsSummary(filterDto.getStartDate(), filterDto.getEndDate()));
     }
 
-    @GetMapping("/department")
-    public ResponseEntity<List<DepartmentSummaryDto>> getDepartmentsSummary() {
-        return ResponseEntity.ok(departmentService.departmentsSummary());
+    @PutMapping("/positionByPeriod")
+    public ResponseEntity<List<PositionSummaryDto>> getPositionsSummary(@RequestBody FilterDto filterDto) {
+        return ResponseEntity.ok(positionService.positionsSummaryByPeriod(filterDto.getStartDate(), filterDto.getEndDate()));
     }
-
-    @GetMapping("/position")
-    public ResponseEntity<List<PositionSummaryDto>> getPositionsSummary(@RequestParam LocalDate startDate,
-                                                                        @RequestParam LocalDate endDate) {
-        return ResponseEntity.ok(positionService.positionsSummaryByPeriod(startDate, endDate));
-    }
-
 
     @GetMapping("/employee")
     public ResponseEntity<List<EmployeeSummaryDto>> getEmployeesSummary(@RequestParam LocalDate startDate,

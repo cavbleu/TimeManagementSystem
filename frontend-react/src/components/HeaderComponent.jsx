@@ -70,7 +70,10 @@ class HeaderComponent extends Component {
 												<hr class='dropdown-divider' />
 											</li>
 											<li>
-												<a className='dropdown-item' href='#'>
+												<a
+													className='dropdown-item'
+													href='http://localhost:3000/summary/position'
+												>
 													Должности
 												</a>
 											</li>

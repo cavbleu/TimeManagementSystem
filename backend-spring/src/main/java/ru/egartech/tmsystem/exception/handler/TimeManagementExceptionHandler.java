@@ -100,4 +100,11 @@ public class TimeManagementExceptionHandler {
     String timeManagementHandler(DepartmentConstraintException ex) {
         return ex.getMessage();
     }
+
+    @ResponseBody
+    @ExceptionHandler(PositionConstraintException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    String timeManagementHandler(PositionConstraintException ex) {
+        return ex.getMessage();
+    }
 }

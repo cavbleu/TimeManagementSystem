@@ -58,7 +58,7 @@ class CreateOrEditDepartmentComponent extends Component {
 		if (this.props.id != "add") {
 			return <h4 style={{ textAlign: "center" }}> Редактирование отдела</h4>
 		} else {
-			return <h4 style={{ textAlign: "center" }}> Создание нового отдела</h4>
+			return <h4 style={{ textAlign: "center" }}> Добавление нового отдела</h4>
 		}
 	}
 

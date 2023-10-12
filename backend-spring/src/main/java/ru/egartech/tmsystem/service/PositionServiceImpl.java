@@ -3,16 +3,23 @@ package ru.egartech.tmsystem.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import ru.egartech.tmsystem.exception.DepartmentConstraintException;
+import ru.egartech.tmsystem.exception.DurationException;
 import ru.egartech.tmsystem.exception.PositionNotFoundException;
+import ru.egartech.tmsystem.exception.StartDateEarlierException;
+import ru.egartech.tmsystem.model.dto.EditPositionDto;
 import ru.egartech.tmsystem.model.dto.PositionDto;
 import ru.egartech.tmsystem.model.dto.PositionSummaryDto;
 import ru.egartech.tmsystem.model.dto.SettingsDto;
 import ru.egartech.tmsystem.model.entity.Position;
+import ru.egartech.tmsystem.model.mapping.DepartmentMapper;
 import ru.egartech.tmsystem.model.mapping.PositionMapper;
 import ru.egartech.tmsystem.model.repository.PositionRepository;
 import ru.egartech.tmsystem.utils.SummaryFormatter;
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +29,7 @@ public class PositionServiceImpl implements PositionService {
 
     private final PositionRepository repository;
     private final PositionMapper mapper;
+    private final DepartmentMapper departmentMapper;
     private final SettingsService settingsService;
     private final DepartmentService departmentService;
 
@@ -57,11 +65,24 @@ public class PositionServiceImpl implements PositionService {
 
     @Override
     public void deleteById(Long id) {
-        repository.deleteById(id);
+        if (!findById(id).getEmployees().isEmpty()) {
+            throw new DepartmentConstraintException();
+        } else {
+            repository.deleteById(id);
+        }
     }
 
     @Override
-    public List<PositionSummaryDto> positionsSummaryByPeriod(LocalDate startDate, LocalDate endDate) {
+    public List<PositionSummaryDto> positionsSummaryByPeriod(LocalDateTime startDate, LocalDateTime endDate) {
+
+
+        if (Duration.between(startDate, endDate).toDays() > 30) {
+            throw new DurationException(30);
+        }
+
+        if (startDate.isAfter(endDate)) {
+            throw new StartDateEarlierException();
+        }
 
         List<PositionSummaryDto> positionsSummary = new ArrayList<>();
         List<PositionDto> positions = findAll();
@@ -70,11 +91,12 @@ public class PositionServiceImpl implements PositionService {
         for (PositionDto position : positions) {
 
             PositionSummaryDto positionSummaryDto = new PositionSummaryDto();
-            long workTime = positionWorkTimeByPeriod(startDate, endDate, position.getId());
-            long distractionTime = positionDistractionTimeByPeriod(startDate, endDate, position.getId());
-            long restTime = positionRestTimeByPeriod(startDate, endDate, position.getId());
+            positionSummaryDto.setId(position.getId());
+            long workTime = positionWorkTimeByPeriod(startDate.toLocalDate(), endDate.toLocalDate(), position.getId());
+            long distractionTime = positionDistractionTimeByPeriod(startDate.toLocalDate(), endDate.toLocalDate(), position.getId());
+            long restTime = positionRestTimeByPeriod(startDate.toLocalDate(), endDate.toLocalDate(), position.getId());
             SummaryFormatter.toSummaryDto(workTime, distractionTime, restTime,
-                    positionSummaryDto, position, startDate, endDate, settings);
+                    positionSummaryDto, position, startDate.toLocalDate(), endDate.toLocalDate(), settings);
             positionSummaryDto.setDepartmentName(position.getDepartment().getName());
             positionSummaryDto.setPositionName(position.getName());
             positionsSummary.add(positionSummaryDto);
@@ -108,14 +130,25 @@ public class PositionServiceImpl implements PositionService {
     }
 
     @Override
-    public PositionDto update(PositionDto positionDto, String departmentName, Long id) {
-        positionDto.setDepartment(departmentService.findByName(departmentName));
-        return updateById(id, positionDto);
+    public PositionDto update(PositionDto positionDto) {
+        positionDto.setDepartment(departmentMapper.toEntity(departmentService.findById(positionDto.getDepartment().getId())));
+        return updateById(positionDto.getId(), positionDto);
     }
 
     @Override
     public Position findByName(String positionName) {
         return repository.findByName(positionName)
                 .orElseThrow(() -> new PositionNotFoundException(positionName));
+    }
+
+    @Override
+    public EditPositionDto getEditPositionDtoById(Long id) {
+        EditPositionDto editPositionDto = new EditPositionDto();
+        PositionDto positionDto = findById(id);
+        editPositionDto.setId(positionDto.getId());
+        editPositionDto.setName(positionDto.getName());
+        editPositionDto.setDepartment(positionDto.getDepartment());
+        editPositionDto.setAllDepartments(departmentService.findAll());
+        return editPositionDto;
     }
 }
