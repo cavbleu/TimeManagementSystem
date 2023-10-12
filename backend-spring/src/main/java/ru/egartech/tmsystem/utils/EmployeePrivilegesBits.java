@@ -9,6 +9,5 @@ public class EmployeePrivilegesBits {
     public int BIT_ABSENCE = 0x4;
     public int BIT_SKIP = 0x8;
     public int BIT_REST_TIME = 0x10;
-    public int  BIT_LUNCH_TIME = 0x20;
-    public int  BIT_DISTRACTION_TIME = 0x40;
+    public int  BIT_DISTRACTION_TIME = 0x20;
 }

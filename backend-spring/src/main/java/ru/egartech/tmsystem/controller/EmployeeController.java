@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.egartech.tmsystem.model.dto.EditEmployeeDto;
 import ru.egartech.tmsystem.model.dto.EmployeeDto;
 import ru.egartech.tmsystem.service.EmployeeService;
 
@@ -21,16 +22,20 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.findAll());
     }
 
-    @PostMapping()
+    @GetMapping("/{id}")
+    public ResponseEntity<EditEmployeeDto> getEmployeeById(@PathVariable Long id) {
+        return ResponseEntity.ok(employeeService.getEditEmployeeDtoById(id));
+    }
+
+    @PostMapping
     public ResponseEntity<EmployeeDto> saveEmployee(@Valid  @RequestBody EmployeeDto dto, @RequestParam String departmentName,
                                                     @RequestParam String positionName) {
         return ResponseEntity.ok(employeeService.save(dto, positionName, departmentName));
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<EmployeeDto> updateEmployee(@Valid @RequestBody EmployeeDto dto, @PathVariable Long id,
-                                                      @RequestParam String departmentName, @RequestParam String positionName) {
-        return ResponseEntity.ok(employeeService.update(id, dto, positionName, departmentName));
+    @PutMapping
+    public ResponseEntity<EmployeeDto> updateEmployee(@Valid @RequestBody EmployeeDto dto) {
+        return ResponseEntity.ok(employeeService.update(dto));
     }
 
     @DeleteMapping("{id}")

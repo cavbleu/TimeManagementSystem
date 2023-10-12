@@ -3,16 +3,19 @@ package ru.egartech.tmsystem.service;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import ru.egartech.tmsystem.exception.DurationException;
 import ru.egartech.tmsystem.exception.EmployeeNotFoundException;
-import ru.egartech.tmsystem.model.dto.EmployeeDto;
-import ru.egartech.tmsystem.model.dto.EmployeeSummaryDto;
-import ru.egartech.tmsystem.model.dto.SettingsDto;
+import ru.egartech.tmsystem.exception.StartDateEarlierException;
+import ru.egartech.tmsystem.model.dto.*;
 import ru.egartech.tmsystem.model.entity.Employee;
 import ru.egartech.tmsystem.model.mapping.EmployeeMapper;
 import ru.egartech.tmsystem.model.repository.EmployeeRepository;
+import ru.egartech.tmsystem.utils.BitsConverter;
 import ru.egartech.tmsystem.utils.SummaryFormatter;
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,7 +71,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeSummaryDto> employeesSummaryByPeriod(LocalDate startDate, LocalDate endDate) {
+    public List<EmployeeSummaryDto> employeesSummaryByPeriod(LocalDateTime startDate, LocalDateTime endDate) {
+
+        if (Duration.between(startDate, endDate).toDays() > 30) {
+            throw new DurationException(30);
+        }
+
+        if (startDate.isAfter(endDate)) {
+            throw new StartDateEarlierException();
+        }
+
         List<EmployeeSummaryDto> employeesSummary = new ArrayList<>();
         List<EmployeeDto> employees = findAll();
         SettingsDto settings = settingsService.findByCurrentSettingsProfile();
@@ -76,11 +88,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         for (EmployeeDto employee : employees) {
 
             EmployeeSummaryDto employeeSummaryDto = new EmployeeSummaryDto();
-            long workTime = employeeWorkTimeByPeriod(startDate, endDate, employee.getId());
-            long distractionTime = employeeDistractionTimeByPeriod(startDate, endDate, employee.getId());
-            long restTime = employeeRestTimeByPeriod(startDate, endDate, employee.getId());
+            long workTime = employeeWorkTimeByPeriod(startDate.toLocalDate(), endDate.toLocalDate(), employee.getId());
+            long distractionTime = employeeDistractionTimeByPeriod(startDate.toLocalDate(), endDate.toLocalDate(), employee.getId());
+            long restTime = employeeRestTimeByPeriod(startDate.toLocalDate(), endDate.toLocalDate(), employee.getId());
             SummaryFormatter.toSummaryDto(workTime, distractionTime, restTime,
-                    employeeSummaryDto, employee, startDate, endDate, settings);
+                    employeeSummaryDto, employee, startDate.toLocalDate(), endDate.toLocalDate(), settings);
             employeeSummaryDto.setName(employee.getName());
             employeeSummaryDto.setPositionName(employee.getPosition().getName());
             employeeSummaryDto.setDepartmentName(employee.getPosition().getDepartment().getName());
@@ -111,13 +123,24 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeDto save(EmployeeDto employeeDto, String positionName, String departmentName) {
-        employeeDto.setPosition(positionService.findByName(positionName));
         return save(employeeDto);
     }
 
     @Override
-    public EmployeeDto update(Long employeeId, EmployeeDto employeeDto, String positionName, String departmentName) {
-        employeeDto.setPosition(positionService.findByName(positionName));
-        return updateById(employeeId, employeeDto);
+    public EmployeeDto update(EmployeeDto employeeDto) {
+        return updateById(employeeDto.getId(), employeeDto);
+    }
+
+    @Override
+    public EditEmployeeDto getEditEmployeeDtoById(Long employeeId) {
+        EditEmployeeDto editEmployeeDto = new EditEmployeeDto();
+        EmployeeDto employeeDto = findById(employeeId);
+        editEmployeeDto.setId(employeeId);
+        editEmployeeDto.setName(employeeDto.getName());
+        editEmployeeDto.setAge(employeeDto.getAge());
+        editEmployeeDto.setPosition(employeeDto.getPosition());
+        editEmployeeDto.setPrivilegesNumber(employeeDto.getPrivilegesNumber());
+        BitsConverter.setPrivileges(editEmployeeDto);
+        return editEmployeeDto;
     }
 }

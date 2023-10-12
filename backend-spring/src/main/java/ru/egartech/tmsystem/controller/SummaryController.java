@@ -11,7 +11,6 @@ import ru.egartech.tmsystem.service.DepartmentService;
 import ru.egartech.tmsystem.service.EmployeeService;
 import ru.egartech.tmsystem.service.PositionService;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -34,10 +33,9 @@ public class SummaryController {
         return ResponseEntity.ok(positionService.positionsSummaryByPeriod(filterDto.getStartDate(), filterDto.getEndDate()));
     }
 
-    @GetMapping("/employee")
-    public ResponseEntity<List<EmployeeSummaryDto>> getEmployeesSummary(@RequestParam LocalDate startDate,
-                                                                        @RequestParam LocalDate endDate) {
-        return ResponseEntity.ok(employeeService.employeesSummaryByPeriod(startDate, endDate));
+    @PutMapping("/employee")
+    public ResponseEntity<List<EmployeeSummaryDto>> getEmployeesSummary(@RequestBody FilterDto filterDto) {
+        return ResponseEntity.ok(employeeService.employeesSummaryByPeriod(filterDto.getStartDate(), filterDto.getEndDate()));
     }
 
 }

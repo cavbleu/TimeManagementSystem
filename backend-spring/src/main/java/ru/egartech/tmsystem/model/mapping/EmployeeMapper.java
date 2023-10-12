@@ -26,6 +26,7 @@ public abstract class EmployeeMapper {
         dto.setName(employee.getName());
         dto.setAge(employee.getAge());
         dto.setPosition(employee.getPosition());
+        dto.setPrivilegesNumber(employee.getPrivilegesNumber());
         dto.setTimeSheets(employee.getTimeSheets());
         if (employee.getPrivilegesNumber() == null) {
             dto.setPrivileges("");
