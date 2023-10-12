@@ -13,26 +13,6 @@ class DepartmentSummaryComponent extends Component {
 	constructor(props) {
 		super(props)
 
-		function buttonFormatter(row) {
-			return (
-				<div>
-					<button
-						onClick={() => this.editDepartment(row.id)}
-						className='btn btn-success btn-sm'
-					>
-						Редактировать
-					</button>
-					<button
-						style={{ marginTop: "10px" }}
-						onClick={() => this.deleteDepartment(row.id)}
-						className='btn btn-danger btn-sm'
-					>
-						Удалить
-					</button>
-				</div>
-			)
-		}
-
 		function filterFormatter(column, colIndex, { sortElement, filterElement }) {
 			return (
 				<div style={{ display: "flex", flexDirection: "column" }}>
@@ -123,6 +103,27 @@ class DepartmentSummaryComponent extends Component {
 				month: "long",
 				day: "numeric",
 			},
+		}
+
+		function buttonFormatter(cell, row, rowIndex) {
+			return (
+				<div>
+					<button
+						// onClick={() => this.addDepartment(row.id)}
+						onClick={() => (window.location.href = `/add_department/${row.id}`)}
+						className='btn btn-success btn-sm'
+					>
+						Редактировать
+					</button>
+					<button
+						style={{ marginTop: "10px" }}
+						onClick={() => props.history.push(`/add-department/${row.id}`)}
+						className='btn btn-danger btn-sm'
+					>
+						Удалить
+					</button>
+				</div>
+			)
 		}
 	}
 
