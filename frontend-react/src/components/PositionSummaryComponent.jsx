@@ -7,16 +7,17 @@ import filterFactory, {
 	textFilter,
 } from "react-bootstrap-table2-filter"
 import DatePicker from "react-datepicker"
-import DepartmentService from "../services/DepartmentService"
+import PositionService from "../services/PositionService"
 
-class DepartmentSummaryComponent extends Component {
+class PositionSummaryComponent extends Component {
 	constructor(props) {
 		super(props)
 
 		var date = new Date()
 		this.state = {
-			departments: [],
+			positions: [],
 			id: "",
+			positionName: "",
 			departmentName: "",
 			workTime: "",
 			productiveTime: "",
@@ -40,12 +41,12 @@ class DepartmentSummaryComponent extends Component {
 			endDate: this.state.endDate.toISOString(),
 		}
 
-		DepartmentService.getDepartmentSummaryByPeriod(filterDto).then(res => {
-			this.setState({ departments: res.data })
+		PositionService.getSummaryByPeriod(filterDto).then(res => {
+			this.setState({ positions: res.data })
 		})
 	}
 
-	getDepartmentSummaryByPeriod = e => {
+	getPositionSummaryByPeriod = e => {
 		e.preventDefault()
 
 		if (this.state.startDate === null) {
@@ -57,9 +58,10 @@ class DepartmentSummaryComponent extends Component {
 				startDate: this.state.startDate.toISOString(),
 				endDate: this.state.endDate.toISOString(),
 			}
-			DepartmentService.getDepartmentSummaryByPeriod(filterDto)
+
+			PositionService.getSummaryByPeriod(filterDto)
 				.then(res => {
-					this.setState({ departments: res.data })
+					this.setState({ positions: res.data })
 				})
 				.catch(err => {
 					alert(err.response.data)
@@ -69,6 +71,15 @@ class DepartmentSummaryComponent extends Component {
 	}
 
 	columns = [
+		{
+			dataField: "positionName",
+			text: "Должность",
+			sort: true,
+			filter: textFilter({
+				placeholder: "Фильтр...",
+			}),
+			headerFormatter: this.filterFormatter,
+		},
 		{
 			dataField: "departmentName",
 			text: "Отдел",
@@ -145,7 +156,7 @@ class DepartmentSummaryComponent extends Component {
 		return (
 			<div>
 				<button
-					onClick={() => (window.location.href = `/add-department/${row.id}`)}
+					onClick={() => (window.location.href = `/add-position/${row.id}`)}
 					className='btn btn-success btn-sm'
 				>
 					Редактировать
@@ -154,12 +165,12 @@ class DepartmentSummaryComponent extends Component {
 				<button
 					style={{ marginTop: 5 }}
 					onClick={() => {
-						DepartmentService.deleteDepartment(row.id)
+						PositionService.delete(row.id)
 							.catch(err => {
 								alert(err.response.data)
 							})
 							.then(res => {
-								window.location.reload()
+								// window.location.reload()
 							})
 					}}
 					className='btn btn-danger btn-sm'
@@ -173,7 +184,7 @@ class DepartmentSummaryComponent extends Component {
 	render() {
 		return (
 			<div>
-				<h2 className='text-center'>Сводная статистика по отделам</h2>
+				<h2 className='text-center'>Сводная статистика по должностям</h2>
 				<div>
 					<h5>Дата начала отчетного периода: </h5>
 					<DatePicker
@@ -196,22 +207,22 @@ class DepartmentSummaryComponent extends Component {
 				</div>
 				<div>
 					<form style={{ marginBottom: 10, marginTop: 5 }} id='external-form'>
-						<input type='submit' onClick={this.getDepartmentSummaryByPeriod} />
+						<input type='submit' onClick={this.getPositionSummaryByPeriod} />
 					</form>
 				</div>
 				<div>
 					<button
-						onClick={() => this.props.history.push("/add-department/add")}
+						onClick={() => this.props.history.push("/add-position/add")}
 						style={{ marginBottom: "5px" }}
 						className='btn btn-primary'
 					>
-						Добавить отдел
+						Добавить должность
 					</button>
 				</div>
 				<BootStrapTable
 					bootstrap4
 					keyField='name'
-					data={this.state.departments}
+					data={this.state.positions}
 					columns={this.columns}
 					filter={filterFactory()}
 					striped
@@ -222,5 +233,4 @@ class DepartmentSummaryComponent extends Component {
 		)
 	}
 }
-
-export default DepartmentSummaryComponent
+export default PositionSummaryComponent

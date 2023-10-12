@@ -11,6 +11,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
+@CrossOrigin(origins = "http://localhost:3000/")
 @RequestMapping("api/v1/position")
 public class PositionController {
 
@@ -19,6 +20,11 @@ public class PositionController {
     @GetMapping()
     public ResponseEntity<List<PositionDto>> getAllPositions() {
         return ResponseEntity.ok(positionService.findAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PositionDto> getPositionById(@PathVariable Long id) {
+        return ResponseEntity.ok(positionService.findById(id));
     }
 
     @PostMapping()
