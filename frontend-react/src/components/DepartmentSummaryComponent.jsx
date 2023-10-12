@@ -32,108 +32,6 @@ class DepartmentSummaryComponent extends Component {
 				day: "numeric",
 			},
 		}
-
-		this.columns = [
-			{
-				dataField: "departmentName",
-				text: "Наименование",
-				sort: true,
-				filter: textFilter({
-					placeholder: "Фильтр...",
-				}),
-				headerFormatter: filterFormatter,
-			},
-			{
-				dataField: "workTime",
-				text: "Суммарное отработанное время",
-				sort: true,
-				filter: numberFilter({
-					placeholder: "Фильтр...",
-					defaultValue: { comparator: Comparator.GT },
-				}),
-				headerFormatter: filterFormatter,
-			},
-			{
-				dataField: "productiveTime",
-				text: "Суммарное продуктивное время",
-				sort: true,
-				filter: numberFilter({
-					placeholder: "Фильтр...",
-					defaultValue: { comparator: Comparator.GT },
-				}),
-				headerFormatter: filterFormatter,
-			},
-			{
-				dataField: "distractionTime",
-				text: "Суммарное время отвлечений",
-				sort: true,
-				filter: numberFilter({
-					placeholder: "Фильтр...",
-					defaultValue: { comparator: Comparator.GT },
-				}),
-				headerFormatter: filterFormatter,
-			},
-			{
-				dataField: "restTime",
-				text: "Суммарное время перерывов",
-				sort: true,
-				filter: numberFilter({
-					placeholder: "Фильтр...",
-					defaultValue: { comparator: Comparator.GT },
-				}),
-				headerFormatter: filterFormatter,
-			},
-			{
-				dataField: "overTime",
-				text: "Переработки",
-				sort: true,
-				filter: numberFilter({
-					placeholder: "Фильтр...",
-					defaultValue: { comparator: Comparator.GT },
-				}),
-				headerFormatter: filterFormatter,
-			},
-			{ text: "Действия", formatter: editFormatter },
-		]
-
-		function filterFormatter(column, colIndex, { sortElement, filterElement }) {
-			return (
-				<div style={{ display: "flex", flexDirection: "column" }}>
-					{filterElement}
-					{column.text}
-					{sortElement}
-				</div>
-			)
-		}
-
-		function editFormatter(cell, row, rowIndex) {
-			return (
-				<div>
-					<button
-						onClick={() => props.history.push(`/add-department/${row.id}`)}
-						className='btn btn-success btn-sm'
-					>
-						Редактировать
-					</button>
-
-					<button
-						style={{ marginTop: 5 }}
-						onClick={() => {
-							DepartmentService.deleteDepartment(row.id)
-								.catch(err => {
-									alert(err.response.data)
-								})
-								.then(res => {
-									window.location.reload()
-								})
-						}}
-						className='btn btn-danger btn-sm'
-					>
-						Удалить
-					</button>
-				</div>
-			)
-		}
 	}
 
 	componentDidMount() {
@@ -164,6 +62,108 @@ class DepartmentSummaryComponent extends Component {
 					this.componentDidMount()
 				})
 		}
+	}
+
+	columns = [
+		{
+			dataField: "departmentName",
+			text: "Наименование",
+			sort: true,
+			filter: textFilter({
+				placeholder: "Фильтр...",
+			}),
+			headerFormatter: this.filterFormatter,
+		},
+		{
+			dataField: "workTime",
+			text: "Суммарное отработанное время",
+			sort: true,
+			filter: numberFilter({
+				placeholder: "Фильтр...",
+				defaultValue: { comparator: Comparator.GT },
+			}),
+			headerFormatter: this.filterFormatter,
+		},
+		{
+			dataField: "productiveTime",
+			text: "Суммарное продуктивное время",
+			sort: true,
+			filter: numberFilter({
+				placeholder: "Фильтр...",
+				defaultValue: { comparator: Comparator.GT },
+			}),
+			headerFormatter: this.filterFormatter,
+		},
+		{
+			dataField: "distractionTime",
+			text: "Суммарное время отвлечений",
+			sort: true,
+			filter: numberFilter({
+				placeholder: "Фильтр...",
+				defaultValue: { comparator: Comparator.GT },
+			}),
+			headerFormatter: this.filterFormatter,
+		},
+		{
+			dataField: "restTime",
+			text: "Суммарное время перерывов",
+			sort: true,
+			filter: numberFilter({
+				placeholder: "Фильтр...",
+				defaultValue: { comparator: Comparator.GT },
+			}),
+			headerFormatter: this.filterFormatter,
+		},
+		{
+			dataField: "overTime",
+			text: "Переработки",
+			sort: true,
+			filter: numberFilter({
+				placeholder: "Фильтр...",
+				defaultValue: { comparator: Comparator.GT },
+			}),
+			headerFormatter: this.filterFormatter,
+		},
+		{ text: "Действия", formatter: this.buttonFormatter },
+	]
+
+	filterFormatter(column, colIndex, { sortElement, filterElement }) {
+		return (
+			<div style={{ display: "flex", flexDirection: "column" }}>
+				{filterElement}
+				{column.text}
+				{sortElement}
+			</div>
+		)
+	}
+
+	buttonFormatter(cell, row, rowIndex) {
+		return (
+			<div>
+				<button
+					onClick={() => (window.location.href = `/add-department/${row.id}`)}
+					className='btn btn-success btn-sm'
+				>
+					Редактировать
+				</button>
+
+				<button
+					style={{ marginTop: 5 }}
+					onClick={() => {
+						DepartmentService.deleteDepartment(row.id)
+							.catch(err => {
+								alert(err.response.data)
+							})
+							.then(res => {
+								window.location.reload()
+							})
+					}}
+					className='btn btn-danger btn-sm'
+				>
+					Удалить
+				</button>
+			</div>
+		)
 	}
 
 	render() {
