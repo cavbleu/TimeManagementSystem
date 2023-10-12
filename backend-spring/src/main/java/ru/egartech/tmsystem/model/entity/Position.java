@@ -29,7 +29,6 @@ public class Position {
     private String name;
 
     @ManyToOne
-    @JsonIgnore
     private Department department;
 
     @OneToMany(mappedBy = "position", fetch = FetchType.EAGER)
