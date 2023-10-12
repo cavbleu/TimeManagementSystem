@@ -15,7 +15,6 @@ import ru.egartech.tmsystem.utils.SummaryFormatter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -41,9 +40,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Optional<EmployeeDto> findById(Long id) {
+    public EmployeeDto findById(Long id) {
         return repository.findById(id)
-                .map(mapper::toDto);
+                .map(mapper::toDto)
+                .orElseThrow(() -> new EmployeeNotFoundException(id));
     }
 
     @Override

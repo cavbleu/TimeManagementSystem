@@ -29,9 +29,10 @@ public class SettingsServiceImpl implements SettingsService {
     }
 
     @Override
-    public Optional<SettingsDto> findById(Long id) {
+    public SettingsDto findById(Long id) {
         return repository.findById(id)
-                .map(mapper::toDto);
+                .map(mapper::toDto)
+                .orElseThrow(() -> new SettingsNotFoundException(id));
     }
 
     @Override
@@ -68,7 +69,7 @@ public class SettingsServiceImpl implements SettingsService {
     public void deleteById(Long id) {
         if (findAll().size() == 1) {
             throw new SettingsOneProfileException();
-        } else if (findById(id).orElseThrow(() -> new SettingsNotFoundException(id)).isCurrentSettingsProfile()) {
+        } else if (findById(id).isCurrentSettingsProfile()) {
             throw new CurrentSettingsNotFoundException();
         } else {
             repository.deleteById(id);

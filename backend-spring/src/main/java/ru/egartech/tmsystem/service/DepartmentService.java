@@ -2,6 +2,7 @@ package ru.egartech.tmsystem.service;
 
 import ru.egartech.tmsystem.model.dto.DepartmentDto;
 import ru.egartech.tmsystem.model.dto.DepartmentSummaryDto;
+import ru.egartech.tmsystem.model.dto.PositionDto;
 import ru.egartech.tmsystem.model.entity.Department;
 import ru.egartech.tmsystem.utils.BaseService;
 
@@ -20,5 +21,4 @@ public interface DepartmentService extends BaseService<DepartmentDto, Long> {
 
     long departmentRestTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id);
     Department findByName(String name);
-
 }

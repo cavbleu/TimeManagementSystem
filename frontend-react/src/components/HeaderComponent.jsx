@@ -17,7 +17,7 @@ class HeaderComponent extends Component {
 							<a
 								style={{ marginLeft: "20px", color: "white" }}
 								className='navbar-brand'
-								href='http://localhost:3000/department'
+								href='http://localhost:3000/'
 							>
 								<img
 									style={{ marginRight: "10px", color: "white" }}
@@ -59,7 +59,10 @@ class HeaderComponent extends Component {
 											aria-labelledby='navbarDropdownMenuLink'
 										>
 											<li>
-												<a className='dropdown-item' href='#'>
+												<a
+													className='dropdown-item'
+													href='http://localhost:3000/summary/department'
+												>
 													Отделы
 												</a>
 											</li>

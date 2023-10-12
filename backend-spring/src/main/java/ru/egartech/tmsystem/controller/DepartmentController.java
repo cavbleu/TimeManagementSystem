@@ -17,20 +17,24 @@ public class DepartmentController {
 
     private final DepartmentService departmentService;
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<List<DepartmentDto>> getAllDepartments() {
         return ResponseEntity.ok(departmentService.findAll());
     }
 
-    @PostMapping()
+    @GetMapping("/{id}")
+    public ResponseEntity<DepartmentDto> getDepartmentById(@PathVariable Long id) {
+        return ResponseEntity.ok(departmentService.findById(id));
+    }
+
+    @PostMapping
     public ResponseEntity<DepartmentDto> saveDepartment(@Valid @RequestBody DepartmentDto dto) {
         return ResponseEntity.ok(departmentService.save(dto));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<DepartmentDto> updateDepartment(@Valid @RequestBody DepartmentDto dto, @PathVariable Long id
-    ) {
-        return ResponseEntity.ok(departmentService.updateById(id, dto));
+    @PutMapping
+    public ResponseEntity<DepartmentDto> updateDepartment(@Valid @RequestBody DepartmentDto dto) {
+        return ResponseEntity.ok(departmentService.updateById(dto.getId(), dto));
     }
 
     @DeleteMapping("/{id}")

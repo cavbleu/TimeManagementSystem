@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.exception.DistractionNotFoundException;
-import ru.egartech.tmsystem.exception.TimeSheetNotFoundException;
 import ru.egartech.tmsystem.model.dto.DistractionDto;
 import ru.egartech.tmsystem.model.entity.Distraction;
 import ru.egartech.tmsystem.model.mapping.DistractionMapper;
@@ -12,7 +11,6 @@ import ru.egartech.tmsystem.model.mapping.TimeSheetMapper;
 import ru.egartech.tmsystem.model.repository.DistractionRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,9 +29,10 @@ public class DistractionServiceImpl implements DistractionService {
     }
 
     @Override
-    public Optional<DistractionDto> findById(Long id) {
+    public DistractionDto findById(Long id) {
         return repository.findById(id)
-                .map(mapper::toDto);
+                .map(mapper::toDto)
+                .orElseThrow(DistractionNotFoundException::new);
     }
 
     @Override
@@ -59,14 +58,13 @@ public class DistractionServiceImpl implements DistractionService {
 
     @Override
     public DistractionDto save(Long timeSheetId, DistractionDto distractionDto) {
-        distractionDto.setTimeSheet(timeSheetMapper.toEntity(timeSheetService.findById(timeSheetId).orElseThrow(DistractionNotFoundException::new)));
+        distractionDto.setTimeSheet(timeSheetMapper.toEntity(timeSheetService.findById(timeSheetId)));
         return save(distractionDto);
     }
 
     @Override
     public DistractionDto update(Long timeSheetId, Long restId, DistractionDto dto) {
-        dto.setTimeSheet(timeSheetMapper.toEntity(timeSheetService.findById(timeSheetId)
-                .orElseThrow(TimeSheetNotFoundException::new)));
+        dto.setTimeSheet(timeSheetMapper.toEntity(timeSheetService.findById(timeSheetId)));
         return updateById(restId, dto);
     }
 }

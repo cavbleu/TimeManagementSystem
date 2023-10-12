@@ -94,4 +94,10 @@ public class TimeManagementExceptionHandler {
         return ex.getMessage();
     }
 
+    @ResponseBody
+    @ExceptionHandler(DepartmentConstraintException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    String timeManagementHandler(DepartmentConstraintException ex) {
+        return ex.getMessage();
+    }
 }

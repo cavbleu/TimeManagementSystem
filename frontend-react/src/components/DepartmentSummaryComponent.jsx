@@ -13,98 +13,6 @@ class DepartmentSummaryComponent extends Component {
 	constructor(props) {
 		super(props)
 
-		function buttonFormatter(row) {
-			return (
-				<div>
-					<button
-						onClick={() => this.editDepartment(row.id)}
-						className='btn btn-success btn-sm'
-					>
-						Редактировать
-					</button>
-					<button
-						style={{ marginTop: "10px" }}
-						onClick={() => this.deleteDepartment(row.id)}
-						className='btn btn-danger btn-sm'
-					>
-						Удалить
-					</button>
-				</div>
-			)
-		}
-
-		function filterFormatter(column, colIndex, { sortElement, filterElement }) {
-			return (
-				<div style={{ display: "flex", flexDirection: "column" }}>
-					{filterElement}
-					{column.text}
-					{sortElement}
-				</div>
-			)
-		}
-
-		this.columns = [
-			{
-				dataField: "departmentName",
-				text: "Наименование",
-				sort: true,
-				filter: textFilter({
-					placeholder: "Фильтр...",
-				}),
-				headerFormatter: filterFormatter,
-			},
-			{
-				dataField: "workTime",
-				text: "Суммарное отработанное время",
-				sort: true,
-				filter: numberFilter({
-					placeholder: "Фильтр...",
-					defaultValue: { comparator: Comparator.GT },
-				}),
-				headerFormatter: filterFormatter,
-			},
-			{
-				dataField: "productiveTime",
-				text: "Суммарное продуктивное время",
-				sort: true,
-				filter: numberFilter({
-					placeholder: "Фильтр...",
-					defaultValue: { comparator: Comparator.GT },
-				}),
-				headerFormatter: filterFormatter,
-			},
-			{
-				dataField: "distractionTime",
-				text: "Суммарное время отвлечений",
-				sort: true,
-				filter: numberFilter({
-					placeholder: "Фильтр...",
-					defaultValue: { comparator: Comparator.GT },
-				}),
-				headerFormatter: filterFormatter,
-			},
-			{
-				dataField: "restTime",
-				text: "Суммарное время перерывов",
-				sort: true,
-				filter: numberFilter({
-					placeholder: "Фильтр...",
-					defaultValue: { comparator: Comparator.GT },
-				}),
-				headerFormatter: filterFormatter,
-			},
-			{
-				dataField: "overTime",
-				text: "Переработки",
-				sort: true,
-				filter: numberFilter({
-					placeholder: "Фильтр...",
-					defaultValue: { comparator: Comparator.GT },
-				}),
-				headerFormatter: filterFormatter,
-			},
-			{ text: "Действия", formatter: buttonFormatter },
-		]
 		var date = new Date()
 		this.state = {
 			departments: [],
@@ -156,6 +64,108 @@ class DepartmentSummaryComponent extends Component {
 		}
 	}
 
+	columns = [
+		{
+			dataField: "departmentName",
+			text: "Наименование",
+			sort: true,
+			filter: textFilter({
+				placeholder: "Фильтр...",
+			}),
+			headerFormatter: this.filterFormatter,
+		},
+		{
+			dataField: "workTime",
+			text: "Суммарное отработанное время",
+			sort: true,
+			filter: numberFilter({
+				placeholder: "Фильтр...",
+				defaultValue: { comparator: Comparator.GT },
+			}),
+			headerFormatter: this.filterFormatter,
+		},
+		{
+			dataField: "productiveTime",
+			text: "Суммарное продуктивное время",
+			sort: true,
+			filter: numberFilter({
+				placeholder: "Фильтр...",
+				defaultValue: { comparator: Comparator.GT },
+			}),
+			headerFormatter: this.filterFormatter,
+		},
+		{
+			dataField: "distractionTime",
+			text: "Суммарное время отвлечений",
+			sort: true,
+			filter: numberFilter({
+				placeholder: "Фильтр...",
+				defaultValue: { comparator: Comparator.GT },
+			}),
+			headerFormatter: this.filterFormatter,
+		},
+		{
+			dataField: "restTime",
+			text: "Суммарное время перерывов",
+			sort: true,
+			filter: numberFilter({
+				placeholder: "Фильтр...",
+				defaultValue: { comparator: Comparator.GT },
+			}),
+			headerFormatter: this.filterFormatter,
+		},
+		{
+			dataField: "overTime",
+			text: "Переработки",
+			sort: true,
+			filter: numberFilter({
+				placeholder: "Фильтр...",
+				defaultValue: { comparator: Comparator.GT },
+			}),
+			headerFormatter: this.filterFormatter,
+		},
+		{ text: "Действия", formatter: this.buttonFormatter },
+	]
+
+	filterFormatter(column, colIndex, { sortElement, filterElement }) {
+		return (
+			<div style={{ display: "flex", flexDirection: "column" }}>
+				{filterElement}
+				{column.text}
+				{sortElement}
+			</div>
+		)
+	}
+
+	buttonFormatter(cell, row, rowIndex) {
+		return (
+			<div>
+				<button
+					onClick={() => (window.location.href = `/add-department/${row.id}`)}
+					className='btn btn-success btn-sm'
+				>
+					Редактировать
+				</button>
+
+				<button
+					style={{ marginTop: 5 }}
+					onClick={() => {
+						DepartmentService.deleteDepartment(row.id)
+							.catch(err => {
+								alert(err.response.data)
+							})
+							.then(res => {
+								window.location.reload()
+							})
+					}}
+					className='btn btn-danger btn-sm'
+				>
+					Удалить
+				</button>
+			</div>
+		)
+	}
+
 	render() {
 		return (
 			<div>
@@ -184,6 +194,15 @@ class DepartmentSummaryComponent extends Component {
 					<form style={{ marginBottom: 10, marginTop: 5 }} id='external-form'>
 						<input type='submit' onClick={this.getDepartmentSummaryByPeriod} />
 					</form>
+				</div>
+				<div>
+					<button
+						onClick={() => this.props.history.push("/add-department/add")}
+						style={{ marginBottom: "5px" }}
+						className='btn btn-primary'
+					>
+						Добавить отдел
+					</button>
 				</div>
 				<BootStrapTable
 					bootstrap4
