@@ -33,8 +33,8 @@ class DepartmentSummaryComponent extends Component {
 			},
 		}
 
-		this.buttonFormatter = this.buttonFormatter.bind(this)
-		this.deleteDepartment = this.deleteDepartment.bind(this)
+		// this.buttonFormatter = this.buttonFormatter.bind(this)
+		// this.deleteDepartment = this.deleteDepartment.bind(this)
 	}
 
 	componentDidMount() {
@@ -103,7 +103,17 @@ class DepartmentSummaryComponent extends Component {
 			}),
 			headerFormatter: this.filterFormatter,
 		},
-		{ text: "Действия", formatter: this.buttonFormatter },
+		{
+			text: "Переработки",
+			sort: true,
+			filter: numberFilter({
+				placeholder: "Фильтр...",
+				defaultValue: { comparator: Comparator.GT },
+			}),
+			headerFormatter: this.filterFormatter,
+		},
+		{ text: "Редактировать", formatter: this.editFormatter },
+		{ text: "Удалить", formatter: this.deleteFormatter },
 	]
 
 	filterFormatter(column, colIndex, { sortElement, filterElement }) {
@@ -116,36 +126,44 @@ class DepartmentSummaryComponent extends Component {
 		)
 	}
 
-	buttonFormatter(cell, row, rowIndex) {
+	editFormatter(cell, row, rowIndex) {
 		return (
 			<div>
-				<div>
-					<button
-						onClick={() => this.props.history.push(`/add-department/${row.id}`)}
-						className='btn btn-success btn-sm'
-					>
-						Редактировать
-					</button>
-				</div>
-				<div>
-					<button
-						style={{ marginTop: "10px" }}
-						onClick={console.log(row.id)}
-						className='btn btn-danger btn-sm'
-					>
-						Удалить
-					</button>
-				</div>
+				<button
+					onClick={() => this.props.history.push(`/add-department/${row.id}`)}
+					className='btn btn-success'
+				>
+					Редактировать
+				</button>
+			</div>
+		)
+	}
+
+	deleteFormatter(cell, row, rowIndex) {
+		return (
+			<div>
+				<button
+					onClick={() => {
+						DepartmentService.deleteDepartment(row.id)
+							.catch(err => {
+								alert(err.response.data)
+							})
+							.then(res => {})
+					}}
+					className='btn btn-danger'
+				>
+					Удалить
+				</button>
 			</div>
 		)
 	}
 
 	deleteDepartment(id) {
-		// DepartmentService.deleteDepartment(id)
-		// 	.catch(err => {
-		// 		alert(err.response.data)
-		// 	})
-		// 	.then(res => {})
+		DepartmentService.deleteDepartment(id)
+			.catch(err => {
+				alert(err.response.data)
+			})
+			.then(res => {})
 
 		console.log(id)
 	}
