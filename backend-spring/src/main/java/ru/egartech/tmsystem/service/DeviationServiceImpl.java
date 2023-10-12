@@ -34,8 +34,7 @@ public class DeviationServiceImpl implements DeviationService {
     public DeviationDto deviationEmployeeByMonth(LocalDate yearMonth, Long employeeId) {
 
         DeviationDto deviationsSummaryDto = new DeviationDto();
-        EmployeeDto employeeDto = employeeService.findById(employeeId)
-                .orElseThrow(() -> new EmployeeNotFoundException(employeeId));
+        EmployeeDto employeeDto = employeeService.findById(employeeId);
         SettingsDto settingsDto = settingsService.findByCurrentSettingsProfile();
 
         long lateCount = employeeLateCountByMonth(settingsService.findByCurrentSettingsProfile().getDefaultStartWork(),

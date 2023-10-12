@@ -1,6 +1,7 @@
 import axios from "axios"
 
 const SUMMARY_BASE_URL = "http://localhost:8080/api/v1/summary"
+const DEPARTMENT_BASE_URL = "http://localhost:8080/api/v1/department"
 
 class DepartmentService {
 	getDepartmentSummary() {
@@ -12,7 +13,23 @@ class DepartmentService {
 	getDepartmentSummaryByPeriod(filterDto) {
 		return axios.put(SUMMARY_BASE_URL + "/departmentByPeriod", filterDto)
 	}
-	zzz
+
+	getDepartmentById(id) {
+		return axios.get(DEPARTMENT_BASE_URL + "/" + id)
+	}
+
+	createDepartment(department) {
+		return axios.post(DEPARTMENT_BASE_URL, department)
+	}
+
+	updateDepartment(department) {
+		return axios.put(DEPARTMENT_BASE_URL, department)
+	}
+
+	deleteDepartment(id) {
+		return axios.delete(DEPARTMENT_BASE_URL + "/" + id)
+	}
+
 	// createVehicle(vehicle) {
 	//     return axios.post(VEHICLE_BASE_URL, vehicle)
 	// }

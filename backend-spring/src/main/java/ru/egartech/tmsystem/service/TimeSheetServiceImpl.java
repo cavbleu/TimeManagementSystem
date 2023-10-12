@@ -10,7 +10,6 @@ import ru.egartech.tmsystem.model.mapping.TimeSheetMapper;
 import ru.egartech.tmsystem.model.repository.TimeSheetRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TimeSheetServiceImpl implements TimeSheetService{
@@ -31,9 +30,10 @@ public class TimeSheetServiceImpl implements TimeSheetService{
     }
 
     @Override
-    public Optional<TimeSheetDto> findById(Long id) {
+    public TimeSheetDto findById(Long id) {
         return repository.findById(id)
-                .map(mapper::toDto);
+                .map(mapper::toDto)
+                .orElseThrow(TimeSheetNotFoundException::new);
     }
 
     @Override

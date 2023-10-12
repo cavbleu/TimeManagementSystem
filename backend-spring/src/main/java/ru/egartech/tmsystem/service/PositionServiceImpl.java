@@ -15,7 +15,6 @@ import ru.egartech.tmsystem.utils.SummaryFormatter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,9 +33,10 @@ public class PositionServiceImpl implements PositionService {
     }
 
     @Override
-    public Optional<PositionDto> findById(Long id) {
+    public PositionDto findById(Long id) {
         return repository.findById(id)
-                .map(mapper::toDto);
+                .map(mapper::toDto)
+                .orElseThrow(() -> new PositionNotFoundException(id));
     }
 
     @Override

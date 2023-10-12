@@ -3,6 +3,7 @@ package ru.egartech.tmsystem.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import ru.egartech.tmsystem.exception.DepartmentConstraintException;
 import ru.egartech.tmsystem.exception.DepartmentNotFoundException;
 import ru.egartech.tmsystem.exception.DurationException;
 import ru.egartech.tmsystem.exception.StartDateEarlierException;
@@ -20,7 +21,6 @@ import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,9 +38,10 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Optional<DepartmentDto> findById(Long id) {
+    public DepartmentDto findById(Long id) {
         return repository.findById(id)
-                .map(mapper::toDto);
+                .map(mapper::toDto)
+                .orElseThrow(() -> new DepartmentNotFoundException(id));
     }
 
     @Override
@@ -61,6 +62,11 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public void deleteById(Long id) {
+        findAll().forEach((d) -> {
+            if (d.getPositions().isEmpty()) {
+                throw new DepartmentConstraintException();
+            }
+        });
         repository.deleteById(id);
     }
 

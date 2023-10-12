@@ -17,7 +17,7 @@ function App() {
 							component={DepartmentSummaryComponent}
 						/>
 						<Route
-							path='/add_department/:id'
+							path='/add-department/:id'
 							component={CreateOrEditDepartmentComponent}
 						/>
 					</Switch>
