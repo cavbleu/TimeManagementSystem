@@ -20,6 +20,10 @@ function App() {
 							path='/add-department/:id'
 							component={CreateOrEditDepartmentComponent}
 						/>
+						<Route
+							path='/add-department/add'
+							component={CreateOrEditDepartmentComponent}
+						/>
 					</Switch>
 				</div>
 			</Router>

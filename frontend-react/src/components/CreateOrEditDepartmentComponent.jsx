@@ -28,18 +28,22 @@ class CreateOrEditDepartmentComponent extends Component {
 
 	saveOrUpdateDepartment = e => {
 		e.preventDefault()
-		let department = {
-			id: this.state.id,
-			name: this.state.name,
-		}
-
 		if (this.state.id === "add") {
+			let department = {
+				name: this.state.name,
+			}
 			DepartmentService.createDepartment(department)
-				.then(res => {})
 				.catch(err => {
 					alert(err.response.data)
 				})
+				.then(res => {
+					this.props.history.push("/summary/department")
+				})
 		} else {
+			let department = {
+				id: this.state.id,
+				name: this.state.name,
+			}
 			DepartmentService.updateDepartment(department)
 				.then(res => {
 					this.props.history.push("/summary/department")

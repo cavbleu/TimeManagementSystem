@@ -62,7 +62,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public void deleteById(Long id) {
-        if (findAll().stream().anyMatch(d -> !d.getPositions().isEmpty())){
+        if (!findById(id).getPositions().isEmpty()) {
             throw new DepartmentConstraintException();
         } else {
             repository.deleteById(id);

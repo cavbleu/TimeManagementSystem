@@ -123,7 +123,9 @@ class DepartmentSummaryComponent extends Component {
 								.catch(err => {
 									alert(err.response.data)
 								})
-								.then(res => {})
+								.then(res => {
+									window.location.reload()
+								})
 						}}
 						className='btn btn-danger btn-sm'
 					>
@@ -192,6 +194,15 @@ class DepartmentSummaryComponent extends Component {
 					<form style={{ marginBottom: 10, marginTop: 5 }} id='external-form'>
 						<input type='submit' onClick={this.getDepartmentSummaryByPeriod} />
 					</form>
+				</div>
+				<div>
+					<button
+						onClick={() => this.props.history.push("/add-department/add")}
+						style={{ marginBottom: "5px" }}
+						className='btn btn-primary'
+					>
+						Добавить отдел
+					</button>
 				</div>
 				<BootStrapTable
 					bootstrap4

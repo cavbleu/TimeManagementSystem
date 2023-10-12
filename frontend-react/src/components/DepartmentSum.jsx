@@ -138,6 +138,9 @@ class DepartmentSummaryComponent extends Component {
 						Система мониторинга рабочего времени сотрудников
 					</h2>
 				</div>
+				<div>
+					<button>Добавить отдел</button>
+				</div>
 				<div className='row'>
 					<table className='table table-striped table-bordered'>
 						<thead>
