@@ -40,7 +40,6 @@ class DeviationSummaryComponent extends Component {
 			yearMonth: this.state.yearMonth.toLocaleDateString("ru-RU"),
 		}
 
-		console.log(JSON.stringify(filterDto))
 		DeviationService.getAll(filterDto).then(res => {
 			this.setState({ deviations: res.data })
 		})
@@ -53,7 +52,7 @@ class DeviationSummaryComponent extends Component {
 			alert("Дата отчетного периода не может пустой")
 		} else {
 			let filterDto = {
-				yearMonth: this.state.yearMonth.toISOString(),
+				yearMonth: this.state.yearMonth.toLocaleDateString("ru-RU"),
 			}
 
 			console.log(JSON.stringify(filterDto))

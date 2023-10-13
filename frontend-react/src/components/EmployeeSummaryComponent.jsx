@@ -39,9 +39,11 @@ class EmployeeSummaryComponent extends Component {
 
 	componentDidMount() {
 		let filterDto = {
-			startDate: this.state.startDate.toISOString(),
-			endDate: this.state.endDate.toISOString(),
+			startDate: this.state.startDate.toLocaleDateString("ru-RU"),
+			endDate: this.state.endDate.toLocaleDateString("ru-RU"),
 		}
+
+		console.log(JSON.stringify(filterDto))
 
 		EmployeeService.getSummaryByPeriod(filterDto).then(res => {
 			this.setState({ employees: res.data })
@@ -57,8 +59,8 @@ class EmployeeSummaryComponent extends Component {
 			alert("Дата окончания отчетного периода не может пустой")
 		} else {
 			let filterDto = {
-				startDate: this.state.startDate.toISOString(),
-				endDate: this.state.endDate.toISOString(),
+				startDate: this.state.startDate.toLocaleDateString("ru-RU"),
+				endDate: this.state.endDate.toLocaleDateString("ru-RU"),
 			}
 
 			EmployeeService.getSummaryByPeriod(filterDto)

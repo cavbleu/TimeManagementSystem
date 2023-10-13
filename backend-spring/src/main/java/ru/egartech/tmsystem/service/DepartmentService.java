@@ -6,12 +6,11 @@ import ru.egartech.tmsystem.model.entity.Department;
 import ru.egartech.tmsystem.utils.BaseService;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface DepartmentService extends BaseService<DepartmentDto, Long> {
 
-    List<DepartmentSummaryDto> departmentsSummary(LocalDateTime startDate, LocalDateTime endDate);
+    List<DepartmentSummaryDto> departmentsSummary(LocalDate startDate, LocalDate endDate);
 
     long departmentWorkTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id);
 

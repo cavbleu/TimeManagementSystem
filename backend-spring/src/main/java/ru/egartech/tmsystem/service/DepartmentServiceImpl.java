@@ -19,9 +19,8 @@ import ru.egartech.tmsystem.model.mapping.DepartmentMapper;
 import ru.egartech.tmsystem.model.repository.DepartmentRepository;
 import ru.egartech.tmsystem.utils.SummaryFormatter;
 
-import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,9 +81,9 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public List<DepartmentSummaryDto> departmentsSummary(LocalDateTime startDate, LocalDateTime endDate) {
+    public List<DepartmentSummaryDto> departmentsSummary(LocalDate startDate, LocalDate endDate) {
 
-        if (Duration.between(startDate, endDate).toDays() > 30) {
+        if (Period.between(startDate, endDate).getDays() > 30) {
             throw new DurationException(30);
         }
 
@@ -100,11 +99,11 @@ public class DepartmentServiceImpl implements DepartmentService {
 
             DepartmentSummaryDto departmentSummaryDto = new DepartmentSummaryDto();
             departmentSummaryDto.setId(department.getId());
-            long workTime = departmentWorkTimeByPeriod(startDate.toLocalDate(), endDate.toLocalDate(), department.getId());
-            long distractionTime = departmentDistractionTimeByPeriod(startDate.toLocalDate(), endDate.toLocalDate(), department.getId());
-            long restTime = departmentRestTimeByPeriod(startDate.toLocalDate(), endDate.toLocalDate(), department.getId());
+            long workTime = departmentWorkTimeByPeriod(startDate, endDate, department.getId());
+            long distractionTime = departmentDistractionTimeByPeriod(startDate, endDate, department.getId());
+            long restTime = departmentRestTimeByPeriod(startDate, endDate, department.getId());
             SummaryFormatter.toSummaryDto(workTime, distractionTime, restTime,
-                    departmentSummaryDto, department, startDate.toLocalDate(), endDate.toLocalDate(), settings);
+                    departmentSummaryDto, department, startDate, endDate, settings);
 
             departmentsSummary.add(departmentSummaryDto);
         }

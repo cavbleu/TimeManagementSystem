@@ -22,9 +22,8 @@ import ru.egartech.tmsystem.model.repository.EmployeeRepository;
 import ru.egartech.tmsystem.utils.BitsConverter;
 import ru.egartech.tmsystem.utils.SummaryFormatter;
 
-import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,9 +91,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeSummaryDto> employeesSummaryByPeriod(LocalDateTime startDate, LocalDateTime endDate) {
+    public List<EmployeeSummaryDto> employeesSummaryByPeriod(LocalDate startDate, LocalDate endDate) {
 
-        if (Duration.between(startDate, endDate).toDays() > 30) {
+        if (Period.between(startDate, endDate).getDays() > 30) {
             throw new DurationException(30);
         }
 
@@ -111,11 +110,11 @@ public class EmployeeServiceImpl implements EmployeeService {
             EmployeeSummaryDto employeeSummaryDto = new EmployeeSummaryDto();
             employeeSummaryDto.setId(employee.getId());
             employeeSummaryDto.setAge(employee.getAge());
-            long workTime = employeeWorkTimeByPeriod(startDate.toLocalDate(), endDate.toLocalDate(), employee.getId());
-            long distractionTime = employeeDistractionTimeByPeriod(startDate.toLocalDate(), endDate.toLocalDate(), employee.getId());
-            long restTime = employeeRestTimeByPeriod(startDate.toLocalDate(), endDate.toLocalDate(), employee.getId());
+            long workTime = employeeWorkTimeByPeriod(startDate, endDate, employee.getId());
+            long distractionTime = employeeDistractionTimeByPeriod(startDate, endDate, employee.getId());
+            long restTime = employeeRestTimeByPeriod(startDate, endDate, employee.getId());
             SummaryFormatter.toSummaryDto(workTime, distractionTime, restTime,
-                    employeeSummaryDto, employee, startDate.toLocalDate(), endDate.toLocalDate(), settings);
+                    employeeSummaryDto, employee, startDate, endDate, settings);
             employeeSummaryDto.setEmployeeName(employee.getName());
             employeeSummaryDto.setPositionName(employee.getPosition().getName());
             employeeSummaryDto.setDepartmentName(employee.getPosition().getDepartment().getName());

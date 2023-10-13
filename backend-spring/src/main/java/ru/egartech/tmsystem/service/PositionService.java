@@ -7,12 +7,11 @@ import ru.egartech.tmsystem.model.entity.Position;
 import ru.egartech.tmsystem.utils.BaseService;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface PositionService extends BaseService<PositionDto, Long> {
 
-    List<PositionSummaryDto> positionsSummaryByPeriod(LocalDateTime startDate, LocalDateTime endDate);
+    List<PositionSummaryDto> positionsSummaryByPeriod(LocalDate startDate, LocalDate endDate);
 
     long positionWorkTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id);
 

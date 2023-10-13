@@ -37,8 +37,8 @@ class PositionSummaryComponent extends Component {
 
 	componentDidMount() {
 		let filterDto = {
-			startDate: this.state.startDate.toISOString(),
-			endDate: this.state.endDate.toISOString(),
+			startDate: this.state.startDate.toLocaleDateString("ru-RU"),
+			endDate: this.state.endDate.toLocaleDateString("ru-RU"),
 		}
 
 		PositionService.getSummaryByPeriod(filterDto).then(res => {
@@ -55,8 +55,8 @@ class PositionSummaryComponent extends Component {
 			alert("Дата окончания отчетного периода не может пустой")
 		} else {
 			let filterDto = {
-				startDate: this.state.startDate.toISOString(),
-				endDate: this.state.endDate.toISOString(),
+				startDate: this.state.startDate.toLocaleDateString("ru-RU"),
+				endDate: this.state.endDate.toLocaleDateString("ru-RU"),
 			}
 
 			PositionService.getSummaryByPeriod(filterDto)
