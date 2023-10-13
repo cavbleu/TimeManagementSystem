@@ -1,13 +1,22 @@
 package ru.egartech.tmsystem.service;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.exception.DurationException;
 import ru.egartech.tmsystem.exception.EmployeeNotFoundException;
 import ru.egartech.tmsystem.exception.StartDateEarlierException;
-import ru.egartech.tmsystem.model.dto.*;
+import ru.egartech.tmsystem.model.dto.EditEmployeeDto;
+import ru.egartech.tmsystem.model.dto.EmployeeDto;
+import ru.egartech.tmsystem.model.dto.EmployeeSummaryDto;
+import ru.egartech.tmsystem.model.dto.SettingsDto;
+import ru.egartech.tmsystem.model.entity.Distraction;
 import ru.egartech.tmsystem.model.entity.Employee;
+import ru.egartech.tmsystem.model.entity.Rest;
+import ru.egartech.tmsystem.model.entity.TimeSheet;
 import ru.egartech.tmsystem.model.mapping.EmployeeMapper;
 import ru.egartech.tmsystem.model.repository.EmployeeRepository;
 import ru.egartech.tmsystem.utils.BitsConverter;
@@ -25,19 +34,30 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository repository;
     private final EmployeeMapper mapper;
     private final SettingsService settingsService;
-    private final PositionService positionService;
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
 
     public EmployeeServiceImpl(@Qualifier("employeeRepository") EmployeeRepository repository, EmployeeMapper mapper,
                                SettingsService settingsService, PositionService positionService) {
         this.repository = repository;
         this.mapper = mapper;
         this.settingsService = settingsService;
-        this.positionService = positionService;
+
     }
 
     @Override
     public List<EmployeeDto> findAll() {
-        return repository.findAll().stream()
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Employee> cq = cb.createQuery(Employee.class);
+        Root<Employee> root = cq.from(Employee.class);
+        Fetch<Employee,TimeSheet> b = root.fetch("timeSheets", JoinType.LEFT);
+        Fetch<TimeSheet, Rest> r = b.fetch("rests", JoinType.LEFT);
+        Fetch<TimeSheet, Distraction> d = b.fetch("distractions", JoinType.LEFT);
+        cq.select(root);
+        List<Employee> result =  entityManager.createQuery(cq).getResultList();
+        return result.stream()
                 .map(mapper::toDto)
                 .toList();
     }
@@ -121,10 +141,6 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .orElse(0L);
     }
 
-    @Override
-    public EmployeeDto save(EmployeeDto employeeDto, String positionName, String departmentName) {
-        return save(employeeDto);
-    }
 
     @Override
     public EmployeeDto update(EmployeeDto employeeDto) {

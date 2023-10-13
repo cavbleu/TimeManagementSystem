@@ -17,8 +17,6 @@ public interface EmployeeService extends BaseService<EmployeeDto, Long> {
 
     long employeeRestTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id);
 
-    EmployeeDto save (EmployeeDto employeeDto, String positionName, String departmentName);
-
     EmployeeDto update (EmployeeDto employeeDto);
 
     EditEmployeeDto getEditEmployeeDtoById(Long id);

@@ -1,5 +1,6 @@
 package ru.egartech.tmsystem.controller;
 
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -28,9 +29,8 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<EmployeeDto> saveEmployee(@Valid  @RequestBody EmployeeDto dto, @RequestParam String departmentName,
-                                                    @RequestParam String positionName) {
-        return ResponseEntity.ok(employeeService.save(dto, positionName, departmentName));
+    public ResponseEntity<EmployeeDto> saveEmployee(@Valid  @RequestBody EmployeeDto dto) {
+        return ResponseEntity.ok(employeeService.save(dto));
     }
 
     @PutMapping
@@ -38,7 +38,7 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.update(dto));
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public void deleteEmployee(@PathVariable Long id) {
         employeeService.deleteById(id);
     }
