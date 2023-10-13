@@ -11,7 +11,6 @@ public enum EmployeePrivilegesEnum {
     ABSENCE("Увеличенное количество отсутствий на работе"),
     SKIP("Увеличенное количество прогулов работы"),
     REST_TIME("Увеличенное суммарное время перерывов"),
-    LUNCH_TIME("Увеличенное суммарное время обедов"),
     DISTRACTION_TIME("Увеличенное суммарное время отвлечений");
 
     private final String name;

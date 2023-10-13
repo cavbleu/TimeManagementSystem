@@ -37,7 +37,7 @@ public class Employee {
     @JsonIgnore
     private Position position;
 
-    @OneToMany(mappedBy = "employee", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @OrderBy("date ASC")
     private List<TimeSheet> timeSheets;
 

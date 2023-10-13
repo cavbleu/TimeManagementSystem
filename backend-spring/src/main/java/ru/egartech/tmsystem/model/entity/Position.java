@@ -34,6 +34,7 @@ public class Position {
     @OneToMany(mappedBy = "position", fetch = FetchType.EAGER)
     @JsonIgnore
     @OrderBy("name ASC")
+    @OrderColumn(name = "id")
     private List<Employee> employees = new ArrayList<>();
 
     public Position(String name) {

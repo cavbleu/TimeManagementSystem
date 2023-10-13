@@ -7,16 +7,19 @@ import filterFactory, {
 	textFilter,
 } from "react-bootstrap-table2-filter"
 import DatePicker from "react-datepicker"
-import DepartmentService from "../services/DepartmentService"
+import EmployeeService from "../services/EmployeeService"
 
-class DepartmentSummaryComponent extends Component {
+class EmployeeSummaryComponent extends Component {
 	constructor(props) {
 		super(props)
 
 		var date = new Date()
 		this.state = {
-			departments: [],
+			employees: [],
 			id: "",
+			age: "",
+			privileges: "",
+			positionName: "",
 			departmentName: "",
 			workTime: "",
 			productiveTime: "",
@@ -40,12 +43,13 @@ class DepartmentSummaryComponent extends Component {
 			endDate: this.state.endDate.toISOString(),
 		}
 
-		DepartmentService.getDepartmentSummaryByPeriod(filterDto).then(res => {
-			this.setState({ departments: res.data })
+		EmployeeService.getSummaryByPeriod(filterDto).then(res => {
+			this.setState({ employees: res.data })
+			console.log(res)
 		})
 	}
 
-	getDepartmentSummaryByPeriod = e => {
+	getEmployeeSummaryByPeriod = e => {
 		e.preventDefault()
 
 		if (this.state.startDate === null) {
@@ -57,9 +61,10 @@ class DepartmentSummaryComponent extends Component {
 				startDate: this.state.startDate.toISOString(),
 				endDate: this.state.endDate.toISOString(),
 			}
-			DepartmentService.getDepartmentSummaryByPeriod(filterDto)
+
+			EmployeeService.getSummaryByPeriod(filterDto)
 				.then(res => {
-					this.setState({ departments: res.data })
+					this.setState({ employees: res.data })
 					this.componentDidMount()
 				})
 				.catch(err => {
@@ -69,6 +74,34 @@ class DepartmentSummaryComponent extends Component {
 	}
 
 	columns = [
+		{
+			dataField: "employeeName",
+			text: "Имя",
+			sort: true,
+			filter: textFilter({
+				placeholder: "Фильтр...",
+			}),
+			headerFormatter: this.filterFormatter,
+		},
+		{
+			dataField: "age",
+			text: "Возраст",
+			sort: true,
+			filter: numberFilter({
+				placeholder: "Фильтр...",
+				defaultValue: { comparator: Comparator.GT },
+			}),
+			headerFormatter: this.filterFormatter,
+		},
+		{
+			dataField: "positionName",
+			text: "Должность",
+			sort: true,
+			filter: textFilter({
+				placeholder: "Фильтр...",
+			}),
+			headerFormatter: this.filterFormatter,
+		},
 		{
 			dataField: "departmentName",
 			text: "Отдел",
@@ -128,6 +161,15 @@ class DepartmentSummaryComponent extends Component {
 			}),
 			headerFormatter: this.filterFormatter,
 		},
+		{
+			dataField: "privileges",
+			text: "Привилегии",
+			sort: true,
+			filter: textFilter({
+				placeholder: "Фильтр...",
+			}),
+			headerFormatter: this.filterFormatter,
+		},
 		{ text: "Действия", formatter: this.buttonFormatter },
 	]
 
@@ -145,16 +187,17 @@ class DepartmentSummaryComponent extends Component {
 		return (
 			<div>
 				<button
-					onClick={() => (window.location.href = `/add-department/${row.id}`)}
+					onClick={() => (window.location.href = `/add-employee/${row.id}`)}
 					className='btn btn-success btn-sm'
+					style={{ fontSize: 12 }}
 				>
 					Редактировать
 				</button>
 
 				<button
-					style={{ marginTop: 5 }}
+					style={{ marginTop: 5, fontSize: 12 }}
 					onClick={() => {
-						DepartmentService.deleteDepartment(row.id)
+						EmployeeService.delete(row.id)
 							.catch(err => {
 								alert(err.response.data)
 							})
@@ -173,7 +216,7 @@ class DepartmentSummaryComponent extends Component {
 	render() {
 		return (
 			<div>
-				<h2 className='text-center'>Сводная статистика по отделам</h2>
+				<h2 className='text-center'>Сводная статистика по сотрудникам</h2>
 				<div>
 					<h5>Дата начала отчетного периода: </h5>
 					<DatePicker
@@ -196,22 +239,22 @@ class DepartmentSummaryComponent extends Component {
 				</div>
 				<div>
 					<form style={{ marginBottom: 10, marginTop: 5 }} id='external-form'>
-						<input type='submit' onClick={this.getDepartmentSummaryByPeriod} />
+						<input type='submit' onClick={this.getEmployeeSummaryByPeriod} />
 					</form>
 				</div>
 				<div>
 					<button
-						onClick={() => this.props.history.push("/add-department/add")}
+						onClick={() => this.props.history.push("/add-employee/add")}
 						style={{ marginBottom: "5px" }}
 						className='btn btn-primary'
 					>
-						Добавить отдел
+						Добавить сотрудника
 					</button>
 				</div>
 				<BootStrapTable
 					bootstrap4
 					keyField='id'
-					data={this.state.departments}
+					data={this.state.employees}
 					columns={this.columns}
 					filter={filterFactory()}
 					striped
@@ -222,5 +265,4 @@ class DepartmentSummaryComponent extends Component {
 		)
 	}
 }
-
-export default DepartmentSummaryComponent
+export default EmployeeSummaryComponent

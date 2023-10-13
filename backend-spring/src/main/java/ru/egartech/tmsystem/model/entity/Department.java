@@ -32,6 +32,7 @@ public class Department {
     @OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
     @OrderBy("name ASC")
     @JsonIgnore
+    @OrderColumn(name = "id")
     private List<Position> positions = new ArrayList<>();
 
     public Department(String name) {

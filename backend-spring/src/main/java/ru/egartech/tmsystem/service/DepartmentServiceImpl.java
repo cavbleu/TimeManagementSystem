@@ -1,5 +1,8 @@
 package ru.egartech.tmsystem.service;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -11,6 +14,7 @@ import ru.egartech.tmsystem.model.dto.DepartmentDto;
 import ru.egartech.tmsystem.model.dto.DepartmentSummaryDto;
 import ru.egartech.tmsystem.model.dto.SettingsDto;
 import ru.egartech.tmsystem.model.entity.Department;
+import ru.egartech.tmsystem.model.entity.Position;
 import ru.egartech.tmsystem.model.mapping.DepartmentMapper;
 import ru.egartech.tmsystem.model.repository.DepartmentRepository;
 import ru.egartech.tmsystem.utils.SummaryFormatter;
@@ -29,9 +33,18 @@ public class DepartmentServiceImpl implements DepartmentService {
     private final SettingsService settingsService;
     private final DepartmentMapper mapper;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Override
     public List<DepartmentDto> findAll() {
-        return repository.findAll().stream()
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Department> cq = cb.createQuery(Department.class);
+        Root<Department> root = cq.from(Department.class);
+        Fetch<Department, Position> d = root.fetch("positions", JoinType.LEFT);
+        cq.select(root);
+        List<Department> result =  entityManager.createQuery(cq).getResultList();
+        return result.stream()
                 .map(mapper::toDto)
                 .toList();
     }

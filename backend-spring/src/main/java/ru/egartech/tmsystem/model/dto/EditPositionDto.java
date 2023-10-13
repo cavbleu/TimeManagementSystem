@@ -11,5 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 public class EditPositionDto extends PositionDto {
 
+    //Список всех отделов
     private List<DepartmentDto> allDepartments;
 }
