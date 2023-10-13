@@ -53,7 +53,7 @@ public class BitsConverter {
         return Integer.parseInt(privilegesNumber.toString(), Character.MIN_RADIX);
     }
 
-    public static void setPrivileges(EditEmployeeDto editEmployeeDto) {
+    public static void setEmployeePrivileges(EditEmployeeDto editEmployeeDto) {
         Long privilegesBit = editEmployeeDto.getPrivilegesNumber();
         if ((privilegesBit & BIT_LATE_COUNT) != 0) {
             editEmployeeDto.setLateIncreased(true);
@@ -73,6 +73,29 @@ public class BitsConverter {
         if ((privilegesBit & BIT_DISTRACTION_TIME) != 0) {
             editEmployeeDto.setDistractionTimeIncreased(true);
         }
+    }
+
+    public static List<String> getEmployeePrivilegesList(EditEmployeeDto editEmployeeDto) {
+        List<String> privileges = new ArrayList<>();
+        if(editEmployeeDto.isLateIncreased()){
+            privileges.add(LATE_COUNT.getName());
+        }
+        if(editEmployeeDto.isEarlyLeavingIncreased()){
+            privileges.add(EARLY_LIVING_COUNT.getName());
+        }
+        if(editEmployeeDto.isAbsenceIncreased()){
+            privileges.add(ABSENCE.getName());
+        }
+        if(editEmployeeDto.isSkipIncreased()){
+            privileges.add(SKIP.getName());
+        }
+        if(editEmployeeDto.isRestTimeIncreased()){
+            privileges.add(REST_TIME.getName());
+        }
+        if(editEmployeeDto.isDistractionTimeIncreased()){
+            privileges.add(DISTRACTION_TIME.getName());
+        }
+        return privileges;
     }
 
 }

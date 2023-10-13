@@ -50,13 +50,12 @@ class CreateOrUpdatePositionComponent extends Component {
 				name: this.state.name,
 				department: this.state.department,
 			}
-			console.log(JSON.stringify(position))
 			PositionService.create(position)
 				.catch(err => {
 					alert(err.response.data)
 				})
 				.then(res => {
-					// this.props.history.push("/summary/position")
+					this.props.history.push("/summary/position")
 				})
 		} else {
 			let position = {

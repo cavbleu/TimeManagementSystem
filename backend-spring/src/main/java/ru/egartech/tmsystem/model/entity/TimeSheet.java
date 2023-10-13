@@ -43,12 +43,12 @@ public class TimeSheet {
     @JsonIgnore
     private Employee employee;
 
-    @OneToMany(mappedBy = "timeSheet", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    @OneToMany(mappedBy = "timeSheet", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @OrderBy("date ASC")
     @OrderColumn(name = "id")
     private List<Rest> rests = new ArrayList<>();
 
-    @OneToMany(mappedBy = "timeSheet", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "timeSheet", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @OrderBy("date ASC")
     @OrderColumn(name = "id")
     private List<Distraction> distractions = new ArrayList<>();

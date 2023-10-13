@@ -11,14 +11,19 @@ import java.util.List;
 
 public interface EmployeeService extends BaseService<EmployeeDto, Long> {
     List<EmployeeSummaryDto> employeesSummaryByPeriod(LocalDateTime startDate, LocalDateTime endDate);
+
     long employeeWorkTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id);
 
     long employeeDistractionTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id);
 
     long employeeRestTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id);
 
-    EmployeeDto update (EmployeeDto employeeDto);
+    EmployeeDto update(EmployeeDto employeeDto);
+
+    EditEmployeeDto update(EditEmployeeDto employeeDto);
 
     EditEmployeeDto getEditEmployeeDtoById(Long id);
+
+    EditEmployeeDto save(EditEmployeeDto dto);
 
 }

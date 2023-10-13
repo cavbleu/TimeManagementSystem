@@ -14,6 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/v1/employee")
+@CrossOrigin(origins = "http://localhost:3000/")
 public class EmployeeController {
 
     private final EmployeeService employeeService;
@@ -29,12 +30,12 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<EmployeeDto> saveEmployee(@Valid  @RequestBody EmployeeDto dto) {
+    public ResponseEntity<EditEmployeeDto> saveEmployee(@Valid  @RequestBody EditEmployeeDto dto) {
         return ResponseEntity.ok(employeeService.save(dto));
     }
 
     @PutMapping
-    public ResponseEntity<EmployeeDto> updateEmployee(@Valid @RequestBody EmployeeDto dto) {
+    public ResponseEntity<EditEmployeeDto> updateEmployee(@Valid @RequestBody EditEmployeeDto dto) {
         return ResponseEntity.ok(employeeService.update(dto));
     }
 

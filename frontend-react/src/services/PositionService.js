@@ -1,28 +1,31 @@
 import axios from "axios"
 
 const SUMMARY_BASE_URL = "http://localhost:8080/api/v1/summary"
-const POSITION_BASE_URL = "http://localhost:8080/api/v1/position"
+const BASE_URL = "http://localhost:8080/api/v1/position"
 
 class PositionService {
+	getAll() {
+		return axios.get(BASE_URL)
+	}
 
 	getSummaryByPeriod(filterDto) {
 		return axios.put(SUMMARY_BASE_URL + "/positionByPeriod", filterDto)
 	}
 
 	getById(id) {
-		return axios.get(POSITION_BASE_URL + "/" + id)
+		return axios.get(BASE_URL + "/" + id)
 	}
 
 	create(position) {
-		return axios.post(POSITION_BASE_URL, position)
+		return axios.post(BASE_URL, position)
 	}
 
 	update(position) {
-		return axios.put(POSITION_BASE_URL, position)
+		return axios.put(BASE_URL, position)
 	}
 
 	delete(id) {
-		return axios.delete(POSITION_BASE_URL + "/" + id)
+		return axios.delete(BASE_URL + "/" + id)
 	}
 }
 

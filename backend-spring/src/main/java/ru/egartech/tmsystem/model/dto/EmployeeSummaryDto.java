@@ -8,10 +8,12 @@ import lombok.Setter;
 public class EmployeeSummaryDto extends SummaryDto{
 
     //Имя сотрудника
-    private String name;
+    private String employeeName;
     //Наименование должности
     private String positionName;
     //Список привилегий
     private String privileges;
+    //Возраст сотрудника
+    private int age;
 
 }

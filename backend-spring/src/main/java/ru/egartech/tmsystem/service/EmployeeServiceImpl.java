@@ -34,6 +34,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository repository;
     private final EmployeeMapper mapper;
     private final SettingsService settingsService;
+    private final PositionService positionService;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -44,7 +45,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         this.repository = repository;
         this.mapper = mapper;
         this.settingsService = settingsService;
-
+        this.positionService = positionService;
     }
 
     @Override
@@ -52,11 +53,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Employee> cq = cb.createQuery(Employee.class);
         Root<Employee> root = cq.from(Employee.class);
-        Fetch<Employee,TimeSheet> b = root.fetch("timeSheets", JoinType.LEFT);
+        Fetch<Employee, TimeSheet> b = root.fetch("timeSheets", JoinType.LEFT);
         Fetch<TimeSheet, Rest> r = b.fetch("rests", JoinType.LEFT);
         Fetch<TimeSheet, Distraction> d = b.fetch("distractions", JoinType.LEFT);
         cq.select(root);
-        List<Employee> result =  entityManager.createQuery(cq).getResultList();
+        List<Employee> result = entityManager.createQuery(cq).getResultList();
         return result.stream()
                 .map(mapper::toDto)
                 .toList();
@@ -108,12 +109,14 @@ public class EmployeeServiceImpl implements EmployeeService {
         for (EmployeeDto employee : employees) {
 
             EmployeeSummaryDto employeeSummaryDto = new EmployeeSummaryDto();
+            employeeSummaryDto.setId(employee.getId());
+            employeeSummaryDto.setAge(employee.getAge());
             long workTime = employeeWorkTimeByPeriod(startDate.toLocalDate(), endDate.toLocalDate(), employee.getId());
             long distractionTime = employeeDistractionTimeByPeriod(startDate.toLocalDate(), endDate.toLocalDate(), employee.getId());
             long restTime = employeeRestTimeByPeriod(startDate.toLocalDate(), endDate.toLocalDate(), employee.getId());
             SummaryFormatter.toSummaryDto(workTime, distractionTime, restTime,
                     employeeSummaryDto, employee, startDate.toLocalDate(), endDate.toLocalDate(), settings);
-            employeeSummaryDto.setName(employee.getName());
+            employeeSummaryDto.setEmployeeName(employee.getName());
             employeeSummaryDto.setPositionName(employee.getPosition().getName());
             employeeSummaryDto.setDepartmentName(employee.getPosition().getDepartment().getName());
             employeeSummaryDto.setPrivileges(String.join("; ", employee.getPrivileges()));
@@ -148,6 +151,19 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public EditEmployeeDto update(EditEmployeeDto editEmployeeDto) {
+         updateById(editEmployeeDto.getId(), mapper.toDto(editEmployeeDto));
+         return getEditEmployeeDtoById(editEmployeeDto.getId());
+    }
+
+    @Override
+    public EditEmployeeDto save(EditEmployeeDto dto) {
+
+        EmployeeDto employee = save(mapper.toDto(dto));
+        return getEditEmployeeDtoById(employee.getId());
+    }
+
+    @Override
     public EditEmployeeDto getEditEmployeeDtoById(Long employeeId) {
         EditEmployeeDto editEmployeeDto = new EditEmployeeDto();
         EmployeeDto employeeDto = findById(employeeId);
@@ -156,7 +172,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         editEmployeeDto.setAge(employeeDto.getAge());
         editEmployeeDto.setPosition(employeeDto.getPosition());
         editEmployeeDto.setPrivilegesNumber(employeeDto.getPrivilegesNumber());
-        BitsConverter.setPrivileges(editEmployeeDto);
+        editEmployeeDto.setAllPositions(positionService.findAll());
+        BitsConverter.setEmployeePrivileges(editEmployeeDto);
         return editEmployeeDto;
     }
 }

@@ -33,7 +33,7 @@ public class SummaryController {
         return ResponseEntity.ok(positionService.positionsSummaryByPeriod(filterDto.getStartDate(), filterDto.getEndDate()));
     }
 
-    @PutMapping("/employee")
+    @PutMapping("/employeeByPeriod")
     public ResponseEntity<List<EmployeeSummaryDto>> getEmployeesSummary(@RequestBody FilterDto filterDto) {
         return ResponseEntity.ok(employeeService.employeesSummaryByPeriod(filterDto.getStartDate(), filterDto.getEndDate()));
     }

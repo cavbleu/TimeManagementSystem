@@ -1,11 +1,10 @@
 package ru.egartech.tmsystem.model.mapping;
 
 import org.mapstruct.Mapper;
+import ru.egartech.tmsystem.model.dto.EditEmployeeDto;
 import ru.egartech.tmsystem.model.dto.EmployeeDto;
 import ru.egartech.tmsystem.model.entity.Employee;
 import ru.egartech.tmsystem.utils.BitsConverter;
-
-import java.util.Arrays;
 
 @Mapper(componentModel = "spring")
 public abstract class EmployeeMapper {
@@ -15,9 +14,28 @@ public abstract class EmployeeMapper {
         employee.setName(dto.getName());
         employee.setAge(dto.getAge());
         employee.setPosition(dto.getPosition());
-        employee.setPrivilegesNumber(BitsConverter.getEmployeePrivilegesNumber(Arrays.asList(dto.getPrivileges().split("; "))));
+        employee.setPrivilegesNumber(dto.getPrivilegesNumber());
 
         return employee;
+    }
+
+    public Employee toEntity(EditEmployeeDto dto) {
+        Employee employee = new Employee();
+        employee.setName(dto.getName());
+        employee.setAge(dto.getAge());
+        employee.setPosition(dto.getPosition());
+        employee.setPrivilegesNumber(BitsConverter.getEmployeePrivilegesNumber(BitsConverter.getEmployeePrivilegesList(dto)));
+        return employee;
+    }
+
+    public EmployeeDto toDto(EditEmployeeDto dto) {
+        EmployeeDto employeeDto = new EmployeeDto();
+        employeeDto.setId(dto.getId());
+        employeeDto.setName(dto.getName());
+        employeeDto.setAge(dto.getAge());
+        employeeDto.setPosition(dto.getPosition());
+        employeeDto.setPrivilegesNumber(BitsConverter.getEmployeePrivilegesNumber(BitsConverter.getEmployeePrivilegesList(dto)));
+        return employeeDto;
     }
 
     public EmployeeDto toDto(Employee employee) {

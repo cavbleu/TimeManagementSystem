@@ -62,10 +62,10 @@ class PositionSummaryComponent extends Component {
 			PositionService.getSummaryByPeriod(filterDto)
 				.then(res => {
 					this.setState({ positions: res.data })
+					this.componentDidMount()
 				})
 				.catch(err => {
 					alert(err.response.data)
-					this.componentDidMount()
 				})
 		}
 	}
