@@ -4,6 +4,7 @@ import CreateOrEditDepartmentComponent from "./components/CreateOrEditDepartment
 import CreateOrUpdateEmployeeComponent from "./components/CreateOrUpdateEmployee"
 import CreateOrUpdatePositionComponent from "./components/CreateOrUpdatePositionComponent"
 import DepartmentSummaryComponent from "./components/DepartmentSummaryComponent"
+import DeviationSummaryComponent from "./components/DeviationSummaryComponent"
 import EmployeeSummaryComponent from "./components/EmployeeSummaryComponent"
 import HeaderComponent from "./components/HeaderComponent"
 import PositionSummaryComponent from "./components/PositionSummaryComponent"
@@ -51,6 +52,10 @@ function App() {
 						<Route
 							path='/add-employee/add'
 							component={CreateOrUpdateEmployeeComponent}
+						/>
+						<Route
+							path='/summary/deviation'
+							component={DeviationSummaryComponent}
 						/>
 					</Switch>
 				</div>

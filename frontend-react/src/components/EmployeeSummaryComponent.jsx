@@ -45,7 +45,6 @@ class EmployeeSummaryComponent extends Component {
 
 		EmployeeService.getSummaryByPeriod(filterDto).then(res => {
 			this.setState({ employees: res.data })
-			console.log(res)
 		})
 	}
 

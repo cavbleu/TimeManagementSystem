@@ -2,7 +2,6 @@ package ru.egartech.tmsystem.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.egartech.tmsystem.exception.EmployeeNotFoundException;
 import ru.egartech.tmsystem.model.dto.DeviationDto;
 import ru.egartech.tmsystem.model.dto.EmployeeDto;
 import ru.egartech.tmsystem.model.dto.PrivilegeDto;
@@ -13,6 +12,7 @@ import ru.egartech.tmsystem.utils.SummaryFormatter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -36,13 +36,16 @@ public class DeviationServiceImpl implements DeviationService {
         DeviationDto deviationsSummaryDto = new DeviationDto();
         EmployeeDto employeeDto = employeeService.findById(employeeId);
         SettingsDto settingsDto = settingsService.findByCurrentSettingsProfile();
+        YearMonth month = YearMonth.from(yearMonth);
+        LocalDate startDate = month.atDay(1);
+        LocalDate endDate   = month.atEndOfMonth();
 
         long lateCount = employeeLateCountByMonth(settingsService.findByCurrentSettingsProfile().getDefaultStartWork(),
-                employeeId, yearMonth);
+                employeeId, startDate, endDate);
         long earlyLeavingCount = earlyLeavingCountByEmployeeAndPeriod(settingsService.findByCurrentSettingsProfile().getDefaultWorkTime(),
-                employeeId, yearMonth);
-        long absenceCount = absenceCountByEmployeeAndPeriod(employeeId, yearMonth);
-        long skipCount = skipCountByEmployeeAndPeriod(employeeId, yearMonth);
+                employeeId, startDate, endDate);
+        long absenceCount = absenceCountByEmployeeAndPeriod(employeeId, startDate, endDate);
+        long skipCount = skipCountByEmployeeAndPeriod(employeeId, startDate, endDate);
 
         long maxLateCountByMonth = settingsDto.getMaxLateCountByMonth();
         long maxEarlyLivingCountByMonth = settingsDto.getMaxEarlyLivingCountByMonth();
@@ -77,10 +80,10 @@ public class DeviationServiceImpl implements DeviationService {
                 maxRestTimeByDay + increasedRestTime : maxRestTimeByDay;
 
         long excessDistractionTimeCount = excessDistractionTimeCountByEmployeeAndPeriod(employeeId,
-                yearMonth, maxDistractionTimeByDay);
+                startDate, endDate, maxDistractionTimeByDay);
 
         long excessRestTimeCount = excessRestTimeCountByEmployeeAndPeriod(employeeId,
-                yearMonth, maxRestTimeByDay);
+                startDate, endDate, maxRestTimeByDay);
         long deviationCount = lateCount + earlyLeavingCount + absenceCount + skipCount + excessDistractionTimeCount
                 + excessRestTimeCount;
 
@@ -117,38 +120,38 @@ public class DeviationServiceImpl implements DeviationService {
     }
 
     @Override
-    public long employeeLateCountByMonth(LocalTime defaultStartWork, Long id, LocalDate yearMonth) {
-        return deviationRepository.employeeLateCountByMonth(defaultStartWork, id, yearMonth)
+    public long employeeLateCountByMonth(LocalTime defaultStartWork, Long id, LocalDate startDate, LocalDate endDate) {
+        return deviationRepository.employeeLateCountByMonth(defaultStartWork, id, startDate, endDate)
                 .orElse(0L);
     }
 
     @Override
-    public long earlyLeavingCountByEmployeeAndPeriod(long defaultWorkTime, Long id, LocalDate yearMonth) {
-        return deviationRepository.earlyLeavingCountByEmployeeAndPeriod(defaultWorkTime, id, yearMonth)
+    public long earlyLeavingCountByEmployeeAndPeriod(long defaultWorkTime, Long id, LocalDate startDate, LocalDate endDate) {
+        return deviationRepository.earlyLeavingCountByEmployeeAndPeriod(defaultWorkTime, id, startDate, endDate)
                 .orElse(0L);
     }
 
     @Override
-    public long absenceCountByEmployeeAndPeriod(Long id, LocalDate yearMonth) {
-        return deviationRepository.absenceCountByEmployeeAndPeriod(id, yearMonth)
+    public long absenceCountByEmployeeAndPeriod(Long id, LocalDate startDate, LocalDate endDate) {
+        return deviationRepository.absenceCountByEmployeeAndPeriod(id, startDate, endDate)
                 .orElse(0L);
     }
 
     @Override
-    public long skipCountByEmployeeAndPeriod(Long id, LocalDate yearMonth) {
-        return deviationRepository.skipCountByEmployeeAndPeriod(id, yearMonth)
+    public long skipCountByEmployeeAndPeriod(Long id, LocalDate startDate, LocalDate endDate) {
+        return deviationRepository.skipCountByEmployeeAndPeriod(id, startDate, endDate)
                 .orElse(0L);
     }
 
     @Override
-    public long excessDistractionTimeCountByEmployeeAndPeriod(Long id, LocalDate yearMonth, long maxDistractionTimeByDay) {
-        return deviationRepository.excessDistractionTimeCountByEmployeeAndPeriod(id, yearMonth, maxDistractionTimeByDay)
+    public long excessDistractionTimeCountByEmployeeAndPeriod(Long id, LocalDate startDate, LocalDate endDate, long maxDistractionTimeByDay) {
+        return deviationRepository.excessDistractionTimeCountByEmployeeAndPeriod(id, startDate, endDate, maxDistractionTimeByDay)
                 .orElse(0L);
     }
 
     @Override
-    public long excessRestTimeCountByEmployeeAndPeriod(Long id, LocalDate yearMonth, long maxRestTimeByDay) {
-        return deviationRepository.excessRestTimeCountByEmployeeAndPeriod(id, yearMonth, maxRestTimeByDay)
+    public long excessRestTimeCountByEmployeeAndPeriod(Long id, LocalDate startDate, LocalDate endDate, long maxRestTimeByDay) {
+        return deviationRepository.excessRestTimeCountByEmployeeAndPeriod(id, startDate, endDate, maxRestTimeByDay)
                 .orElse(0L);
     }
 }

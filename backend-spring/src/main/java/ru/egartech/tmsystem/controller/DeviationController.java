@@ -2,26 +2,24 @@ package ru.egartech.tmsystem.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.egartech.tmsystem.model.dto.DeviationDto;
+import ru.egartech.tmsystem.model.dto.FilterDto;
 import ru.egartech.tmsystem.service.DeviationService;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
+@CrossOrigin(origins = "http://localhost:3000/")
 @RequestMapping("api/v1/deviation")
 public class DeviationController {
 
     private final DeviationService deviationService;
 
-    @GetMapping()
-    public ResponseEntity<List<DeviationDto>> getDeviationsByEmployee(@RequestParam LocalDate yearMonth) {
-        return ResponseEntity.ok(deviationService.deviationAllEmployeesByMonth(yearMonth));
+    @PutMapping
+    public ResponseEntity<List<DeviationDto>> getDeviationsByEmployee(@RequestBody FilterDto filterDto) {
+        return ResponseEntity.ok(deviationService.deviationAllEmployeesByMonth(filterDto.getYearMonth()));
     }
 
 }

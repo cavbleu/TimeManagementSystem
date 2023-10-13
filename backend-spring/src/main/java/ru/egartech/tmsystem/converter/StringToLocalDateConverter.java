@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 public class StringToLocalDateConverter implements Converter<String, LocalDate> {
     @Override
     public LocalDate convert(String s) {
-        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         return LocalDate.parse(s, fmt);
     }
 }
