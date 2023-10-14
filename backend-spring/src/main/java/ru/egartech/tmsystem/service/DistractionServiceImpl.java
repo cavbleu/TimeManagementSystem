@@ -58,13 +58,11 @@ public class DistractionServiceImpl implements DistractionService {
 
     @Override
     public DistractionDto save(Long timeSheetId, DistractionDto distractionDto) {
-        distractionDto.setTimeSheet(timeSheetMapper.toEntity(timeSheetService.findById(timeSheetId)));
         return save(distractionDto);
     }
 
     @Override
     public DistractionDto update(Long timeSheetId, Long restId, DistractionDto dto) {
-        dto.setTimeSheet(timeSheetMapper.toEntity(timeSheetService.findById(timeSheetId)));
         return updateById(restId, dto);
     }
 }

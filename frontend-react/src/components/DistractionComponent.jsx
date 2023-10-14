@@ -12,14 +12,16 @@ import EmployeeService from "../services/EmployeeService"
 import TimeSheetService from "../services/TimeSheetService"
 
 class Helper {
-	constructor(name, timeSheet, position) {
+	constructor(name, timeSheet, position, id, distraction) {
 		this.name = name
 		this.timeSheet = timeSheet
 		this.position = position
+		this.id = id
+		this.distraction = distraction
 	}
 }
 
-class TimeSheetComponent extends Component {
+class DistractionComponent extends Component {
 	constructor(props) {
 		super(props)
 
@@ -28,13 +30,16 @@ class TimeSheetComponent extends Component {
 			employees: [],
 			id: "",
 			name: "",
+			distraction: {
+				id: "",
+				date: "",
+				startDistraction: "",
+				endDistraction: "",
+				distractionTime: "",
+			},
 			timeSheet: {
 				id: "",
 				date: "",
-				absenceReason: "",
-				startWork: "",
-				endWork: "",
-				workTime: "",
 			},
 			position: {
 				id: "",
@@ -61,15 +66,16 @@ class TimeSheetComponent extends Component {
 			endDate: this.state.endDate.toLocaleDateString("ru-RU"),
 		}
 
-		console.log(JSON.stringify(filterDto))
-
 		EmployeeService.getAllByPeriod(filterDto)
 			.then(res => {
 				let ar = []
-
 				res.data.map(data => {
 					data.timeSheets.map(t => {
-						ar.push(new Helper(data.name, t, data.position, data.id))
+						t.distractions.map(distr => {
+							if (distr != null) {
+								ar.push(new Helper(data.name, t, data.position, data.id, distr))
+							}
+						})
 					})
 				})
 
@@ -150,8 +156,8 @@ class TimeSheetComponent extends Component {
 			headerFormatter: this.filterFormatter,
 		},
 		{
-			dataField: "timeSheet.startWork",
-			text: "Начало рабочего дня",
+			dataField: "distraction.startDistraction",
+			text: "Время начала отвлечения",
 			sort: true,
 			filter: numberFilter({
 				placeholder: "Фильтр...",
@@ -160,8 +166,8 @@ class TimeSheetComponent extends Component {
 			headerFormatter: this.filterFormatter,
 		},
 		{
-			dataField: "timeSheet.endWork",
-			text: "Окончание рабочего дня",
+			dataField: "distraction.endDistraction",
+			text: "Время окончания отвлечения",
 			sort: true,
 			filter: numberFilter({
 				placeholder: "Фильтр...",
@@ -170,21 +176,12 @@ class TimeSheetComponent extends Component {
 			headerFormatter: this.filterFormatter,
 		},
 		{
-			dataField: "timeSheet.workTime",
-			text: "Отработанное время",
+			dataField: "distraction.distractionTime",
+			text: "Суммарное время",
 			sort: true,
 			filter: numberFilter({
 				placeholder: "Фильтр...",
 				defaultValue: { comparator: Comparator.GT },
-			}),
-			headerFormatter: this.filterFormatter,
-		},
-		{
-			dataField: "timeSheet.absenceReason",
-			text: "Причина отсутствия",
-			sort: true,
-			filter: textFilter({
-				placeholder: "Фильтр...",
 			}),
 			headerFormatter: this.filterFormatter,
 		},
@@ -235,8 +232,10 @@ class TimeSheetComponent extends Component {
 	render() {
 		return (
 			<div>
-				<h2 className='text-center'>Табели рабочего времени сотрудников</h2>
-				<div>
+				<h2 className='text-center' style={{ marginTop: 20 }}>
+					Сводная таблица отвлечений сотрудников от целевых программ
+				</h2>
+				<div style={{ marginTop: 20 }}>
 					<h5>Дата начала отчетного периода: </h5>
 					<DatePicker
 						showIcon
@@ -284,4 +283,4 @@ class TimeSheetComponent extends Component {
 		)
 	}
 }
-export default TimeSheetComponent
+export default DistractionComponent

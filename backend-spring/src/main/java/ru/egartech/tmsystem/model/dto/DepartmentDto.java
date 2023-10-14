@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.egartech.tmsystem.model.entity.Position;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -17,5 +18,5 @@ public class DepartmentDto extends EntityDto {
 
     @JsonIgnore
     //Должности, входящие в состав отдела
-    private List<Position> positions;
+    private List<Position> positions = new ArrayList<>();;
 }

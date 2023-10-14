@@ -17,8 +17,10 @@ import ru.egartech.tmsystem.model.entity.TimeSheet;
 import ru.egartech.tmsystem.model.mapping.EmployeeMapper;
 import ru.egartech.tmsystem.model.repository.EmployeeRepository;
 import ru.egartech.tmsystem.utils.BitsConverter;
+import ru.egartech.tmsystem.utils.PeriodValidation;
 import ru.egartech.tmsystem.utils.SummaryFormatter;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
@@ -31,17 +33,22 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeMapper mapper;
     private final SettingsService settingsService;
     private final PositionService positionService;
+    private final RestService restService;
+    private final DistractionService distractionService;
 
     @PersistenceContext
     private EntityManager entityManager;
 
 
     public EmployeeServiceImpl(@Qualifier("employeeRepository") EmployeeRepository repository, EmployeeMapper mapper,
-                               SettingsService settingsService, PositionService positionService) {
+                               SettingsService settingsService, PositionService positionService,
+                               RestService restService, DistractionService distractionService) {
         this.repository = repository;
         this.mapper = mapper;
         this.settingsService = settingsService;
         this.positionService = positionService;
+        this.restService = restService;
+        this.distractionService = distractionService;
     }
 
     @Override
@@ -49,10 +56,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Employee> cq = cb.createQuery(Employee.class);
         Root<Employee> root = cq.from(Employee.class);
-        Fetch<Employee, TimeSheet> b = root.fetch("timeSheets", JoinType.LEFT);
-        Fetch<TimeSheet, Rest> r = b.fetch("rests", JoinType.LEFT);
-        Fetch<TimeSheet, Distraction> d = b.fetch("distractions", JoinType.LEFT);
-        cq.select(root);
+        cq.multiselect(root.get("name"), root.get("age"), root.get("position"), root.get("privilegesNumber"), root.get("id"));
         List<Employee> result = entityManager.createQuery(cq).getResultList();
         return result.stream()
                 .map(mapper::toDto)
@@ -90,13 +94,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<EmployeeSummaryDto> employeesSummaryByPeriod(LocalDate startDate, LocalDate endDate) {
 
-        if (Period.between(startDate, endDate).getDays() > 30) {
-            throw new DurationException(30);
-        }
-
-        if (startDate.isAfter(endDate)) {
-            throw new StartDateEarlierException();
-        }
+        PeriodValidation.validatePeriod(30, 0, 0, startDate, endDate);
 
         List<EmployeeSummaryDto> employeesSummary = new ArrayList<>();
         List<EmployeeDto> employees = findAll();
@@ -148,8 +146,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EditEmployeeDto update(EditEmployeeDto editEmployeeDto) {
-         updateById(editEmployeeDto.getId(), mapper.toDto(editEmployeeDto));
-         return getEditEmployeeDtoById(editEmployeeDto.getId());
+        updateById(editEmployeeDto.getId(), mapper.toDto(editEmployeeDto));
+        return getEditEmployeeDtoById(editEmployeeDto.getId());
     }
 
     @Override
@@ -161,28 +159,38 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<EmployeeDto> findAllByPeriod(LocalDate startDate, LocalDate endDate) {
-        if (Period.between(startDate, endDate).getDays() > 10) {
-            throw new DurationException(10);
-        }
-        if (startDate.isAfter(endDate)) {
-            throw new StartDateEarlierException();
-        }
+
+        PeriodValidation.validatePeriod(10, 0, 0, startDate, endDate);
 
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Employee> cq = cb.createQuery(Employee.class);
         Root<Employee> root = cq.from(Employee.class);
-        Fetch<Employee, TimeSheet> b = root.fetch("timeSheets", JoinType.LEFT);
-        Fetch<TimeSheet, Rest> r = b.fetch("rests", JoinType.LEFT);
-        Fetch<TimeSheet, Distraction> d = b.fetch("distractions", JoinType.LEFT);
+        Predicate greaterThanDate = cb.greaterThanOrEqualTo(root.get("timeSheets").get("date"), startDate);
+        Predicate lessThanDate = cb.lessThanOrEqualTo(root.get("timeSheets").get("date"), endDate);
+        cq.multiselect(root).where(cb.and(greaterThanDate, lessThanDate));
 
-        Predicate greaterThanDate = cb.greaterThanOrEqualTo(root.join("timeSheets").get("date"), startDate);
-        Predicate lessThanDate = cb.lessThanOrEqualTo(root.join("timeSheets").get("date"), endDate);
 
-        cq.select(root).where(cb.and(greaterThanDate, lessThanDate));
+//        List<EmployeeDto> result = new ArrayList<>();
+//
+//        for (TimeSheet sheet : timeSheets) {
+//            EmployeeDto employeeDto = new EmployeeDto();
+//            TimeSheet timeSheet = new TimeSheet();
+//            employeeDto = mapper.toDto(sheet.getEmployee());
+//            timeSheet.setId(sheet.getId());
+//            timeSheet.setDate(sheet.getDate());
+//            timeSheet.setStartWork(sheet.getStartWork());
+//            timeSheet.setEndWork(sheet.getEndWork());
+//            timeSheet.setWorkTime(sheet.getWorkTime());
+//            employeeDto.setTimeSheets(List.of(timeSheet));
+//            result.add(employeeDto);
+//        }
 
-        List<Employee> result = entityManager.createQuery(cq).getResultList();
-
-        return entityManager.createQuery(cq).getResultList().stream()
+//        List<Employee> result = entityManager.createQuery(cq).getResultList();
+        List<RestDto> r = restService.findAll();
+        List<DistractionDto> d = distractionService.findAll();
+        List<EmployeeDto> e = findAll();
+        List<Employee> res = repository.employeesByPeriod(startDate, endDate);
+        return res.stream()
                 .map(mapper::toDto)
                 .toList();
     }

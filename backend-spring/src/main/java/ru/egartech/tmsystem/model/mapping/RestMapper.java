@@ -17,8 +17,7 @@ public abstract class RestMapper {
         rest.setStartRest(dto.getStartRest());
         rest.setEndRest(dto.getEndRest());
         rest.setRestTime(Duration.between(dto.getStartRest(), dto.getEndRest()).toMinutes());
-        rest.setTimeSheet(dto.getTimeSheet());
-
+rest.setEmployee(dto.getEmployee());
         return rest;
     }
 }

@@ -43,17 +43,17 @@ public interface DeviationRepository extends EmployeeRepository {
     Optional<Long> skipCountByEmployeeAndPeriod(@Param("id") Long id, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 
     @Query("select sum(case when d.distractionTime > :maxDistractionTimeByDay then 1 else 0 end) " +
-            "from TimeSheet t join t.employee e join t.distractions d " +
-            "where t.date >= :startDate " +
-            "and t.date <= :endDate " +
+            "from Distraction d join d.employee e " +
+            "where d.date >= :startDate " +
+            "and d.date <= :endDate " +
             "and e.id = :id")
     Optional<Long> excessDistractionTimeCountByEmployeeAndPeriod(@Param("id") Long id, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate,
                                                                  @Param("maxDistractionTimeByDay") long maxDistractionTimeByDay);
 
     @Query("select sum(case when r.restTime > :maxRestTimeByDay then 1 else 0 end) " +
-            "from TimeSheet t join t.employee e join t.rests r " +
-            "where t.date >= :startDate " +
-            "and t.date <= :endDate " +
+            "from Rest r join r.employee e " +
+            "where r.date >= :startDate " +
+            "and r.date <= :endDate " +
             "and e.id = :id")
     Optional<Long> excessRestTimeCountByEmployeeAndPeriod(@Param("id") Long id, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate,
                                                           @Param("maxRestTimeByDay") long maxRestTimeByDay);

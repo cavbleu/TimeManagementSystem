@@ -3,6 +3,7 @@ package ru.egartech.tmsystem.model.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Setter
@@ -18,5 +19,5 @@ public class EmployeeTimeSheetDto {
     //Наименование должности
     String positionName;
     //Список отвлечений
-    List<TimeSheetDto> timeSheets;
+    List<TimeSheetDto> timeSheets = new ArrayList<>();;
 }

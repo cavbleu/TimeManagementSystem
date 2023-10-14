@@ -11,10 +11,11 @@ import java.util.List;
 
 public interface RestRepository extends JpaRepository<Rest, Long> {
 
-    @Query("select e.name, e.age, p.name, d.name, t.rests  " +
+    @Query("select e.name, e.age, p.name, d.name  " +
             "from Employee e join e.timeSheets t join e.position p join p.department d " +
             "where e.id = :id " +
             "and t.date >= :startDate " +
             "and t.date <= :endDate")
     List<EmployeeRestDto> employeeRestsByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+
 }

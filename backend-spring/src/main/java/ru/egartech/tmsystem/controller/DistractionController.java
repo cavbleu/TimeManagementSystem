@@ -9,14 +9,15 @@ import ru.egartech.tmsystem.service.DistractionService;
 
 @RequiredArgsConstructor
 @RestController
+@CrossOrigin(origins = "http://localhost:3000/")
 @RequestMapping("api/v1/distraction")
 public class DistractionController {
 
     private final DistractionService distractionService;
 
-    @PostMapping("/{timeSheetId}")
-    public ResponseEntity<DistractionDto> saveDistraction(@Valid  @RequestBody DistractionDto dto, @PathVariable Long timeSheetId) {
-        return ResponseEntity.ok(distractionService.save(timeSheetId, dto));
+    @PostMapping
+    public ResponseEntity<DistractionDto> saveDistraction(@Valid  @RequestBody DistractionDto dto) {
+        return ResponseEntity.ok(distractionService.save(dto.getId(), dto));
     }
 
     @PutMapping("/{distractionId}")

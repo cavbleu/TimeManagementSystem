@@ -7,6 +7,7 @@ import lombok.Setter;
 import ru.egartech.tmsystem.model.entity.Department;
 import ru.egartech.tmsystem.model.entity.Employee;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -18,7 +19,7 @@ public class PositionDto extends EntityDto {
     private Department department;
     @JsonIgnore
     //Список сотрудников
-    List<Employee> employees;
+    List<Employee> employees = new ArrayList<>();;
 
     public PositionDto(String name, Department department) {
         super(name);
