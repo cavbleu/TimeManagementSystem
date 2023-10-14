@@ -90,6 +90,24 @@ class HeaderComponent extends Component {
 											</li>
 										</ul>
 									</li>
+									<li class='nav-item'>
+										<a
+											style={{ color: "white" }}
+											class='nav-link'
+											href='http://localhost:3000/summary/deviation'
+										>
+											Отклонения
+										</a>
+									</li>
+									<li class='nav-item'>
+										<a
+											style={{ color: "white" }}
+											class='nav-link'
+											href='http://localhost:3000/summary/timeSheet/'
+										>
+											Табели рабочего времени
+										</a>
+									</li>
 								</ul>
 							</div>
 						</div>

@@ -4,9 +4,11 @@ import CreateOrEditDepartmentComponent from "./components/CreateOrEditDepartment
 import CreateOrUpdateEmployeeComponent from "./components/CreateOrUpdateEmployee"
 import CreateOrUpdatePositionComponent from "./components/CreateOrUpdatePositionComponent"
 import DepartmentSummaryComponent from "./components/DepartmentSummaryComponent"
+import DeviationSummaryComponent from "./components/DeviationSummaryComponent"
 import EmployeeSummaryComponent from "./components/EmployeeSummaryComponent"
 import HeaderComponent from "./components/HeaderComponent"
 import PositionSummaryComponent from "./components/PositionSummaryComponent"
+import TimeSheetComponent from "./components/TimeSheetComponent"
 
 function App() {
 	return (
@@ -50,6 +52,19 @@ function App() {
 						/>
 						<Route
 							path='/add-employee/add'
+							component={CreateOrUpdateEmployeeComponent}
+						/>
+						<Route
+							path='/summary/deviation'
+							component={DeviationSummaryComponent}
+						/>
+						<Route path='/summary/timeSheet' component={TimeSheetComponent} />
+						<Route
+							path='/upd-timeSheet/:id'
+							component={CreateOrUpdateEmployeeComponent}
+						/>
+						<Route
+							path='/add-timeSheet/:id'
 							component={CreateOrUpdateEmployeeComponent}
 						/>
 					</Switch>

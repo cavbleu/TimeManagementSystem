@@ -1,6 +1,5 @@
 package ru.egartech.tmsystem.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +16,6 @@ import java.time.LocalTime;
 public class TimeSheetDto {
 
     Long id;
-    @JsonFormat(pattern = "dd-MM-yyyy")
     //Дата
     private LocalDate date;
     //Причина отсутствия на работе

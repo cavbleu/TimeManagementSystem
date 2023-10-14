@@ -17,9 +17,8 @@ import ru.egartech.tmsystem.model.mapping.PositionMapper;
 import ru.egartech.tmsystem.model.repository.PositionRepository;
 import ru.egartech.tmsystem.utils.SummaryFormatter;
 
-import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,10 +72,10 @@ public class PositionServiceImpl implements PositionService {
     }
 
     @Override
-    public List<PositionSummaryDto> positionsSummaryByPeriod(LocalDateTime startDate, LocalDateTime endDate) {
+    public List<PositionSummaryDto> positionsSummaryByPeriod(LocalDate startDate, LocalDate endDate) {
 
 
-        if (Duration.between(startDate, endDate).toDays() > 30) {
+        if (Period.between(startDate, endDate).getDays() > 30) {
             throw new DurationException(30);
         }
 
@@ -92,11 +91,11 @@ public class PositionServiceImpl implements PositionService {
 
             PositionSummaryDto positionSummaryDto = new PositionSummaryDto();
             positionSummaryDto.setId(position.getId());
-            long workTime = positionWorkTimeByPeriod(startDate.toLocalDate(), endDate.toLocalDate(), position.getId());
-            long distractionTime = positionDistractionTimeByPeriod(startDate.toLocalDate(), endDate.toLocalDate(), position.getId());
-            long restTime = positionRestTimeByPeriod(startDate.toLocalDate(), endDate.toLocalDate(), position.getId());
+            long workTime = positionWorkTimeByPeriod(startDate, endDate, position.getId());
+            long distractionTime = positionDistractionTimeByPeriod(startDate, endDate, position.getId());
+            long restTime = positionRestTimeByPeriod(startDate, endDate, position.getId());
             SummaryFormatter.toSummaryDto(workTime, distractionTime, restTime,
-                    positionSummaryDto, position, startDate.toLocalDate(), endDate.toLocalDate(), settings);
+                    positionSummaryDto, position, startDate, endDate, settings);
             positionSummaryDto.setDepartmentName(position.getDepartment().getName());
             positionSummaryDto.setPositionName(position.getName());
             positionsSummary.add(positionSummaryDto);

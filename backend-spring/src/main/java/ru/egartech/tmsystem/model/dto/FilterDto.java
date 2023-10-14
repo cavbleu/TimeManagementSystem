@@ -1,12 +1,12 @@
 package ru.egartech.tmsystem.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -14,6 +14,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class FilterDto {
 
-    LocalDateTime startDate;
-    LocalDateTime endDate;
+    @JsonFormat(pattern = "dd.MM.yyyy")
+    private  LocalDate yearMonth;
+    @JsonFormat(pattern = "dd.MM.yyyy")
+    LocalDate startDate;
+    @JsonFormat(pattern = "dd.MM.yyyy")
+    LocalDate endDate;
 }

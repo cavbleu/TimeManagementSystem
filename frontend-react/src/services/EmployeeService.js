@@ -4,6 +4,10 @@ const SUMMARY_BASE_URL = "http://localhost:8080/api/v1/summary"
 const BASE_URL = "http://localhost:8080/api/v1/employee"
 
 class PositionService {
+	getAll(filterDto) {
+		return axios.put(BASE_URL + "/byPeriod", filterDto)
+	}
+
 	getSummaryByPeriod(filterDto) {
 		return axios.put(SUMMARY_BASE_URL + "/employeeByPeriod", filterDto)
 	}

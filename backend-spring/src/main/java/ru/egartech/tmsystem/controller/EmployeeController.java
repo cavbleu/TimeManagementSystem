@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.egartech.tmsystem.model.dto.EditEmployeeDto;
 import ru.egartech.tmsystem.model.dto.EmployeeDto;
+import ru.egartech.tmsystem.model.dto.FilterDto;
 import ru.egartech.tmsystem.service.EmployeeService;
 
 import java.util.List;
@@ -19,9 +20,14 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-    @GetMapping()
-    public ResponseEntity<List<EmployeeDto>> getAllEmployees() {
+    @GetMapping
+    public ResponseEntity<List<EmployeeDto>> getAllEmployeesByPeriod() {
         return ResponseEntity.ok(employeeService.findAll());
+    }
+
+    @PutMapping("/byPeriod")
+    public ResponseEntity<List<EmployeeDto>> getAllEmployeesByPeriod(@RequestBody FilterDto filterDto) {
+        return ResponseEntity.ok(employeeService.findAllByPeriod(filterDto.getStartDate(), filterDto.getEndDate()));
     }
 
     @GetMapping("/{id}")

@@ -82,9 +82,6 @@ class CreateOrUpdateEmployeeComponent extends Component {
 				lunchTimeIncreased: this.state.lunchTimeIncreased,
 				distractionTimeIncreased: this.state.distractionTimeIncreased,
 			}
-
-			console.log(JSON.stringify(employee))
-
 			EmployeeService.create(employee)
 				.then(res => {
 					this.props.history.push("/summary/employee")
