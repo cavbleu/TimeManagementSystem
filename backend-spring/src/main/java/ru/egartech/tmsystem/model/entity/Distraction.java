@@ -1,6 +1,5 @@
 package ru.egartech.tmsystem.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
@@ -37,6 +36,5 @@ public class Distraction {
     private long distractionTime;
 
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JsonIgnore
     private TimeSheet timeSheet;
 }

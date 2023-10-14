@@ -7,12 +7,19 @@ import org.springframework.web.bind.annotation.*;
 import ru.egartech.tmsystem.model.dto.RestDto;
 import ru.egartech.tmsystem.service.RestService;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/v1/rest")
 public class RestsController {
 
     private final RestService restService;
+
+    @PutMapping
+    public ResponseEntity<List<RestDto>> getAllRestsByPeriod() {
+        return ResponseEntity.ok(restService.findAll());
+    }
 
     @PostMapping("/{timeSheetId}")
     public ResponseEntity<RestDto> saveRest(@Valid @RequestBody RestDto dto, @PathVariable Long timeSheetId) {

@@ -37,6 +37,5 @@ public class Rest {
     private long restTime;
 
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JsonIgnore
     private TimeSheet timeSheet;
 }

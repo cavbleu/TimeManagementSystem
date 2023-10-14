@@ -25,4 +25,5 @@ public interface EmployeeService extends BaseService<EmployeeDto, Long> {
 
     EditEmployeeDto save(EditEmployeeDto dto);
 
+    List<EmployeeDto> findAllByPeriod(LocalDate startDate, LocalDate getEndDate);
 }

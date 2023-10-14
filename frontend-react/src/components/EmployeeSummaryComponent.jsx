@@ -43,8 +43,6 @@ class EmployeeSummaryComponent extends Component {
 			endDate: this.state.endDate.toLocaleDateString("ru-RU"),
 		}
 
-		console.log(JSON.stringify(filterDto))
-
 		EmployeeService.getSummaryByPeriod(filterDto).then(res => {
 			this.setState({ employees: res.data })
 		})

@@ -9,10 +9,7 @@ import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.exception.DurationException;
 import ru.egartech.tmsystem.exception.EmployeeNotFoundException;
 import ru.egartech.tmsystem.exception.StartDateEarlierException;
-import ru.egartech.tmsystem.model.dto.EditEmployeeDto;
-import ru.egartech.tmsystem.model.dto.EmployeeDto;
-import ru.egartech.tmsystem.model.dto.EmployeeSummaryDto;
-import ru.egartech.tmsystem.model.dto.SettingsDto;
+import ru.egartech.tmsystem.model.dto.*;
 import ru.egartech.tmsystem.model.entity.Distraction;
 import ru.egartech.tmsystem.model.entity.Employee;
 import ru.egartech.tmsystem.model.entity.Rest;
@@ -160,6 +157,34 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         EmployeeDto employee = save(mapper.toDto(dto));
         return getEditEmployeeDtoById(employee.getId());
+    }
+
+    @Override
+    public List<EmployeeDto> findAllByPeriod(LocalDate startDate, LocalDate endDate) {
+        if (Period.between(startDate, endDate).getDays() > 10) {
+            throw new DurationException(10);
+        }
+        if (startDate.isAfter(endDate)) {
+            throw new StartDateEarlierException();
+        }
+
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Employee> cq = cb.createQuery(Employee.class);
+        Root<Employee> root = cq.from(Employee.class);
+        Fetch<Employee, TimeSheet> b = root.fetch("timeSheets", JoinType.LEFT);
+        Fetch<TimeSheet, Rest> r = b.fetch("rests", JoinType.LEFT);
+        Fetch<TimeSheet, Distraction> d = b.fetch("distractions", JoinType.LEFT);
+
+        Predicate greaterThanDate = cb.greaterThanOrEqualTo(root.join("timeSheets").get("date"), startDate);
+        Predicate lessThanDate = cb.lessThanOrEqualTo(root.join("timeSheets").get("date"), endDate);
+
+        cq.select(root).where(cb.and(greaterThanDate, lessThanDate));
+
+        List<Employee> result = entityManager.createQuery(cq).getResultList();
+
+        return entityManager.createQuery(cq).getResultList().stream()
+                .map(mapper::toDto)
+                .toList();
     }
 
     @Override

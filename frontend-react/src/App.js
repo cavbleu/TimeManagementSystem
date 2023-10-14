@@ -8,6 +8,7 @@ import DeviationSummaryComponent from "./components/DeviationSummaryComponent"
 import EmployeeSummaryComponent from "./components/EmployeeSummaryComponent"
 import HeaderComponent from "./components/HeaderComponent"
 import PositionSummaryComponent from "./components/PositionSummaryComponent"
+import TimeSheetComponent from "./components/TimeSheetComponent"
 
 function App() {
 	return (
@@ -56,6 +57,15 @@ function App() {
 						<Route
 							path='/summary/deviation'
 							component={DeviationSummaryComponent}
+						/>
+						<Route path='/summary/timeSheet' component={TimeSheetComponent} />
+						<Route
+							path='/upd-timeSheet/:id'
+							component={CreateOrUpdateEmployeeComponent}
+						/>
+						<Route
+							path='/add-timeSheet/:id'
+							component={CreateOrUpdateEmployeeComponent}
 						/>
 					</Switch>
 				</div>

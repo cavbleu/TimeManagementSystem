@@ -1,5 +1,6 @@
 package ru.egartech.tmsystem.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
@@ -25,6 +26,7 @@ public class TimeSheet {
     @Temporal(TemporalType.DATE)
     @Column(name = "date")
     @Pattern(regexp = "(^0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-(\\d{4}$)", message = "{date.pattern}")
+    @JsonFormat(pattern="dd-MM-yyyy")
     private LocalDate date;
     @Column(name = "absence_reason")
     private String absenceReason;
