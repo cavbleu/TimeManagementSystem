@@ -60,7 +60,7 @@ class CreateOrUpdateSettingsComponent extends Component {
 			console.log(JSON.stringify(settings))
 			SettingsService.create(settings)
 				.then(res => {
-					this.props.history.push("/settings")
+					this.props.history.push("/settings/limits")
 				})
 				.catch(err => {
 					alert(err.response.data)
@@ -81,7 +81,7 @@ class CreateOrUpdateSettingsComponent extends Component {
 			}
 			SettingsService.update(settings)
 				.then(res => {
-					this.props.history.push("/settings")
+					this.props.history.push("/settings/limits")
 				})
 				.catch(err => {
 					alert(err.response.data)

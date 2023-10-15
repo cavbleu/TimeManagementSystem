@@ -103,7 +103,7 @@ class HeaderComponent extends Component {
 										<a
 											style={{ color: "white" }}
 											class='nav-link'
-											href='http://localhost:3000/summary/timeSheet/'
+											href='http://localhost:3000/summary/timeSheet'
 										>
 											Табели рабочего времени
 										</a>
@@ -112,7 +112,7 @@ class HeaderComponent extends Component {
 										<a
 											style={{ color: "white" }}
 											class='nav-link'
-											href='http://localhost:3000/summary/distraction/'
+											href='http://localhost:3000/summary/distraction'
 										>
 											Отвлечения
 										</a>
@@ -121,7 +121,7 @@ class HeaderComponent extends Component {
 										<a
 											style={{ color: "white" }}
 											class='nav-link'
-											href='http://localhost:3000/summary/rest/'
+											href='http://localhost:3000/summary/rest'
 										>
 											Перерывы
 										</a>
@@ -130,9 +130,18 @@ class HeaderComponent extends Component {
 										<a
 											style={{ color: "white" }}
 											class='nav-link'
-											href='http://localhost:3000/settings/'
+											href='http://localhost:3000/settings/limits'
 										>
-											Настройки
+											Настройки лимитов
+										</a>
+									</li>
+									<li class='nav-item'>
+										<a
+											style={{ color: "white" }}
+											class='nav-link'
+											href='http://localhost:3000/settings/privilege'
+										>
+											Настройки привилегий
 										</a>
 									</li>
 								</ul>

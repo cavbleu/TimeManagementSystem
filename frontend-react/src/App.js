@@ -13,9 +13,11 @@ import DistractionComponent from "./components/DistractionComponent"
 import EmployeeSummaryComponent from "./components/EmployeeSummaryComponent"
 import HeaderComponent from "./components/HeaderComponent"
 import PositionSummaryComponent from "./components/PositionSummaryComponent"
+import PrivilegeComponent from "./components/PrivilegeComponent"
 import RestSummaryComponent from "./components/RestSummaryComponent"
 import SettingsComponent from "./components/SettingsComoponent"
 import TimeSheetComponent from "./components/TimeSheetComponent"
+import UpdatePrivilegeComponent from "./components/UpdatePriivlegeComponent"
 
 function App() {
 	return (
@@ -96,7 +98,7 @@ function App() {
 							path='/add-rest/add'
 							component={CreateOrUpdateRestComponent}
 						/>
-						<Route path='/settings' component={SettingsComponent} />
+						<Route path='/settings/limits' component={SettingsComponent} />
 						<Route
 							path='/add-settings/:id'
 							component={CreateOrUpdateSettingsComponent}
@@ -104,6 +106,11 @@ function App() {
 						<Route
 							path='/add-settings/add'
 							component={CreateOrUpdateSettingsComponent}
+						/>
+						<Route path='/settings/privilege' component={PrivilegeComponent} />
+						<Route
+							path='/upd-privilege/:id'
+							component={UpdatePrivilegeComponent}
 						/>
 					</Switch>
 				</div>

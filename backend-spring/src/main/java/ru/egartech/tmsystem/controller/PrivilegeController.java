@@ -5,12 +5,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.egartech.tmsystem.model.dto.PrivilegeDto;
+import ru.egartech.tmsystem.model.dto.SettingsDto;
 import ru.egartech.tmsystem.service.PrivilegeService;
 
 import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
+@CrossOrigin(origins = "http://localhost:3000/")
 @RequestMapping("api/v1/privilege")
 public class PrivilegeController {
 
@@ -21,9 +23,14 @@ public class PrivilegeController {
         return ResponseEntity.ok(privilegeService.findAll());
     }
 
-    @PutMapping("/{privilegeId}")
-    public ResponseEntity<PrivilegeDto> updatePrivilege(@Valid  @RequestBody PrivilegeDto privilegeDto, @PathVariable Long privilegeId) {
-        return ResponseEntity.ok(privilegeService.updateById(privilegeId, privilegeDto));
+    @GetMapping("{id}")
+    public ResponseEntity<PrivilegeDto> getPrivilegeById(@PathVariable Long id) {
+        return ResponseEntity.ok(privilegeService.findById(id));
+    }
+
+    @PutMapping
+    public ResponseEntity<PrivilegeDto> updatePrivilege(@Valid  @RequestBody PrivilegeDto privilegeDto) {
+        return ResponseEntity.ok(privilegeService.updateById(privilegeDto.getId(), privilegeDto));
     }
 
 }

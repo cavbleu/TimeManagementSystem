@@ -25,9 +25,10 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     }
 
     @Override
-    public Optional<PrivilegeDto> findById(Long id) {
+    public PrivilegeDto findById(Long id) {
         return repository.findById(id)
-                .map(mapper::toDto);
+                .map(mapper::toDto)
+                .orElseThrow();
     }
 
     @Override
