@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ru.egartech.tmsystem.model.dto.EmployeeDistractionDto;
 import ru.egartech.tmsystem.model.entity.Distraction;
+import ru.egartech.tmsystem.model.entity.TimeSheet;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,4 +18,6 @@ public interface DistractionRepository extends JpaRepository<Distraction, Long> 
             "and t.date >= :startDate " +
             "and t.date <= :endDate")
     List<EmployeeDistractionDto> employeeDistractionsByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+
+    List<Distraction> findByDateBetweenAndEmployee_Id(LocalDate startDate, LocalDate endDate, Long empId);
 }

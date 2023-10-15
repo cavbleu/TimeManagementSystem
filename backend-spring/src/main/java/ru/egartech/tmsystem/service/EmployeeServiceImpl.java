@@ -2,27 +2,30 @@ package ru.egartech.tmsystem.service;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.criteria.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import ru.egartech.tmsystem.exception.DurationException;
 import ru.egartech.tmsystem.exception.EmployeeNotFoundException;
-import ru.egartech.tmsystem.exception.StartDateEarlierException;
-import ru.egartech.tmsystem.model.dto.*;
-import ru.egartech.tmsystem.model.entity.Distraction;
+import ru.egartech.tmsystem.model.dto.EditEmployeeDto;
+import ru.egartech.tmsystem.model.dto.EmployeeDto;
+import ru.egartech.tmsystem.model.dto.EmployeeSummaryDto;
+import ru.egartech.tmsystem.model.dto.SettingsDto;
 import ru.egartech.tmsystem.model.entity.Employee;
 import ru.egartech.tmsystem.model.entity.Rest;
-import ru.egartech.tmsystem.model.entity.TimeSheet;
 import ru.egartech.tmsystem.model.mapping.EmployeeMapper;
+import ru.egartech.tmsystem.model.repository.DistractionRepository;
 import ru.egartech.tmsystem.model.repository.EmployeeRepository;
+import ru.egartech.tmsystem.model.repository.RestRepository;
+import ru.egartech.tmsystem.model.repository.TimeSheetRepository;
 import ru.egartech.tmsystem.utils.BitsConverter;
 import ru.egartech.tmsystem.utils.PeriodValidation;
 import ru.egartech.tmsystem.utils.SummaryFormatter;
 
-import java.time.Duration;
 import java.time.LocalDate;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,15 +43,28 @@ public class EmployeeServiceImpl implements EmployeeService {
     private EntityManager entityManager;
 
 
+
+    private  final TimeSheetRepository timeSheetRepository;
+
+    private  final RestRepository restRepository;
+
+    private  final DistractionRepository distractionRepository;
+
+
     public EmployeeServiceImpl(@Qualifier("employeeRepository") EmployeeRepository repository, EmployeeMapper mapper,
                                SettingsService settingsService, PositionService positionService,
-                               RestService restService, DistractionService distractionService) {
+                               RestService restService, DistractionService distractionService,
+                               TimeSheetRepository timeSheetRepository, RestRepository restRepository, DistractionRepository distractionRepository) {
         this.repository = repository;
         this.mapper = mapper;
         this.settingsService = settingsService;
         this.positionService = positionService;
         this.restService = restService;
         this.distractionService = distractionService;
+        this.distractionRepository = distractionRepository;
+        this.restRepository = restRepository;
+        this.timeSheetRepository = timeSheetRepository;
+
     }
 
     @Override
@@ -163,36 +179,30 @@ public class EmployeeServiceImpl implements EmployeeService {
         PeriodValidation.validatePeriod(10, 0, 0, startDate, endDate);
 
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Employee> cq = cb.createQuery(Employee.class);
-        Root<Employee> root = cq.from(Employee.class);
-        Predicate greaterThanDate = cb.greaterThanOrEqualTo(root.get("timeSheets").get("date"), startDate);
-        Predicate lessThanDate = cb.lessThanOrEqualTo(root.get("timeSheets").get("date"), endDate);
-        cq.multiselect(root).where(cb.and(greaterThanDate, lessThanDate));
+        CriteriaQuery<Rest> cq = cb.createQuery(Rest.class);
+        Root<Rest> root = cq.from(Rest.class);
+        Predicate greaterThanDate = cb.greaterThanOrEqualTo(root.get("date"), startDate);
+        Predicate lessThanDate = cb.lessThanOrEqualTo(root.get("date"), endDate);
+        cq.select(root).where(cb.and(greaterThanDate, lessThanDate));
+        List<Rest> rests = entityManager.createQuery(cq).getResultList();
 
+        List<EmployeeDto> result = new ArrayList<>();
+        for (EmployeeDto employeeDto : findAll()) {
+            EmployeeDto dto = new EmployeeDto();
+            dto.setId(employeeDto.getId());
+            dto.setName(employeeDto.getName());
+            dto.setAge(employeeDto.getAge());
+            dto.setPosition(employeeDto.getPosition());
+            dto.setPrivilegesNumber(employeeDto.getPrivilegesNumber());
+            dto.setPosition(employeeDto.getPosition());
+            dto.setRests(restRepository.findByDateBetweenAndEmployee_Id(startDate, endDate, employeeDto.getId()));
+            dto.setDistractions(distractionRepository.findByDateBetweenAndEmployee_Id(startDate, endDate, employeeDto.getId()));
+            dto.setTimeSheets(timeSheetRepository.findByDateBetweenAndEmployee_Id(startDate, endDate, employeeDto.getId()));
 
-//        List<EmployeeDto> result = new ArrayList<>();
-//
-//        for (TimeSheet sheet : timeSheets) {
-//            EmployeeDto employeeDto = new EmployeeDto();
-//            TimeSheet timeSheet = new TimeSheet();
-//            employeeDto = mapper.toDto(sheet.getEmployee());
-//            timeSheet.setId(sheet.getId());
-//            timeSheet.setDate(sheet.getDate());
-//            timeSheet.setStartWork(sheet.getStartWork());
-//            timeSheet.setEndWork(sheet.getEndWork());
-//            timeSheet.setWorkTime(sheet.getWorkTime());
-//            employeeDto.setTimeSheets(List.of(timeSheet));
-//            result.add(employeeDto);
-//        }
+            result.add(dto);
+        }
 
-//        List<Employee> result = entityManager.createQuery(cq).getResultList();
-        List<RestDto> r = restService.findAll();
-        List<DistractionDto> d = distractionService.findAll();
-        List<EmployeeDto> e = findAll();
-        List<Employee> res = repository.employeesByPeriod(startDate, endDate);
-        return res.stream()
-                .map(mapper::toDto)
-                .toList();
+        return result;
     }
 
     @Override

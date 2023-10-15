@@ -9,7 +9,21 @@ import java.time.Duration;
 @Mapper(componentModel = "spring")
 public abstract class RestMapper {
 
-    public abstract RestDto toDto(Rest rest);
+    public RestDto toDto(Rest rest) {
+        if ( rest == null ) {
+            return null;
+        }
+
+        RestDto restDto = new RestDto();
+
+        restDto.setId( rest.getId() );
+        restDto.setDate( rest.getDate() );
+        restDto.setStartRest( rest.getStartRest() );
+        restDto.setEndRest( rest.getEndRest() );
+        restDto.setRestTime( rest.getRestTime() );
+
+        return restDto;
+    }
 
     public Rest toEntity(RestDto dto) {
         Rest rest = new Rest();
@@ -17,7 +31,7 @@ public abstract class RestMapper {
         rest.setStartRest(dto.getStartRest());
         rest.setEndRest(dto.getEndRest());
         rest.setRestTime(Duration.between(dto.getStartRest(), dto.getEndRest()).toMinutes());
-rest.setEmployee(dto.getEmployee());
+        rest.setEmployee(dto.getEmployee());
         return rest;
     }
 }

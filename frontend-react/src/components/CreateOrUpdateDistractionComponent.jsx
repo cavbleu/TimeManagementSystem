@@ -3,7 +3,6 @@ import DepartmentService from "../services/DepartmentService"
 import DistractionService from "../services/DistractionService"
 import EmployeeService from "../services/EmployeeService"
 import PositionService from "../services/PositionService"
-import TimeSheetService from "../services/TimeSheetService"
 
 class CreateOrUpdateDistractionComponent extends Component {
 	constructor(props) {
@@ -96,14 +95,13 @@ class CreateOrUpdateDistractionComponent extends Component {
 				})
 			})
 		} else {
-			TimeSheetService.getById(this.state.id).then(res => {
+			DistractionService.getById(this.state.id).then(res => {
 				let timeSheet = res.data
 				this.setState({
 					id: timeSheet.id,
 					date: timeSheet.date,
-					absenceReason: timeSheet.absenceReason,
-					startWork: timeSheet.startWork,
-					endWork: timeSheet.endWork,
+					startWork: timeSheet.startDistraction,
+					endWork: timeSheet.endDistraction,
 					employee: timeSheet.employee,
 					position: timeSheet.employee.position,
 					name: timeSheet.employee.name,
@@ -114,15 +112,16 @@ class CreateOrUpdateDistractionComponent extends Component {
 
 	saveOrUpdate = e => {
 		e.preventDefault()
-		console.log(this.state.id)
 		if (this.state.id === "add") {
 			let distraction = {
-				date: this.state.date,
-				startDistraction: this.state.startDistraction,
-				endDistraction: this.state.endDistraction,
-				timeSheet: {
+				employee: {
 					id: this.state.empId,
+					name: this.state.name,
+					position: this.state.position,
 				},
+				date: this.state.date,
+				startDistraction: this.state.startWork,
+				endDistraction: this.state.endWork,
 			}
 			console.log(JSON.stringify(distraction))
 			DistractionService.create(distraction)
@@ -136,13 +135,14 @@ class CreateOrUpdateDistractionComponent extends Component {
 			let timeSheet = {
 				id: this.state.id,
 				date: this.state.date,
-				startWork: this.state.startWork,
-				endWork: this.state.endWork,
+				startDistraction: this.state.startWork,
+				endDistraction: this.state.endWork,
 				employee: this.state.employee,
 			}
-			TimeSheetService.update(timeSheet)
+			console.log(JSON.stringify(timeSheet))
+			DistractionService.update(timeSheet)
 				.then(res => {
-					this.props.history.push("/summary/timeSheet")
+					this.props.history.push("/summary/distraction")
 				})
 				.catch(err => {
 					alert(err.response.data)
@@ -191,7 +191,6 @@ class CreateOrUpdateDistractionComponent extends Component {
 									},
 								},
 							})
-							console.log(emp)
 							this.state.empId = emp.id
 							this.state.name = emp.name
 						}}

@@ -28,7 +28,6 @@ public class DistractionDto {
     private LocalTime endDistraction;
     //Суммарное время отвлечения от целевых программ
     private long distractionTime;
-    //Табель рабочего времени
-    @JsonIgnore
+
     private Employee employee;
 }

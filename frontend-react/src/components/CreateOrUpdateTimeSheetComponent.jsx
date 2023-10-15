@@ -153,7 +153,7 @@ class CreateOrUpdateTimeSheetComponent extends Component {
 	}
 
 	getTitle() {
-		if (this.props.id != "add") {
+		if (this.state.id != "add") {
 			return (
 				<h3 style={{ textAlign: "center" }}>
 					Редактирование табеля рабочего времени

@@ -8,16 +8,15 @@ import filterFactory, {
 	textFilter,
 } from "react-bootstrap-table2-filter"
 import DatePicker from "react-datepicker"
+import DistractionService from "../services/DistractionService"
 import EmployeeService from "../services/EmployeeService"
-import TimeSheetService from "../services/TimeSheetService"
 
 class Helper {
-	constructor(name, timeSheet, position, id, distraction) {
+	constructor(name, position, distraction, id) {
 		this.name = name
-		this.timeSheet = timeSheet
 		this.position = position
-		this.id = id
 		this.distraction = distraction
+		this.id = id
 	}
 }
 
@@ -37,10 +36,7 @@ class DistractionComponent extends Component {
 				endDistraction: "",
 				distractionTime: "",
 			},
-			timeSheet: {
-				id: "",
-				date: "",
-			},
+
 			position: {
 				id: "",
 				name: "",
@@ -65,24 +61,20 @@ class DistractionComponent extends Component {
 			startDate: this.state.startDate.toLocaleDateString("ru-RU"),
 			endDate: this.state.endDate.toLocaleDateString("ru-RU"),
 		}
-
+		console.log(JSON.stringify(filterDto))
 		EmployeeService.getAllByPeriod(filterDto)
 			.then(res => {
 				let ar = []
 				res.data.map(data => {
-					data.timeSheets.map(t => {
-						t.distractions.map(distr => {
-							if (distr != null) {
-								ar.push(new Helper(data.name, t, data.position, data.id, distr))
-							}
-						})
+					data.distractions.map(distr => {
+						ar.push(new Helper(data.name, data.position, distr, data.id))
 					})
 				})
 
 				ar.sort(
 					(a, b) =>
-						moment(b.timeSheet.date, "DD.MM.YY") -
-						moment(a.timeSheet.date, "DD.MM.YY")
+						moment(b.distraction.date, "DD.MM.YY") -
+						moment(a.distraction.date, "DD.MM.YY")
 				)
 
 				this.setState({
@@ -119,7 +111,7 @@ class DistractionComponent extends Component {
 
 	columns = [
 		{
-			dataField: "timeSheet.date",
+			dataField: "distraction.date",
 			text: "Дата",
 			sort: true,
 			filter: numberFilter({
@@ -203,7 +195,7 @@ class DistractionComponent extends Component {
 			<div>
 				<button
 					onClick={() =>
-						(window.location.href = `/add-timeSheet/${row.timeSheet.id}`)
+						(window.location.href = `/add-distraction/${row.distraction.id}`)
 					}
 					className='btn btn-success'
 				>
@@ -213,7 +205,7 @@ class DistractionComponent extends Component {
 				<button
 					style={{ marginTop: 5 }}
 					onClick={() => {
-						TimeSheetService.delete(row.timeSheet.id)
+						DistractionService.delete(row.distraction.id)
 							.catch(err => {
 								alert(err.response.data)
 							})
@@ -262,7 +254,7 @@ class DistractionComponent extends Component {
 				</div>
 				<div className='d-grid gap-2 d-md-flex justify-content-md-end'>
 					<button
-						onClick={() => this.props.history.push("/add-timeSheet/add")}
+						onClick={() => this.props.history.push("/add-distraction/add")}
 						style={{ marginBottom: "5px" }}
 						className='btn btn-primary'
 					>

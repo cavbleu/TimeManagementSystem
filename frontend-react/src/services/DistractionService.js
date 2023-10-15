@@ -3,6 +3,10 @@ import axios from "axios"
 const BASE_URL = "http://localhost:8080/api/v1/distraction"
 
 class TimeSheetService {
+	getById(id) {
+		return axios.get(BASE_URL + "/" + id)
+	}
+
 	create(distraction) {
 		return axios.post(BASE_URL, distraction)
 	}

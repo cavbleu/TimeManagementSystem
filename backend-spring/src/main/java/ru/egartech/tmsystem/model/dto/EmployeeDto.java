@@ -29,7 +29,7 @@ public class EmployeeDto extends EntityDto {
     private Position position;
     //Список табелей рабочего времен
     private List<TimeSheet> timeSheets = new ArrayList<>();
-    private List<Rest> rests = new ArrayList<>();;
+    private List<Rest> rests = new ArrayList<>();
     private List<Distraction> distractions = new ArrayList<>();;
 
     public EmployeeDto(List<TimeSheet> timeSheets, List<Rest> rests, List<Distraction> distractions) {
