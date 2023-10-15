@@ -1,9 +1,10 @@
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css"
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom"
 import CreateOrEditDepartmentComponent from "./components/CreateOrEditDepartmentComponent"
-import { default as CreateOrUpdateDistractionComponent } from "./components/CreateOrUpdateDistractionComponent"
+import CreateOrUpdateDistractionComponent from "./components/CreateOrUpdateDistractionComponent"
 import CreateOrUpdateEmployeeComponent from "./components/CreateOrUpdateEmployee"
 import CreateOrUpdatePositionComponent from "./components/CreateOrUpdatePositionComponent"
+import CreateOrUpdateRestComponent from "./components/CreateOrUpdateRestComponent.jsx"
 import CreateOrUpdateTimeSheetComponent from "./components/CreateOrUpdateTimeSheetComponent"
 import DepartmentSummaryComponent from "./components/DepartmentSummaryComponent"
 import DeviationSummaryComponent from "./components/DeviationSummaryComponent"
@@ -11,6 +12,7 @@ import DistractionComponent from "./components/DistractionComponent"
 import EmployeeSummaryComponent from "./components/EmployeeSummaryComponent"
 import HeaderComponent from "./components/HeaderComponent"
 import PositionSummaryComponent from "./components/PositionSummaryComponent"
+import RestSummaryComponent from "./components/RestSummaryComponent"
 import TimeSheetComponent from "./components/TimeSheetComponent"
 
 function App() {
@@ -80,8 +82,17 @@ function App() {
 							component={CreateOrUpdateDistractionComponent}
 						/>
 						<Route
-							path='/update-distraction/:id'
+							path='/add-distraction/add'
 							component={CreateOrUpdateDistractionComponent}
+						/>
+						<Route path='/summary/rest' component={RestSummaryComponent} />
+						<Route
+							path='/add-rest/:id'
+							component={CreateOrUpdateRestComponent}
+						/>
+						<Route
+							path='/add-rest/add'
+							component={CreateOrUpdateRestComponent}
 						/>
 					</Switch>
 				</div>
