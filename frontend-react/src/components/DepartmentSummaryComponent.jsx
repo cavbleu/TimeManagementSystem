@@ -172,7 +172,7 @@ class DepartmentSummaryComponent extends Component {
 
 	render() {
 		return (
-			<div>
+			<div style={{ marginTop: 20 }}>
 				<h2 className='text-center'>Сводная статистика по отделам</h2>
 				<div>
 					<h5>Дата начала отчетного периода: </h5>
@@ -195,11 +195,11 @@ class DepartmentSummaryComponent extends Component {
 					/>
 				</div>
 				<div>
-					<form style={{ marginBottom: 10, marginTop: 5 }} id='external-form'>
+					<form style={{ marginBottom: -35, marginTop: 5 }} id='external-form'>
 						<input type='submit' onClick={this.getDepartmentSummaryByPeriod} />
 					</form>
 				</div>
-				<div>
+				<div className='d-grid gap-2 d-md-flex justify-content-md-end'>
 					<button
 						onClick={() => this.props.history.push("/add-department/add")}
 						style={{ marginBottom: "5px" }}

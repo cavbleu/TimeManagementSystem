@@ -168,7 +168,7 @@ class RestSummaryComponent extends Component {
 		},
 		{
 			dataField: "rest.restTime",
-			text: "Суммарное время",
+			text: "Суммарное время, мин",
 			sort: true,
 			filter: numberFilter({
 				placeholder: "Фильтр...",

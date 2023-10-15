@@ -158,7 +158,9 @@ class DeviationSummaryComponent extends Component {
 
 	filterFormatter(column, colIndex, { sortElement, filterElement }) {
 		return (
-			<div style={{ display: "flex", flexDirection: "column" }}>
+			<div
+			// style={{ display: "flex", flexDirection: "column" }}
+			>
 				{filterElement}
 				{column.text}
 				{sortElement}
@@ -173,12 +175,12 @@ class DeviationSummaryComponent extends Component {
 
 	render() {
 		return (
-			<div>
+			<div style={{ fontSize: 14, marginTop: 20 }}>
 				<h3 className='text-center'>
 					Сводная статистика по отклонениям от нормы рабочего времени
 					сотрудников
 				</h3>
-				<div>
+				<div style={{ marginTop: 20 }}>
 					<h5> Отчетный период: </h5>
 					<DatePicker
 						showIcon

@@ -214,7 +214,7 @@ class EmployeeSummaryComponent extends Component {
 
 	render() {
 		return (
-			<div>
+			<div style={{ fontSize: 14, marginTop: 20 }}>
 				<h2 className='text-center'>Сводная статистика по сотрудникам</h2>
 				<div>
 					<h5>Дата начала отчетного периода: </h5>
@@ -237,11 +237,11 @@ class EmployeeSummaryComponent extends Component {
 					/>
 				</div>
 				<div>
-					<form style={{ marginBottom: 10, marginTop: 5 }} id='external-form'>
+					<form style={{ marginBottom: -35, marginTop: 5 }} id='external-form'>
 						<input type='submit' onClick={this.getEmployeeSummaryByPeriod} />
 					</form>
 				</div>
-				<div>
+				<div className='d-grid gap-2 d-md-flex justify-content-md-end'>
 					<button
 						onClick={() => this.props.history.push("/add-employee/add")}
 						style={{ marginBottom: "5px" }}

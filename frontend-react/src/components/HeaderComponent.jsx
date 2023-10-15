@@ -42,54 +42,36 @@ class HeaderComponent extends Component {
 							</button>
 							<div className='collapse navbar-collapse' id='navbarNavDropdown'>
 								<ul className='navbar-nav'>
-									<li className='nav-item dropdown'>
+									<li class='nav-item'>
 										<a
 											style={{ color: "white" }}
-											className='nav-link dropdown-toggle'
-											href='#'
-											id='navbarDropdownMenuLink'
-											role='button'
-											data-bs-toggle='dropdown'
-											aria-expanded='false'
+											class='nav-link'
+											href='http://localhost:3000/summary/department'
 										>
-											Cводка
+											Отделы
 										</a>
-										<ul
-											className='dropdown-menu'
-											aria-labelledby='navbarDropdownMenuLink'
-										>
-											<li>
-												<a
-													className='dropdown-item'
-													href='http://localhost:3000/summary/department'
-												>
-													Отделы
-												</a>
-											</li>
-											<li>
-												<hr class='dropdown-divider' />
-											</li>
-											<li>
-												<a
-													className='dropdown-item'
-													href='http://localhost:3000/summary/position'
-												>
-													Должности
-												</a>
-											</li>
-											<li>
-												<hr class='dropdown-divider' />
-											</li>
-											<li>
-												<a
-													className='dropdown-item'
-													href='http://localhost:3000/summary/employee'
-												>
-													Сотрудники
-												</a>
-											</li>
-										</ul>
 									</li>
+
+									<li class='nav-item'>
+										<a
+											style={{ color: "white" }}
+											class='nav-link'
+											href='http://localhost:3000/summary/position'
+										>
+											Должности
+										</a>
+									</li>
+
+									<li class='nav-item'>
+										<a
+											style={{ color: "white" }}
+											class='nav-link'
+											href='http://localhost:3000/summary/employee'
+										>
+											Сотрудники
+										</a>
+									</li>
+
 									<li class='nav-item'>
 										<a
 											style={{ color: "white" }}
@@ -126,23 +108,43 @@ class HeaderComponent extends Component {
 											Перерывы
 										</a>
 									</li>
-									<li class='nav-item'>
+
+									<li className='nav-item dropdown'>
 										<a
 											style={{ color: "white" }}
-											class='nav-link'
-											href='http://localhost:3000/settings/limits'
+											className='nav-link dropdown-toggle'
+											href='#'
+											id='navbarDropdownMenuLink'
+											role='button'
+											data-bs-toggle='dropdown'
+											aria-expanded='false'
 										>
-											Настройки лимитов
+											Настройки
 										</a>
-									</li>
-									<li class='nav-item'>
-										<a
-											style={{ color: "white" }}
-											class='nav-link'
-											href='http://localhost:3000/settings/privilege'
+										<ul
+											className='dropdown-menu'
+											aria-labelledby='navbarDropdownMenuLink'
 										>
-											Настройки привилегий
-										</a>
+											<li>
+												<a
+													className='dropdown-item'
+													href='http://localhost:3000/settings/limits'
+												>
+													Лимиты
+												</a>
+											</li>
+											<li>
+												<hr class='dropdown-divider' />
+											</li>
+											<li>
+												<a
+													className='dropdown-item'
+													href='http://localhost:3000/settings/privilege'
+												>
+													Привилегии
+												</a>
+											</li>
+										</ul>
 									</li>
 								</ul>
 							</div>

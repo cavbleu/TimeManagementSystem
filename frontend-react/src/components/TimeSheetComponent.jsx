@@ -171,7 +171,7 @@ class TimeSheetComponent extends Component {
 		},
 		{
 			dataField: "timeSheet.workTime",
-			text: "Отработанное время",
+			text: "Отработанное время, мин",
 			sort: true,
 			filter: numberFilter({
 				placeholder: "Фильтр...",
@@ -234,7 +234,7 @@ class TimeSheetComponent extends Component {
 
 	render() {
 		return (
-			<div>
+			<div style={{ marginTop: 20 }}>
 				<h2 className='text-center'>Табели рабочего времени сотрудников</h2>
 				<div>
 					<h5>Дата начала отчетного периода: </h5>

@@ -169,7 +169,7 @@ class DistractionComponent extends Component {
 		},
 		{
 			dataField: "distraction.distractionTime",
-			text: "Суммарное время",
+			text: "Суммарное время, мин",
 			sort: true,
 			filter: numberFilter({
 				placeholder: "Фильтр...",
