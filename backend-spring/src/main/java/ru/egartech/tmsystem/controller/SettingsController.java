@@ -11,6 +11,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
+@CrossOrigin(origins = "http://localhost:3000/")
 @RequestMapping("api/v1/settings")
 public class SettingsController {
 
@@ -21,14 +22,19 @@ public class SettingsController {
         return ResponseEntity.ok(settingsService.findAll());
     }
 
-    @PostMapping()
+    @GetMapping("{id}")
+    public ResponseEntity<SettingsDto> getSettingsById(@PathVariable Long id) {
+        return ResponseEntity.ok(settingsService.findById(id));
+    }
+
+    @PostMapping
     public ResponseEntity<SettingsDto> createSettings(@Valid @RequestBody SettingsDto settingsDto) {
         return ResponseEntity.ok(settingsService.save(settingsDto));
     }
 
-    @PutMapping("/{settingsId}")
-    public ResponseEntity<SettingsDto> updateSettings(@Valid @RequestBody SettingsDto settingsDto, @PathVariable Long settingsId) {
-        return ResponseEntity.ok(settingsService.updateById(settingsId, settingsDto));
+    @PutMapping
+    public ResponseEntity<SettingsDto> updateSettings(@Valid @RequestBody SettingsDto settingsDto) {
+        return ResponseEntity.ok(settingsService.updateById(settingsDto.getId(), settingsDto));
     }
 
     @DeleteMapping("/{settingsId}")

@@ -1,5 +1,6 @@
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css"
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom"
+import CreateOrUpdateSettingsComponent from "./components/CrateOrUpdateSettingsComponent"
 import CreateOrEditDepartmentComponent from "./components/CreateOrEditDepartmentComponent"
 import CreateOrUpdateDistractionComponent from "./components/CreateOrUpdateDistractionComponent"
 import CreateOrUpdateEmployeeComponent from "./components/CreateOrUpdateEmployee"
@@ -13,6 +14,7 @@ import EmployeeSummaryComponent from "./components/EmployeeSummaryComponent"
 import HeaderComponent from "./components/HeaderComponent"
 import PositionSummaryComponent from "./components/PositionSummaryComponent"
 import RestSummaryComponent from "./components/RestSummaryComponent"
+import SettingsComponent from "./components/SettingsComoponent"
 import TimeSheetComponent from "./components/TimeSheetComponent"
 
 function App() {
@@ -93,6 +95,15 @@ function App() {
 						<Route
 							path='/add-rest/add'
 							component={CreateOrUpdateRestComponent}
+						/>
+						<Route path='/settings' component={SettingsComponent} />
+						<Route
+							path='/add-settings/:id'
+							component={CreateOrUpdateSettingsComponent}
+						/>
+						<Route
+							path='/add-settings/add'
+							component={CreateOrUpdateSettingsComponent}
 						/>
 					</Switch>
 				</div>
