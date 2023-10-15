@@ -21,7 +21,7 @@ public abstract class RestMapper {
         restDto.setStartRest( rest.getStartRest() );
         restDto.setEndRest( rest.getEndRest() );
         restDto.setRestTime( rest.getRestTime() );
-
+        restDto.setEmployee(rest.getEmployee());
         return restDto;
     }
 

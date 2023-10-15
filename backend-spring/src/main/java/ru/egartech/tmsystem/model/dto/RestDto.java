@@ -1,5 +1,6 @@
 package ru.egartech.tmsystem.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,6 +20,7 @@ public class RestDto {
 
     private Long id;
     //Дата
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate date;
     //Время начала перерыва
     private LocalTime startRest;

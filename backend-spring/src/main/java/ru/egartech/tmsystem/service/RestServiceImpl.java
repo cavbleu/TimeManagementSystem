@@ -56,8 +56,8 @@ public class RestServiceImpl implements RestService {
     }
 
     @Override
-    public RestDto update(Long timeSheetId, Long restId, RestDto restDto) {
-        return updateById(restId, restDto);
+    public RestDto update(Long resId, RestDto restDto) {
+        return updateById(resId, restDto);
     }
 
     @Override
