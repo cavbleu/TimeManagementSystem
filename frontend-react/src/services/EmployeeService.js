@@ -3,8 +3,12 @@ import axios from "axios"
 const SUMMARY_BASE_URL = "http://localhost:8080/api/v1/summary"
 const BASE_URL = "http://localhost:8080/api/v1/employee"
 
-class PositionService {
-	getAll(filterDto) {
+class EmployeeService {
+	getAll() {
+		return axios.get(BASE_URL)
+	}
+
+	getAllByPeriod(filterDto) {
 		return axios.put(BASE_URL + "/byPeriod", filterDto)
 	}
 
@@ -30,4 +34,4 @@ class PositionService {
 }
 
 // eslint-disable-next-line
-export default new PositionService()
+export default new EmployeeService()

@@ -1,21 +1,24 @@
 package ru.egartech.tmsystem.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Setter
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "employee")
+@EqualsAndHashCode(exclude = {"timeSheets", "rests", "distractions"})
 public class Employee {
 
     @Id
@@ -34,18 +37,49 @@ public class Employee {
     private Long privilegesNumber;
 
     @ManyToOne
-    @JsonIgnore
     private Position position;
 
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @OrderBy("date ASC")
     @JsonIgnore
-    private List<TimeSheet> timeSheets;
+    private List<TimeSheet> timeSheets = new ArrayList<>();
 
-    public Employee(String name, int age, Position position) {
+    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OrderBy("date ASC")
+    @OrderColumn(name = "id")
+    @JsonIgnore
+    private List<Rest> rests = new ArrayList<>();;
+
+    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OrderBy("date ASC")
+    @OrderColumn(name = "id")
+    @JsonIgnore
+    private List<Distraction> distractions = new ArrayList<>();;
+
+    public Employee(String name, int age, Position position, Long privilegesNumber, Long id) {
         this.name = name;
         this.age = age;
         this.position = position;
+        this.privilegesNumber = privilegesNumber;
+        this.id = id;
     }
 
+    public Employee(Long id) {
+        this.id = id;
+    }
+
+    public Employee(Long id, String name, int age, Long privilegesNumber, Position position, List<TimeSheet> timeSheets) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.privilegesNumber = privilegesNumber;
+        this.position = position;
+        this.timeSheets = timeSheets;
+    }
+
+    public Employee(List<TimeSheet> timeSheets, List<Rest> rests, List<Distraction> distractions) {
+        this.timeSheets = timeSheets;
+        this.rests = rests;
+        this.distractions = distractions;
+    }
 }

@@ -9,17 +9,31 @@ import java.time.Duration;
 @Mapper(componentModel = "spring")
 public abstract class DistractionMapper {
 
-    public abstract DistractionDto toDto(Distraction distraction);
+    public DistractionDto toDto(Distraction distraction) {
+        if (distraction == null) {
+            return null;
+        }
+
+        DistractionDto distractionDto = new DistractionDto();
+
+        distractionDto.setId(distraction.getId());
+        distractionDto.setDate(distraction.getDate());
+        distractionDto.setStartDistraction(distraction.getStartDistraction());
+        distractionDto.setEndDistraction(distraction.getEndDistraction());
+        distractionDto.setDistractionTime(distraction.getDistractionTime());
+        distractionDto.setEmployee(distraction.getEmployee());
+
+        return distractionDto;
+    }
 
     public Distraction toEntity(DistractionDto dto) {
         Distraction distraction = new Distraction();
         distraction.setDate(dto.getDate());
         distraction.setStartDistraction(dto.getStartDistraction());
         distraction.setEndDistraction(dto.getEndDistraction());
-        distraction.setTimeSheet(dto.getTimeSheet());
         distraction.setDistractionTime(Duration.between(dto.getStartDistraction(),
                 dto.getEndDistraction()).toMinutes());
-
+        distraction.setEmployee(dto.getEmployee());
         return distraction;
     }
 }

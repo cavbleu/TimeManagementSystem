@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.egartech.tmsystem.model.entity.Position;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Setter
@@ -20,7 +21,7 @@ public class EditEmployeeDto {
     //Список привилегий в виде числа
     private Long privilegesNumber;
     //Список всех должностей
-    List<PositionDto> allPositions;
+    List<PositionDto> allPositions = new ArrayList<>();;
     //Должность
     private Position position;
     private boolean isLateIncreased;

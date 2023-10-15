@@ -63,14 +63,14 @@ VALUES (1, '2023-10-02', '18:00:00', '9:00', 540, null, 1),
 ON CONFLICT (id)
 DO NOTHING;
 
-INSERT INTO distraction (id, date, distraction_time, end_distraction, start_distraction, time_sheet_id)
+INSERT INTO distraction (id, date, distraction_time, end_distraction, start_distraction, employee_id)
 VALUES (1, '2023-10-02', 10, '12:10', '12:00', 1),
        (2, '2023-10-02', 15, '13:10', '12:55', 1),
        (3, '2023-10-02', 5, '11:25', '11:20', 1)
 ON CONFLICT (id)
 DO NOTHING;
 
-INSERT INTO rest (id, date, start_rest, end_rest, rest_time, time_sheet_id)
+INSERT INTO rest (id, date, start_rest, end_rest, rest_time, employee_id)
 VALUES (1, '2023-10-02', '9:45', '11:00', 75, 1)
 ON CONFLICT (id)
 DO NOTHING;

@@ -17,4 +17,6 @@ public interface TimeSheetRepository extends JpaRepository<TimeSheet, Long> {
             "and t.date >= :startDate " +
             "and t.date <= :endDate")
     List<EmployeeTimeSheetDto> employeeTimeSheetsByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+
+    List<TimeSheet> findByDateBetweenAndEmployee_Id(LocalDate startDate, LocalDate endDate, Long empId);
 }

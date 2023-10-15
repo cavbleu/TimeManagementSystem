@@ -8,18 +8,19 @@ import filterFactory, {
 	textFilter,
 } from "react-bootstrap-table2-filter"
 import DatePicker from "react-datepicker"
+import DistractionService from "../services/DistractionService"
 import EmployeeService from "../services/EmployeeService"
-import TimeSheetService from "../services/TimeSheetService"
 
 class Helper {
-	constructor(name, timeSheet, position) {
+	constructor(name, position, distraction, id) {
 		this.name = name
-		this.timeSheet = timeSheet
 		this.position = position
+		this.distraction = distraction
+		this.id = id
 	}
 }
 
-class TimeSheetComponent extends Component {
+class DistractionComponent extends Component {
 	constructor(props) {
 		super(props)
 
@@ -28,14 +29,14 @@ class TimeSheetComponent extends Component {
 			employees: [],
 			id: "",
 			name: "",
-			timeSheet: {
+			distraction: {
 				id: "",
 				date: "",
-				absenceReason: "",
-				startWork: "",
-				endWork: "",
-				workTime: "",
+				startDistraction: "",
+				endDistraction: "",
+				distractionTime: "",
 			},
+
 			position: {
 				id: "",
 				name: "",
@@ -60,23 +61,20 @@ class TimeSheetComponent extends Component {
 			startDate: this.state.startDate.toLocaleDateString("ru-RU"),
 			endDate: this.state.endDate.toLocaleDateString("ru-RU"),
 		}
-
 		console.log(JSON.stringify(filterDto))
-
 		EmployeeService.getAllByPeriod(filterDto)
 			.then(res => {
 				let ar = []
-
 				res.data.map(data => {
-					data.timeSheets.map(t => {
-						ar.push(new Helper(data.name, t, data.position, data.id))
+					data.distractions.map(distr => {
+						ar.push(new Helper(data.name, data.position, distr, data.id))
 					})
 				})
 
 				ar.sort(
 					(a, b) =>
-						moment(b.timeSheet.date, "DD.MM.YY") -
-						moment(a.timeSheet.date, "DD.MM.YY")
+						moment(b.distraction.date, "DD.MM.YY") -
+						moment(a.distraction.date, "DD.MM.YY")
 				)
 
 				this.setState({
@@ -113,7 +111,7 @@ class TimeSheetComponent extends Component {
 
 	columns = [
 		{
-			dataField: "timeSheet.date",
+			dataField: "distraction.date",
 			text: "Дата",
 			sort: true,
 			filter: numberFilter({
@@ -150,8 +148,8 @@ class TimeSheetComponent extends Component {
 			headerFormatter: this.filterFormatter,
 		},
 		{
-			dataField: "timeSheet.startWork",
-			text: "Начало рабочего дня",
+			dataField: "distraction.startDistraction",
+			text: "Время начала отвлечения",
 			sort: true,
 			filter: numberFilter({
 				placeholder: "Фильтр...",
@@ -160,8 +158,8 @@ class TimeSheetComponent extends Component {
 			headerFormatter: this.filterFormatter,
 		},
 		{
-			dataField: "timeSheet.endWork",
-			text: "Окончание рабочего дня",
+			dataField: "distraction.endDistraction",
+			text: "Время окончания отвлечения",
 			sort: true,
 			filter: numberFilter({
 				placeholder: "Фильтр...",
@@ -170,21 +168,12 @@ class TimeSheetComponent extends Component {
 			headerFormatter: this.filterFormatter,
 		},
 		{
-			dataField: "timeSheet.workTime",
-			text: "Отработанное время",
+			dataField: "distraction.distractionTime",
+			text: "Суммарное время",
 			sort: true,
 			filter: numberFilter({
 				placeholder: "Фильтр...",
 				defaultValue: { comparator: Comparator.GT },
-			}),
-			headerFormatter: this.filterFormatter,
-		},
-		{
-			dataField: "timeSheet.absenceReason",
-			text: "Причина отсутствия",
-			sort: true,
-			filter: textFilter({
-				placeholder: "Фильтр...",
 			}),
 			headerFormatter: this.filterFormatter,
 		},
@@ -206,7 +195,7 @@ class TimeSheetComponent extends Component {
 			<div>
 				<button
 					onClick={() =>
-						(window.location.href = `/add-timeSheet/${row.timeSheet.id}`)
+						(window.location.href = `/add-distraction/${row.distraction.id}`)
 					}
 					className='btn btn-success'
 				>
@@ -216,7 +205,7 @@ class TimeSheetComponent extends Component {
 				<button
 					style={{ marginTop: 5 }}
 					onClick={() => {
-						TimeSheetService.delete(row.timeSheet.id)
+						DistractionService.delete(row.distraction.id)
 							.catch(err => {
 								alert(err.response.data)
 							})
@@ -235,8 +224,10 @@ class TimeSheetComponent extends Component {
 	render() {
 		return (
 			<div>
-				<h2 className='text-center'>Табели рабочего времени сотрудников</h2>
-				<div>
+				<h2 className='text-center' style={{ marginTop: 20 }}>
+					Сводная таблица отвлечений сотрудников от целевых программ
+				</h2>
+				<div style={{ marginTop: 20 }}>
 					<h5>Дата начала отчетного периода: </h5>
 					<DatePicker
 						showIcon
@@ -263,7 +254,7 @@ class TimeSheetComponent extends Component {
 				</div>
 				<div className='d-grid gap-2 d-md-flex justify-content-md-end'>
 					<button
-						onClick={() => this.props.history.push("/add-timeSheet/add")}
+						onClick={() => this.props.history.push("/add-distraction/add")}
 						style={{ marginBottom: "5px" }}
 						className='btn btn-primary'
 					>
@@ -284,4 +275,4 @@ class TimeSheetComponent extends Component {
 		)
 	}
 }
-export default TimeSheetComponent
+export default DistractionComponent

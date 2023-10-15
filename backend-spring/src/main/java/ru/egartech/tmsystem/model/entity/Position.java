@@ -31,10 +31,10 @@ public class Position {
     @ManyToOne
     private Department department;
 
-    @OneToMany(mappedBy = "position", fetch = FetchType.EAGER)
-    @JsonIgnore
+    @OneToMany(mappedBy = "position", fetch = FetchType.LAZY)
     @OrderBy("name ASC")
     @OrderColumn(name = "id")
+    @JsonIgnore
     private List<Employee> employees = new ArrayList<>();
 
     public Position(String name) {

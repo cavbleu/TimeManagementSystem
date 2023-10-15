@@ -2,25 +2,30 @@ package ru.egartech.tmsystem.service;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.criteria.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import ru.egartech.tmsystem.exception.DurationException;
 import ru.egartech.tmsystem.exception.EmployeeNotFoundException;
-import ru.egartech.tmsystem.exception.StartDateEarlierException;
-import ru.egartech.tmsystem.model.dto.*;
-import ru.egartech.tmsystem.model.entity.Distraction;
+import ru.egartech.tmsystem.model.dto.EditEmployeeDto;
+import ru.egartech.tmsystem.model.dto.EmployeeDto;
+import ru.egartech.tmsystem.model.dto.EmployeeSummaryDto;
+import ru.egartech.tmsystem.model.dto.SettingsDto;
 import ru.egartech.tmsystem.model.entity.Employee;
 import ru.egartech.tmsystem.model.entity.Rest;
-import ru.egartech.tmsystem.model.entity.TimeSheet;
 import ru.egartech.tmsystem.model.mapping.EmployeeMapper;
+import ru.egartech.tmsystem.model.repository.DistractionRepository;
 import ru.egartech.tmsystem.model.repository.EmployeeRepository;
+import ru.egartech.tmsystem.model.repository.RestRepository;
+import ru.egartech.tmsystem.model.repository.TimeSheetRepository;
 import ru.egartech.tmsystem.utils.BitsConverter;
+import ru.egartech.tmsystem.utils.PeriodValidation;
 import ru.egartech.tmsystem.utils.SummaryFormatter;
 
 import java.time.LocalDate;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,17 +36,35 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeMapper mapper;
     private final SettingsService settingsService;
     private final PositionService positionService;
+    private final RestService restService;
+    private final DistractionService distractionService;
 
     @PersistenceContext
     private EntityManager entityManager;
 
 
+
+    private  final TimeSheetRepository timeSheetRepository;
+
+    private  final RestRepository restRepository;
+
+    private  final DistractionRepository distractionRepository;
+
+
     public EmployeeServiceImpl(@Qualifier("employeeRepository") EmployeeRepository repository, EmployeeMapper mapper,
-                               SettingsService settingsService, PositionService positionService) {
+                               SettingsService settingsService, PositionService positionService,
+                               RestService restService, DistractionService distractionService,
+                               TimeSheetRepository timeSheetRepository, RestRepository restRepository, DistractionRepository distractionRepository) {
         this.repository = repository;
         this.mapper = mapper;
         this.settingsService = settingsService;
         this.positionService = positionService;
+        this.restService = restService;
+        this.distractionService = distractionService;
+        this.distractionRepository = distractionRepository;
+        this.restRepository = restRepository;
+        this.timeSheetRepository = timeSheetRepository;
+
     }
 
     @Override
@@ -49,10 +72,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Employee> cq = cb.createQuery(Employee.class);
         Root<Employee> root = cq.from(Employee.class);
-        Fetch<Employee, TimeSheet> b = root.fetch("timeSheets", JoinType.LEFT);
-        Fetch<TimeSheet, Rest> r = b.fetch("rests", JoinType.LEFT);
-        Fetch<TimeSheet, Distraction> d = b.fetch("distractions", JoinType.LEFT);
-        cq.select(root);
+        cq.multiselect(root.get("name"), root.get("age"), root.get("position"), root.get("privilegesNumber"), root.get("id"));
         List<Employee> result = entityManager.createQuery(cq).getResultList();
         return result.stream()
                 .map(mapper::toDto)
@@ -90,13 +110,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<EmployeeSummaryDto> employeesSummaryByPeriod(LocalDate startDate, LocalDate endDate) {
 
-        if (Period.between(startDate, endDate).getDays() > 30) {
-            throw new DurationException(30);
-        }
-
-        if (startDate.isAfter(endDate)) {
-            throw new StartDateEarlierException();
-        }
+        PeriodValidation.validatePeriod(30, 0, 0, startDate, endDate);
 
         List<EmployeeSummaryDto> employeesSummary = new ArrayList<>();
         List<EmployeeDto> employees = findAll();
@@ -148,8 +162,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EditEmployeeDto update(EditEmployeeDto editEmployeeDto) {
-         updateById(editEmployeeDto.getId(), mapper.toDto(editEmployeeDto));
-         return getEditEmployeeDtoById(editEmployeeDto.getId());
+        updateById(editEmployeeDto.getId(), mapper.toDto(editEmployeeDto));
+        return getEditEmployeeDtoById(editEmployeeDto.getId());
     }
 
     @Override
@@ -161,30 +175,34 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<EmployeeDto> findAllByPeriod(LocalDate startDate, LocalDate endDate) {
-        if (Period.between(startDate, endDate).getDays() > 10) {
-            throw new DurationException(10);
-        }
-        if (startDate.isAfter(endDate)) {
-            throw new StartDateEarlierException();
-        }
+
+        PeriodValidation.validatePeriod(10, 0, 0, startDate, endDate);
 
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Employee> cq = cb.createQuery(Employee.class);
-        Root<Employee> root = cq.from(Employee.class);
-        Fetch<Employee, TimeSheet> b = root.fetch("timeSheets", JoinType.LEFT);
-        Fetch<TimeSheet, Rest> r = b.fetch("rests", JoinType.LEFT);
-        Fetch<TimeSheet, Distraction> d = b.fetch("distractions", JoinType.LEFT);
-
-        Predicate greaterThanDate = cb.greaterThanOrEqualTo(root.join("timeSheets").get("date"), startDate);
-        Predicate lessThanDate = cb.lessThanOrEqualTo(root.join("timeSheets").get("date"), endDate);
-
+        CriteriaQuery<Rest> cq = cb.createQuery(Rest.class);
+        Root<Rest> root = cq.from(Rest.class);
+        Predicate greaterThanDate = cb.greaterThanOrEqualTo(root.get("date"), startDate);
+        Predicate lessThanDate = cb.lessThanOrEqualTo(root.get("date"), endDate);
         cq.select(root).where(cb.and(greaterThanDate, lessThanDate));
+        List<Rest> rests = entityManager.createQuery(cq).getResultList();
 
-        List<Employee> result = entityManager.createQuery(cq).getResultList();
+        List<EmployeeDto> result = new ArrayList<>();
+        for (EmployeeDto employeeDto : findAll()) {
+            EmployeeDto dto = new EmployeeDto();
+            dto.setId(employeeDto.getId());
+            dto.setName(employeeDto.getName());
+            dto.setAge(employeeDto.getAge());
+            dto.setPosition(employeeDto.getPosition());
+            dto.setPrivilegesNumber(employeeDto.getPrivilegesNumber());
+            dto.setPosition(employeeDto.getPosition());
+            dto.setRests(restRepository.findByDateBetweenAndEmployee_Id(startDate, endDate, employeeDto.getId()));
+            dto.setDistractions(distractionRepository.findByDateBetweenAndEmployee_Id(startDate, endDate, employeeDto.getId()));
+            dto.setTimeSheets(timeSheetRepository.findByDateBetweenAndEmployee_Id(startDate, endDate, employeeDto.getId()));
 
-        return entityManager.createQuery(cq).getResultList().stream()
-                .map(mapper::toDto)
-                .toList();
+            result.add(dto);
+        }
+
+        return result;
     }
 
     @Override

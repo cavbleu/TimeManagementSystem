@@ -5,24 +5,30 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.egartech.tmsystem.model.dto.DistractionDto;
+import ru.egartech.tmsystem.model.dto.TimeSheetDto;
 import ru.egartech.tmsystem.service.DistractionService;
 
 @RequiredArgsConstructor
 @RestController
+@CrossOrigin(origins = "http://localhost:3000/")
 @RequestMapping("api/v1/distraction")
 public class DistractionController {
 
     private final DistractionService distractionService;
 
-    @PostMapping("/{timeSheetId}")
-    public ResponseEntity<DistractionDto> saveDistraction(@Valid  @RequestBody DistractionDto dto, @PathVariable Long timeSheetId) {
-        return ResponseEntity.ok(distractionService.save(timeSheetId, dto));
+    @GetMapping("/{id}")
+    public ResponseEntity<DistractionDto> getDistractionById(@PathVariable Long id) {
+        return ResponseEntity.ok(distractionService.findById(id));
     }
 
-    @PutMapping("/{distractionId}")
-    public ResponseEntity<DistractionDto> updateDistraction(@Valid @RequestBody DistractionDto dto, @RequestParam Long timeSheetId,
-                                                     @PathVariable Long distractionId) {
-        return ResponseEntity.ok(distractionService.update(timeSheetId, distractionId, dto));
+    @PostMapping
+    public ResponseEntity<DistractionDto> saveDistraction(@Valid  @RequestBody DistractionDto dto) {
+        return ResponseEntity.ok(distractionService.save(dto.getId(), dto));
+    }
+
+    @PutMapping
+    public ResponseEntity<DistractionDto> updateDistraction(@Valid @RequestBody DistractionDto dto) {
+        return ResponseEntity.ok(distractionService.updateById(dto.getId(), dto));
     }
 
     @DeleteMapping("/{id}")

@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.egartech.tmsystem.model.entity.Employee;
 import ru.egartech.tmsystem.model.entity.TimeSheet;
 
 import java.time.LocalDate;
@@ -27,7 +28,6 @@ public class DistractionDto {
     private LocalTime endDistraction;
     //Суммарное время отвлечения от целевых программ
     private long distractionTime;
-    @JsonIgnore
-    //Табель рабочего времени
-    private TimeSheet timeSheet;
+
+    private Employee employee;
 }

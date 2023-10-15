@@ -15,6 +15,7 @@ import ru.egartech.tmsystem.model.entity.Position;
 import ru.egartech.tmsystem.model.mapping.DepartmentMapper;
 import ru.egartech.tmsystem.model.mapping.PositionMapper;
 import ru.egartech.tmsystem.model.repository.PositionRepository;
+import ru.egartech.tmsystem.utils.PeriodValidation;
 import ru.egartech.tmsystem.utils.SummaryFormatter;
 
 import java.time.LocalDate;
@@ -74,14 +75,7 @@ public class PositionServiceImpl implements PositionService {
     @Override
     public List<PositionSummaryDto> positionsSummaryByPeriod(LocalDate startDate, LocalDate endDate) {
 
-
-        if (Period.between(startDate, endDate).getDays() > 30) {
-            throw new DurationException(30);
-        }
-
-        if (startDate.isAfter(endDate)) {
-            throw new StartDateEarlierException();
-        }
+        PeriodValidation.validatePeriod(30,0,0, startDate, endDate);
 
         List<PositionSummaryDto> positionsSummary = new ArrayList<>();
         List<PositionDto> positions = findAll();
