@@ -12,20 +12,24 @@ services:
       - 'PGUSER=postgres'
       - 'POSTGRES_PASSWORD=root'
       - 'POSTGRES_DB=postgresql'
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready", "-d", "postgresql" ]
-      interval: 1s
-      retries: 20
 
-  app:
+  server:
     image: spring
     container_name: spring
-    build: ./
+    build: ./backend-spring
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
     ports:
-      - 8080:8080
+      - "8080:8080"
     environment:
       PORT: 8080
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+
+  client:
+    image: react
+    container_name: react
+    build: ./frontend-react
+    ports:
+      - "3000:3000"
+    depends_on:
+      - server
