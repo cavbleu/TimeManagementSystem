@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.egartech.tmsystem.model.dto.PrivilegeDto;
-import ru.egartech.tmsystem.model.dto.SettingsDto;
 import ru.egartech.tmsystem.service.PrivilegeService;
 
 import java.util.List;

@@ -4,11 +4,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.egartech.tmsystem.model.dto.DistractionDto;
 import ru.egartech.tmsystem.model.dto.RestDto;
 import ru.egartech.tmsystem.service.RestService;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController

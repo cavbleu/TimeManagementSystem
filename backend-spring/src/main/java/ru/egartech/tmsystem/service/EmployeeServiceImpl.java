@@ -4,7 +4,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,7 +14,6 @@ import ru.egartech.tmsystem.model.dto.EmployeeDto;
 import ru.egartech.tmsystem.model.dto.EmployeeSummaryDto;
 import ru.egartech.tmsystem.model.dto.SettingsDto;
 import ru.egartech.tmsystem.model.entity.Employee;
-import ru.egartech.tmsystem.model.entity.Rest;
 import ru.egartech.tmsystem.model.mapping.EmployeeMapper;
 import ru.egartech.tmsystem.model.repository.DistractionRepository;
 import ru.egartech.tmsystem.model.repository.EmployeeRepository;
@@ -36,31 +34,24 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeMapper mapper;
     private final SettingsService settingsService;
     private final PositionService positionService;
-    private final RestService restService;
-    private final DistractionService distractionService;
-
-    @PersistenceContext
-    private EntityManager entityManager;
-
-
-
     private  final TimeSheetRepository timeSheetRepository;
 
     private  final RestRepository restRepository;
 
     private  final DistractionRepository distractionRepository;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
+
 
     public EmployeeServiceImpl(@Qualifier("employeeRepository") EmployeeRepository repository, EmployeeMapper mapper,
                                SettingsService settingsService, PositionService positionService,
-                               RestService restService, DistractionService distractionService,
                                TimeSheetRepository timeSheetRepository, RestRepository restRepository, DistractionRepository distractionRepository) {
         this.repository = repository;
         this.mapper = mapper;
         this.settingsService = settingsService;
         this.positionService = positionService;
-        this.restService = restService;
-        this.distractionService = distractionService;
         this.distractionRepository = distractionRepository;
         this.restRepository = restRepository;
         this.timeSheetRepository = timeSheetRepository;
@@ -108,7 +99,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeSummaryDto> employeesSummaryByPeriod(LocalDate startDate, LocalDate endDate) {
+    public List<EmployeeSummaryDto> employeeSummaryByPeriod(LocalDate startDate, LocalDate endDate) {
 
         PeriodValidation.validatePeriod(30, 0, 0, startDate, endDate);
 
@@ -177,14 +168,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<EmployeeDto> findAllByPeriod(LocalDate startDate, LocalDate endDate) {
 
         PeriodValidation.validatePeriod(10, 0, 0, startDate, endDate);
-
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Rest> cq = cb.createQuery(Rest.class);
-        Root<Rest> root = cq.from(Rest.class);
-        Predicate greaterThanDate = cb.greaterThanOrEqualTo(root.get("date"), startDate);
-        Predicate lessThanDate = cb.lessThanOrEqualTo(root.get("date"), endDate);
-        cq.select(root).where(cb.and(greaterThanDate, lessThanDate));
-        List<Rest> rests = entityManager.createQuery(cq).getResultList();
 
         List<EmployeeDto> result = new ArrayList<>();
         for (EmployeeDto employeeDto : findAll()) {

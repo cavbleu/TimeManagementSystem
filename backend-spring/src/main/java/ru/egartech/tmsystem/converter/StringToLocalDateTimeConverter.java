@@ -2,7 +2,6 @@ package ru.egartech.tmsystem.converter;
 
 import org.springframework.core.convert.converter.Converter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 

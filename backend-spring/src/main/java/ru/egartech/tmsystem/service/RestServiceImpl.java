@@ -7,7 +7,6 @@ import ru.egartech.tmsystem.exception.RestNotFoundException;
 import ru.egartech.tmsystem.model.dto.RestDto;
 import ru.egartech.tmsystem.model.entity.Rest;
 import ru.egartech.tmsystem.model.mapping.RestMapper;
-import ru.egartech.tmsystem.model.mapping.TimeSheetMapper;
 import ru.egartech.tmsystem.model.repository.RestRepository;
 
 import java.util.List;
@@ -17,9 +16,7 @@ import java.util.List;
 public class RestServiceImpl implements RestService {
 
     private final RestRepository repository;
-    private final TimeSheetService timeSheetService;
     private final RestMapper mapper;
-    private final TimeSheetMapper timeSheetMapper;
 
     @Override
     public List<RestDto> findAll() {

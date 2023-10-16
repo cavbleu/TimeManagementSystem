@@ -6,7 +6,6 @@ import org.springframework.data.repository.query.Param;
 import ru.egartech.tmsystem.model.entity.Employee;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
@@ -34,8 +33,4 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     Optional<Long> employeeRestTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate,
                                   @Param("id") Long id);
 
-    @Query("select e from Employee e join e.timeSheets t " +
-            "where t.date >= :startDate " +
-            "and t.date <= :endDate ")
-    List<Employee> employeesByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 }

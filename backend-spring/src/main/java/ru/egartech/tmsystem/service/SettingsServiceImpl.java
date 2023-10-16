@@ -12,7 +12,6 @@ import ru.egartech.tmsystem.model.mapping.SettingsMapper;
 import ru.egartech.tmsystem.model.repository.SettingsRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
