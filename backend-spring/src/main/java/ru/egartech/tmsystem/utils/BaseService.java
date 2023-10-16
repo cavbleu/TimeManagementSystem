@@ -1,7 +1,6 @@
 package ru.egartech.tmsystem.utils;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface BaseService<T, ID> {
     List<T> findAll();

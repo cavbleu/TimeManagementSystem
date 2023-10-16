@@ -8,4 +8,5 @@ public interface RestService extends BaseService<RestDto, Long> {
     RestDto update(Long restId, RestDto restDto);
 
     RestDto save(Long timeSheetId, RestDto restDto);
+
 }

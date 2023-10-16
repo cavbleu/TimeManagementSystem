@@ -9,7 +9,6 @@ import ru.egartech.tmsystem.model.mapping.PrivilegeMapper;
 import ru.egartech.tmsystem.model.repository.PrivilegeRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -39,12 +38,5 @@ public class PrivilegeServiceImpl implements PrivilegeService {
                     return mapper.toDto(repository.save(entity));
                 })
                 .orElseThrow(() -> new PrivilegeNotFoundException(id));
-    }
-
-    @Override
-    public PrivilegeDto increasedAmountByPrivilege(String privilegeName) {
-        return repository.increasedAmountByPrivilege(privilegeName)
-                .map(mapper::toDto)
-                .orElseThrow(() -> new PrivilegeNotFoundException(privilegeName));
     }
 }

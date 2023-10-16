@@ -13,5 +13,5 @@ import java.util.List;
 public class EditPositionDto extends PositionDto {
 
     //Список всех отделов
-    private List<DepartmentDto> allDepartments = new ArrayList<>();;
+    private List<DepartmentDto> allDepartments = new ArrayList<>();
 }

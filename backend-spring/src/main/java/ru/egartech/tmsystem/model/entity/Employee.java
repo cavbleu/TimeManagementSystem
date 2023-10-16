@@ -1,8 +1,6 @@
 package ru.egartech.tmsystem.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
@@ -48,13 +46,13 @@ public class Employee {
     @OrderBy("date ASC")
     @OrderColumn(name = "id")
     @JsonIgnore
-    private List<Rest> rests = new ArrayList<>();;
+    private List<Rest> rests = new ArrayList<>();
 
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @OrderBy("date ASC")
     @OrderColumn(name = "id")
     @JsonIgnore
-    private List<Distraction> distractions = new ArrayList<>();;
+    private List<Distraction> distractions = new ArrayList<>();
 
     public Employee(String name, int age, Position position, Long privilegesNumber, Long id) {
         this.name = name;

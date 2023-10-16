@@ -19,12 +19,8 @@ public class PositionDto extends EntityDto {
     private Department department;
     @JsonIgnore
     //Список сотрудников
-    List<Employee> employees = new ArrayList<>();;
+    List<Employee> employees = new ArrayList<>();
 
-    public PositionDto(String name, Department department) {
-        super(name);
-        this.department = department;
-    }
 }
 
 

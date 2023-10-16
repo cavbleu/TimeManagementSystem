@@ -7,7 +7,6 @@ import ru.egartech.tmsystem.exception.DistractionNotFoundException;
 import ru.egartech.tmsystem.model.dto.DistractionDto;
 import ru.egartech.tmsystem.model.entity.Distraction;
 import ru.egartech.tmsystem.model.mapping.DistractionMapper;
-import ru.egartech.tmsystem.model.mapping.TimeSheetMapper;
 import ru.egartech.tmsystem.model.repository.DistractionRepository;
 
 import java.util.List;
@@ -18,8 +17,6 @@ public class DistractionServiceImpl implements DistractionService {
 
     private final DistractionRepository repository;
     private final DistractionMapper mapper;
-    private final TimeSheetMapper timeSheetMapper;
-    private final TimeSheetService timeSheetService;
 
     @Override
     public List<DistractionDto> findAll() {

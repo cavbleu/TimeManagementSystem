@@ -3,7 +3,6 @@ package ru.egartech.tmsystem.service;
 import ru.egartech.tmsystem.model.dto.EditPositionDto;
 import ru.egartech.tmsystem.model.dto.PositionDto;
 import ru.egartech.tmsystem.model.dto.PositionSummaryDto;
-import ru.egartech.tmsystem.model.entity.Position;
 import ru.egartech.tmsystem.utils.BaseService;
 
 import java.time.LocalDate;
@@ -21,8 +20,6 @@ public interface PositionService extends BaseService<PositionDto, Long> {
 
     PositionDto save(PositionDto positionDto, String departmentName);
     PositionDto update(PositionDto positionDto);
-
-    Position findByName(String positionName);
 
     EditPositionDto getEditPositionDtoById(Long id);
 }

@@ -8,8 +8,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.exception.DepartmentConstraintException;
 import ru.egartech.tmsystem.exception.DepartmentNotFoundException;
-import ru.egartech.tmsystem.exception.DurationException;
-import ru.egartech.tmsystem.exception.StartDateEarlierException;
 import ru.egartech.tmsystem.model.dto.DepartmentDto;
 import ru.egartech.tmsystem.model.dto.DepartmentSummaryDto;
 import ru.egartech.tmsystem.model.dto.SettingsDto;
@@ -21,7 +19,6 @@ import ru.egartech.tmsystem.utils.PeriodValidation;
 import ru.egartech.tmsystem.utils.SummaryFormatter;
 
 import java.time.LocalDate;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -125,9 +122,4 @@ public class DepartmentServiceImpl implements DepartmentService {
                 .orElse(0L);
     }
 
-    @Override
-    public Department findByName(String name) {
-        return repository.findDepartmentByName(name)
-                .orElseThrow(() -> new DepartmentNotFoundException(name));
-    }
 }

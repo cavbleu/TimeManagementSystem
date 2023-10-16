@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface EmployeeService extends BaseService<EmployeeDto, Long> {
-    List<EmployeeSummaryDto> employeesSummaryByPeriod(LocalDate startDate, LocalDate endDate);
+    List<EmployeeSummaryDto> employeeSummaryByPeriod(LocalDate startDate, LocalDate endDate);
 
     long employeeWorkTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id);
 

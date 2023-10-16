@@ -4,22 +4,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.exception.DepartmentConstraintException;
-import ru.egartech.tmsystem.exception.DurationException;
 import ru.egartech.tmsystem.exception.PositionNotFoundException;
-import ru.egartech.tmsystem.exception.StartDateEarlierException;
 import ru.egartech.tmsystem.model.dto.EditPositionDto;
 import ru.egartech.tmsystem.model.dto.PositionDto;
 import ru.egartech.tmsystem.model.dto.PositionSummaryDto;
 import ru.egartech.tmsystem.model.dto.SettingsDto;
 import ru.egartech.tmsystem.model.entity.Position;
-import ru.egartech.tmsystem.model.mapping.DepartmentMapper;
 import ru.egartech.tmsystem.model.mapping.PositionMapper;
 import ru.egartech.tmsystem.model.repository.PositionRepository;
 import ru.egartech.tmsystem.utils.PeriodValidation;
 import ru.egartech.tmsystem.utils.SummaryFormatter;
 
 import java.time.LocalDate;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +25,6 @@ public class PositionServiceImpl implements PositionService {
 
     private final PositionRepository repository;
     private final PositionMapper mapper;
-    private final DepartmentMapper departmentMapper;
     private final SettingsService settingsService;
     private final DepartmentService departmentService;
 
@@ -124,12 +119,6 @@ public class PositionServiceImpl implements PositionService {
     @Override
     public PositionDto update(PositionDto positionDto) {
         return updateById(positionDto.getId(), positionDto);
-    }
-
-    @Override
-    public Position findByName(String positionName) {
-        return repository.findByName(positionName)
-                .orElseThrow(() -> new PositionNotFoundException(positionName));
     }
 
     @Override
