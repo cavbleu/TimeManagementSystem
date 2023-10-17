@@ -35,4 +35,7 @@ public class Department {
     @OrderColumn(name = "id")
     private List<Position> positions = new ArrayList<>();
 
+    public Department(String name) {
+        this.name = name;
+    }
 }

@@ -39,4 +39,5 @@ public class PrivilegeServiceImpl implements PrivilegeService {
                 })
                 .orElseThrow(() -> new PrivilegeNotFoundException(id));
     }
+
 }

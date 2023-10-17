@@ -18,5 +18,9 @@ public class DepartmentDto extends EntityDto {
 
     @JsonIgnore
     //Должности, входящие в состав отдела
-    private List<Position> positions = new ArrayList<>();;
+    private List<Position> positions = new ArrayList<>();
+
+    public DepartmentDto(String name) {
+        super(name);
+    }
 }

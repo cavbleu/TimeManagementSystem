@@ -8,4 +8,5 @@ public interface PrivilegeService  {
     List<PrivilegeDto> findAll();
     PrivilegeDto findById(Long id);
     PrivilegeDto updateById(Long id, PrivilegeDto dto);
+
 }

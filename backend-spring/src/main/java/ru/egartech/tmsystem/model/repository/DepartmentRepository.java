@@ -33,5 +33,4 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
     Optional<Long> departmentRestTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate,
                                               @Param("id") Long id);
 
-    Optional<Department> findDepartmentByName(String name);
 }

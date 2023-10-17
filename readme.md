@@ -4,14 +4,18 @@
 Целью работы системы является мониторинг рабочего времени сотрудников.
 
 **Сводная диаграмма БД**
-![](backend-springboot/src/main/resources/readme/diagram.png)
+![](backend-spring/src/main/resources/readme/diagram.png)
 
 **Стек технологий**
+![](backend-spring/src/main/resources/readme/spring-react.png)
+
 * Spring boot 3
-* PostgreSQL
+* ReactJS
+* PostgresSQL
+* Criteria API
+* Spring data JPA с использованием @Query множественных join запросов
 * Stream API
 * Collections
-* Spring data JPA с использованием @Query множественных join запросов
 * Hibernate
 * Jakarta Bean Validation
 * Docker compose

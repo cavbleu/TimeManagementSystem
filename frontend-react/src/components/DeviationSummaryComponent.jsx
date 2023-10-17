@@ -158,9 +158,7 @@ class DeviationSummaryComponent extends Component {
 
 	filterFormatter(column, colIndex, { sortElement, filterElement }) {
 		return (
-			<div
-			// style={{ display: "flex", flexDirection: "column" }}
-			>
+			<div style={{ display: "flex", flexDirection: "column" }}>
 				{filterElement}
 				{column.text}
 				{sortElement}
