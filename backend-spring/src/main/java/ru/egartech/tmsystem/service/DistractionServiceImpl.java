@@ -3,7 +3,7 @@ package ru.egartech.tmsystem.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import ru.egartech.tmsystem.exception.DistractionNotFoundException;
+import ru.egartech.tmsystem.exception.CustomEntityNotFoundException;
 import ru.egartech.tmsystem.model.dto.DistractionDto;
 import ru.egartech.tmsystem.model.entity.Distraction;
 import ru.egartech.tmsystem.model.mapping.DistractionMapper;
@@ -29,7 +29,7 @@ public class DistractionServiceImpl implements DistractionService {
     public DistractionDto findById(Long id) {
         return repository.findById(id)
                 .map(mapper::toDto)
-                .orElseThrow(DistractionNotFoundException::new);
+                .orElseThrow(() -> new CustomEntityNotFoundException(id));
     }
 
     @Override
@@ -45,7 +45,7 @@ public class DistractionServiceImpl implements DistractionService {
                     BeanUtils.copyProperties(mapper.toEntity(dto), entity, "id");
                     return mapper.toDto(repository.save(entity));
                 })
-                .orElseThrow(DistractionNotFoundException::new);
+                .orElseThrow(() -> new CustomEntityNotFoundException(id));
     }
 
     @Override

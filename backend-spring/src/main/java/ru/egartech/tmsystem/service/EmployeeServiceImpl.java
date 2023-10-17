@@ -2,18 +2,17 @@ package ru.egartech.tmsystem.service;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import ru.egartech.tmsystem.exception.EmployeeNotFoundException;
+import ru.egartech.tmsystem.exception.CustomEntityNotFoundException;
 import ru.egartech.tmsystem.model.dto.EditEmployeeDto;
 import ru.egartech.tmsystem.model.dto.EmployeeDto;
 import ru.egartech.tmsystem.model.dto.EmployeeSummaryDto;
 import ru.egartech.tmsystem.model.dto.SettingsDto;
 import ru.egartech.tmsystem.model.entity.Employee;
+import ru.egartech.tmsystem.model.entity.TimeSheet;
 import ru.egartech.tmsystem.model.mapping.EmployeeMapper;
 import ru.egartech.tmsystem.model.repository.DistractionRepository;
 import ru.egartech.tmsystem.model.repository.EmployeeRepository;
@@ -74,7 +73,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDto findById(Long id) {
         return repository.findById(id)
                 .map(mapper::toDto)
-                .orElseThrow(() -> new EmployeeNotFoundException(id));
+                .orElseThrow(() -> new CustomEntityNotFoundException(id));
     }
 
     @Override
@@ -90,7 +89,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                     BeanUtils.copyProperties(mapper.toEntity(dto), entity, "id");
                     return mapper.toDto(repository.save(entity));
                 })
-                .orElseThrow(() -> new EmployeeNotFoundException(id));
+                .orElseThrow(() -> new CustomEntityNotFoundException(id));
     }
 
     @Override
@@ -129,8 +128,18 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public long employeeWorkTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id) {
-        return repository.employeeWorkTimeByPeriod(startDate, endDate, id)
-                .orElse(0L);
+
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        Root<TimeSheet> root = cq.from(TimeSheet.class);
+        Predicate greaterThanDate = cb.greaterThanOrEqualTo(root.get("date"), startDate);
+        Predicate lessThanDate = cb.lessThanOrEqualTo(root.get("date"), endDate);
+        Predicate equalId = cb.equal(root.get("employee").get("id"), id);
+        cq.select(cb.sum(root.get("workTime")))
+                .where(cb.and(greaterThanDate, lessThanDate, equalId));
+
+        return entityManager.createQuery(cq).getSingleResult();
+
     }
 
     @Override

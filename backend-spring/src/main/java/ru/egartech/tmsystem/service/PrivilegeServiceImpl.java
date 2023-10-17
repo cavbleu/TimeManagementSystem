@@ -3,7 +3,7 @@ package ru.egartech.tmsystem.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import ru.egartech.tmsystem.exception.PrivilegeNotFoundException;
+import ru.egartech.tmsystem.exception.CustomEntityNotFoundException;
 import ru.egartech.tmsystem.model.dto.PrivilegeDto;
 import ru.egartech.tmsystem.model.mapping.PrivilegeMapper;
 import ru.egartech.tmsystem.model.repository.PrivilegeRepository;
@@ -37,7 +37,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
                     BeanUtils.copyProperties(mapper.toEntity(dto), entity, "id");
                     return mapper.toDto(repository.save(entity));
                 })
-                .orElseThrow(() -> new PrivilegeNotFoundException(id));
+                .orElseThrow(() -> new CustomEntityNotFoundException(id));
     }
 
 }
