@@ -3,7 +3,7 @@ package ru.egartech.tmsystem.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import ru.egartech.tmsystem.exception.RestNotFoundException;
+import ru.egartech.tmsystem.exception.CustomEntityNotFoundException;
 import ru.egartech.tmsystem.model.dto.RestDto;
 import ru.egartech.tmsystem.model.entity.Rest;
 import ru.egartech.tmsystem.model.mapping.RestMapper;
@@ -28,8 +28,7 @@ public class RestServiceImpl implements RestService {
     public RestDto findById(Long id) {
         return repository.findById(id)
                 .map(mapper::toDto)
-                .orElseThrow(RestNotFoundException::new);
-    }
+                .orElseThrow(() -> new CustomEntityNotFoundException(id));    }
 
     @Override
     public RestDto save(RestDto dto) {
@@ -44,7 +43,7 @@ public class RestServiceImpl implements RestService {
                     BeanUtils.copyProperties(mapper.toEntity(dto), entity, "id");
                     return mapper.toDto(repository.save(entity));
                 })
-                .orElseThrow(RestNotFoundException::new);
+                .orElseThrow(() -> new CustomEntityNotFoundException(id));
     }
 
     @Override

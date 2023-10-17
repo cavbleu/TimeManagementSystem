@@ -6,8 +6,8 @@ import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import ru.egartech.tmsystem.exception.CustomEntityNotFoundException;
 import ru.egartech.tmsystem.exception.DepartmentConstraintException;
-import ru.egartech.tmsystem.exception.DepartmentNotFoundException;
 import ru.egartech.tmsystem.model.dto.DepartmentDto;
 import ru.egartech.tmsystem.model.dto.DepartmentSummaryDto;
 import ru.egartech.tmsystem.model.dto.SettingsDto;
@@ -50,7 +50,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     public DepartmentDto findById(Long id) {
         return repository.findById(id)
                 .map(mapper::toDto)
-                .orElseThrow(() -> new DepartmentNotFoundException(id));
+                .orElseThrow(() -> new CustomEntityNotFoundException(id));
     }
 
     @Override
@@ -66,7 +66,7 @@ public class DepartmentServiceImpl implements DepartmentService {
                     BeanUtils.copyProperties(mapper.toEntity(dto), entity, "id");
                     return mapper.toDto(repository.save(entity));
                 })
-                .orElseThrow(() -> new DepartmentNotFoundException(id));
+                .orElseThrow(() -> new CustomEntityNotFoundException(id));
     }
 
     @Override

@@ -1,110 +1,94 @@
 package ru.egartech.tmsystem.exception.handler;
 
+import jakarta.persistence.EntityNotFoundException;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ru.egartech.tmsystem.exception.*;
-import ru.egartech.tmsystem.exception.DistractionNotFoundException;
+import ru.egartech.tmsystem.exception.dto.ApiError;
+
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @ControllerAdvice
-public class TimeManagementExceptionHandler {
+public class TimeManagementExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ResponseBody
-    @ExceptionHandler(DepartmentNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    String timeManagementHandler(DepartmentNotFoundException ex) {
-        return ex.getMessage();
+
+    private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
+        return new ResponseEntity<>(apiError, apiError.getStatus());
     }
 
-    @ResponseBody
-    @ExceptionHandler(DistractionNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    String timeManagementHandler(DistractionNotFoundException ex) {
-        return ex.getMessage();
+    @ExceptionHandler(EntityNotFoundException.class)
+    ResponseEntity<Object> handleException(EntityNotFoundException ex) {
+        ApiError apiError = new ApiError(NOT_FOUND);
+        apiError.setMessage(ex.getMessage());
+        apiError.setStackTrace(ExceptionUtils.getStackTrace(ex));
+        ExceptionUtils.getStackTrace(ex);
+        return buildResponseEntity(apiError);
     }
 
-    @ResponseBody
-    @ExceptionHandler(EmployeeNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    String timeManagementHandler(EmployeeNotFoundException ex) {
-        return ex.getMessage();
+    @ExceptionHandler(ActiveProfileDeleteException.class)
+    ResponseEntity<Object> handleException(ActiveProfileDeleteException ex) {
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
+        apiError.setMessage(ex.getMessage());
+        apiError.setStackTrace(ExceptionUtils.getStackTrace(ex));
+        ExceptionUtils.getStackTrace(ex);
+        return buildResponseEntity(apiError);
     }
 
-    @ResponseBody
-    @ExceptionHandler(PositionNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    String timeManagementHandler(PositionNotFoundException ex) {
-        return ex.getMessage();
+    @ExceptionHandler(ActiveProfileNotInstalledException.class)
+    ResponseEntity<Object> handleException(ActiveProfileNotInstalledException ex) {
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
+        apiError.setMessage(ex.getMessage());
+        apiError.setStackTrace(ExceptionUtils.getStackTrace(ex));
+        ExceptionUtils.getStackTrace(ex);
+        return buildResponseEntity(apiError);
     }
 
-    @ResponseBody
-    @ExceptionHandler(PrivilegeNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    String timeManagementHandler(PrivilegeNotFoundException ex) {
-        return ex.getMessage();
-    }
-
-    @ResponseBody
-    @ExceptionHandler(RestNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    String timeManagementHandler(RestNotFoundException ex) {
-        return ex.getMessage();
-    }
-
-    @ResponseBody
-    @ExceptionHandler(SettingsNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    String timeManagementHandler(SettingsNotFoundException ex) {
-        return ex.getMessage();
-    }
-
-    @ResponseBody
-    @ExceptionHandler(TimeSheetNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    String timeManagementHandler(TimeSheetNotFoundException ex) {
-        return ex.getMessage();
-    }
-
-    @ResponseBody
-    @ExceptionHandler(CurrentSettingsNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    String timeManagementHandler(CurrentSettingsNotFoundException ex) {
-        return ex.getMessage();
-    }
-    @ResponseBody
     @ExceptionHandler(SettingsOneProfileException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    String timeManagementHandler(SettingsOneProfileException ex) {
-        return ex.getMessage();
+    ResponseEntity<Object> handleException(SettingsOneProfileException ex) {
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
+        apiError.setMessage(ex.getMessage());
+        apiError.setStackTrace(ExceptionUtils.getStackTrace(ex));
+        ExceptionUtils.getStackTrace(ex);
+        return buildResponseEntity(apiError);
     }
 
-    @ResponseBody
     @ExceptionHandler(DurationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    String timeManagementHandler(DurationException ex) {
-        return ex.getMessage();
+    ResponseEntity<Object> handleException(DurationException ex) {
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
+        apiError.setMessage(ex.getMessage());
+        apiError.setStackTrace(ExceptionUtils.getStackTrace(ex));
+        ExceptionUtils.getStackTrace(ex);
+        return buildResponseEntity(apiError);
     }
 
-    @ResponseBody
     @ExceptionHandler(StartDateEarlierException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    String timeManagementHandler(StartDateEarlierException ex) {
-        return ex.getMessage();
+    ResponseEntity<Object> handleException(StartDateEarlierException ex) {
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
+        apiError.setMessage(ex.getMessage());
+        apiError.setStackTrace(ExceptionUtils.getStackTrace(ex));
+        ExceptionUtils.getStackTrace(ex);
+        return buildResponseEntity(apiError);
     }
 
-    @ResponseBody
     @ExceptionHandler(DepartmentConstraintException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    String timeManagementHandler(DepartmentConstraintException ex) {
-        return ex.getMessage();
+    ResponseEntity<Object> handleException(DepartmentConstraintException ex) {
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
+        apiError.setMessage(ex.getMessage());
+        apiError.setStackTrace(ExceptionUtils.getStackTrace(ex));
+        ExceptionUtils.getStackTrace(ex);
+        return buildResponseEntity(apiError);
     }
 
-    @ResponseBody
     @ExceptionHandler(PositionConstraintException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    String timeManagementHandler(PositionConstraintException ex) {
-        return ex.getMessage();
+    ResponseEntity<Object> handleException(PositionConstraintException ex) {
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
+        apiError.setMessage(ex.getMessage());
+        apiError.setStackTrace(ExceptionUtils.getStackTrace(ex));
+        ExceptionUtils.getStackTrace(ex);
+        return buildResponseEntity(apiError);
     }
 }

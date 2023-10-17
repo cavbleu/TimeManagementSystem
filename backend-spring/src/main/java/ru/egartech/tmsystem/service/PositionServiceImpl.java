@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import ru.egartech.tmsystem.exception.CustomEntityNotFoundException;
 import ru.egartech.tmsystem.exception.DepartmentConstraintException;
 import ru.egartech.tmsystem.model.dto.EditPositionDto;
 import ru.egartech.tmsystem.model.dto.PositionDto;
@@ -49,7 +50,7 @@ public class PositionServiceImpl implements PositionService {
         Position position = entityManager.find(Position.class, id);
         return Optional.of(position)
                 .map(mapper::toDto)
-                .orElseThrow();
+                .orElseThrow(() -> new CustomEntityNotFoundException(id));
     }
 
 

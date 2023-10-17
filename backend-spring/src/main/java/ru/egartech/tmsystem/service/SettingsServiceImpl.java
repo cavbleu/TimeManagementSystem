@@ -3,8 +3,9 @@ package ru.egartech.tmsystem.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import ru.egartech.tmsystem.exception.CurrentSettingsNotFoundException;
-import ru.egartech.tmsystem.exception.SettingsNotFoundException;
+import ru.egartech.tmsystem.exception.ActiveProfileDeleteException;
+import ru.egartech.tmsystem.exception.ActiveProfileNotInstalledException;
+import ru.egartech.tmsystem.exception.CustomEntityNotFoundException;
 import ru.egartech.tmsystem.exception.SettingsOneProfileException;
 import ru.egartech.tmsystem.model.dto.SettingsDto;
 import ru.egartech.tmsystem.model.entity.Settings;
@@ -31,7 +32,7 @@ public class SettingsServiceImpl implements SettingsService {
     public SettingsDto findById(Long id) {
         return repository.findById(id)
                 .map(mapper::toDto)
-                .orElseThrow(() -> new SettingsNotFoundException(id));
+                .orElseThrow(() -> new CustomEntityNotFoundException(id));
     }
 
     @Override
@@ -61,15 +62,14 @@ public class SettingsServiceImpl implements SettingsService {
                     BeanUtils.copyProperties(mapper.toEntity(dto), entity, "id");
                     return mapper.toDto(repository.save(entity));
                 })
-                .orElseThrow(() -> new SettingsNotFoundException(id));
-    }
+                .orElseThrow(() -> new CustomEntityNotFoundException(id));    }
 
     @Override
     public void deleteById(Long id) {
         if (findAll().size() == 1) {
             throw new SettingsOneProfileException();
         } else if (findById(id).isCurrentSettingsProfile()) {
-            throw new CurrentSettingsNotFoundException();
+            throw new ActiveProfileDeleteException();
         } else {
             repository.deleteById(id);
         }
@@ -79,6 +79,6 @@ public class SettingsServiceImpl implements SettingsService {
     public SettingsDto findByCurrentSettingsProfile() {
         return repository.findByCurrentSettingsProfileIsTrue()
                 .map(mapper::toDto)
-                .orElseThrow(CurrentSettingsNotFoundException::new);
+                .orElseThrow(ActiveProfileNotInstalledException::new);
     }
 }

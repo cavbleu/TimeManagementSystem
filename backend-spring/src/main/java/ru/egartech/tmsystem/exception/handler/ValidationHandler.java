@@ -1,46 +1,31 @@
 package ru.egartech.tmsystem.exception.handler;
 
 import jakarta.validation.ConstraintViolationException;
-import org.springframework.http.HttpStatus;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import ru.egartech.tmsystem.exception.dto.ApiError;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @ControllerAdvice
 public class ValidationHandler {
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidationExceptions(
-            MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-        return errors;
+    private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
+        return new ResponseEntity<>(apiError, apiError.getStatus());
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    ResponseEntity<List<String>> handleConstraintViolationException(ConstraintViolationException e) {
-        return new ResponseEntity<>(e.getConstraintViolations().stream()
+    @ResponseStatus(BAD_REQUEST)
+    ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex) {
+        ApiError apiError = new ApiError(BAD_REQUEST);
+        apiError.setMessage(String.join("; ", ex.getConstraintViolations().stream()
                 .map(v -> String.format("Ошибка - %s", v.getMessage()))
-                .toList(), HttpStatus.BAD_REQUEST);
+                .toList()));
+        apiError.setStackTrace(ExceptionUtils.getStackTrace(ex));
+        return buildResponseEntity(apiError);
     }
 
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    ResponseEntity<String> handleConstraintViolationException(HttpMessageNotReadableException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
 }

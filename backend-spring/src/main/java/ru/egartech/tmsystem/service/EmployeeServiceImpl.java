@@ -6,14 +6,12 @@ import jakarta.persistence.criteria.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import ru.egartech.tmsystem.exception.EmployeeNotFoundException;
+import ru.egartech.tmsystem.exception.CustomEntityNotFoundException;
 import ru.egartech.tmsystem.model.dto.EditEmployeeDto;
 import ru.egartech.tmsystem.model.dto.EmployeeDto;
 import ru.egartech.tmsystem.model.dto.EmployeeSummaryDto;
 import ru.egartech.tmsystem.model.dto.SettingsDto;
-import ru.egartech.tmsystem.model.entity.Department;
 import ru.egartech.tmsystem.model.entity.Employee;
-import ru.egartech.tmsystem.model.entity.Position;
 import ru.egartech.tmsystem.model.entity.TimeSheet;
 import ru.egartech.tmsystem.model.mapping.EmployeeMapper;
 import ru.egartech.tmsystem.model.repository.DistractionRepository;
@@ -75,7 +73,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDto findById(Long id) {
         return repository.findById(id)
                 .map(mapper::toDto)
-                .orElseThrow(() -> new EmployeeNotFoundException(id));
+                .orElseThrow(() -> new CustomEntityNotFoundException(id));
     }
 
     @Override
@@ -91,7 +89,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                     BeanUtils.copyProperties(mapper.toEntity(dto), entity, "id");
                     return mapper.toDto(repository.save(entity));
                 })
-                .orElseThrow(() -> new EmployeeNotFoundException(id));
+                .orElseThrow(() -> new CustomEntityNotFoundException(id));
     }
 
     @Override

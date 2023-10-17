@@ -1,8 +1,8 @@
 package ru.egartech.tmsystem.exception;
 
-public class CurrentSettingsNotFoundException extends RuntimeException{
+public class ActiveProfileNotInstalledException extends RuntimeException{
 
-    public CurrentSettingsNotFoundException() {
+    public ActiveProfileNotInstalledException() {
         super("Не установлен активный профиль настроек");
     }
 }
