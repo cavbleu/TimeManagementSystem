@@ -1,10 +1,14 @@
 package ru.egartech.tmsystem.service;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.exception.DepartmentConstraintException;
-import ru.egartech.tmsystem.exception.PositionNotFoundException;
 import ru.egartech.tmsystem.model.dto.EditPositionDto;
 import ru.egartech.tmsystem.model.dto.PositionDto;
 import ru.egartech.tmsystem.model.dto.PositionSummaryDto;
@@ -18,6 +22,7 @@ import ru.egartech.tmsystem.utils.SummaryFormatter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +32,10 @@ public class PositionServiceImpl implements PositionService {
     private final PositionMapper mapper;
     private final SettingsService settingsService;
     private final DepartmentService departmentService;
+    private final EntityManagerFactory entityManagerFactory;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public List<PositionDto> findAll() {
@@ -37,25 +46,28 @@ public class PositionServiceImpl implements PositionService {
 
     @Override
     public PositionDto findById(Long id) {
-        return repository.findById(id)
+        Position position = entityManager.find(Position.class, id);
+        return Optional.of(position)
                 .map(mapper::toDto)
-                .orElseThrow(() -> new PositionNotFoundException(id));
+                .orElseThrow();
     }
+
 
     @Override
     public PositionDto save(PositionDto dto) {
-        Position position = repository.save(mapper.toEntity(dto));
-        return mapper.toDto(position);
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        PositionDto positionDto = mapper.toDto(entityManager.merge(mapper.toEntity(dto)));
+        entityManager.getTransaction().commit();
+        return positionDto;
     }
 
+    @Transactional
     @Override
-    public PositionDto updateById(Long id, PositionDto dto) {
-        return repository.findById(id)
-                .map(entity -> {
-                    BeanUtils.copyProperties(mapper.toEntity(dto), entity, "id");
-                    return mapper.toDto(repository.save(entity));
-                })
-                .orElseThrow(() -> new PositionNotFoundException(id));
+    public PositionDto updateById(Long id, PositionDto updated) {
+        Position actual = mapper.toEntity(findById(id));
+        BeanUtils.copyProperties(mapper.toEntity(updated), actual, "id");
+        return mapper.toDto(entityManager.merge(actual));
     }
 
     @Override
@@ -95,19 +107,43 @@ public class PositionServiceImpl implements PositionService {
 
     @Override
     public long positionWorkTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id) {
-        return repository.positionWorkTimeByPeriod(startDate, endDate, id)
+        TypedQuery<Long> query = entityManager.createQuery(
+                "select sum(t.workTime) " +
+                        "from TimeSheet t join t.employee e " +
+                        "where t.date >= :startDate " +
+                        "and t.date <= :endDate " +
+                        "and e.position.id = :id", Long.class);
+        return Optional.of(query.setParameter("startDate", startDate)
+                .setParameter("endDate", endDate)
+                .setParameter("id", id).getSingleResult())
                 .orElse(0L);
     }
 
     @Override
     public long positionDistractionTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id) {
-        return repository.positionDistractionTimeByPeriod(startDate, endDate, id)
+        TypedQuery<Long> query = entityManager.createQuery(
+                "select sum(d.distractionTime) " +
+                        "from Distraction d join d.employee e " +
+                        "where d.date >= :startDate " +
+                        "and d.date <= :endDate " +
+                        "and e.position.id = :id", Long.class);
+        return Optional.of(query.setParameter("startDate", startDate)
+                        .setParameter("endDate", endDate)
+                        .setParameter("id", id).getSingleResult())
                 .orElse(0L);
     }
 
     @Override
     public long positionRestTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id) {
-        return repository.positionRestTimeByPeriod(startDate, endDate, id)
+        TypedQuery<Long> query = entityManager.createQuery(
+                "select sum(r.restTime) " +
+                        "from Rest r join r.employee e " +
+                        "where r.date >= :startDate " +
+                        "and r.date <= :endDate " +
+                        "and e.position.id = :id", Long.class);
+        return Optional.of(query.setParameter("startDate", startDate)
+                        .setParameter("endDate", endDate)
+                        .setParameter("id", id).getSingleResult())
                 .orElse(0L);
     }
 
@@ -116,6 +152,7 @@ public class PositionServiceImpl implements PositionService {
         return save(positionDto);
     }
 
+    @Transactional
     @Override
     public PositionDto update(PositionDto positionDto) {
         return updateById(positionDto.getId(), positionDto);

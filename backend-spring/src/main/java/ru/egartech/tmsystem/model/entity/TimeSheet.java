@@ -60,4 +60,7 @@ public class TimeSheet {
         this.endWork = endWork;
     }
 
+    public TimeSheet(Long workTime) {
+        this.workTime = workTime;
+    }
 }
