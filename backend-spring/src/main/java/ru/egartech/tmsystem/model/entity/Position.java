@@ -28,10 +28,10 @@ public class Position {
     @Size(max = 60, message = "Наименование должно быть не более 60 символов")
     private String name;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Department department;
 
-    @OneToMany(mappedBy = "position", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "position", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy("name ASC")
     @OrderColumn(name = "id")
     @JsonIgnore
@@ -41,4 +41,8 @@ public class Position {
         this.name = name;
     }
 
+    public Position(String name, Department department) {
+        this.name = name;
+        this.department = department;
+    }
 }

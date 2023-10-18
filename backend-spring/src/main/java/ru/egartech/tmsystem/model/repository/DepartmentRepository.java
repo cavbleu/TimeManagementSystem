@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import ru.egartech.tmsystem.model.entity.Department;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 public interface DepartmentRepository extends JpaRepository<Department, Long> {

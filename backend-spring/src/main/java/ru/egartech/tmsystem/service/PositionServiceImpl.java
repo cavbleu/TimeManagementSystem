@@ -38,11 +38,23 @@ public class PositionServiceImpl implements PositionService {
     @PersistenceContext
     private EntityManager entityManager;
 
+
     @Override
     public List<PositionDto> findAll() {
         return repository.findAll().stream()
                 .map(mapper::toDto)
                 .toList();
+
+//        TypedQuery<Long> query = entityManager.createQuery(
+//                "select p " +
+//                        "from Position p join fetch p.employees e " +
+//                        "where d.date >= :startDate " +
+//                        "and d.date <= :endDate " +
+//                        "and e.position.id = :id", Long.class);
+//        return Optional.ofNullable(query.setParameter("startDate", startDate)
+//                        .setParameter("endDate", endDate)
+//                        .setParameter("id", id).getSingleResult())
+//                .orElse(0L);
     }
 
     @Override
@@ -114,7 +126,7 @@ public class PositionServiceImpl implements PositionService {
                         "where t.date >= :startDate " +
                         "and t.date <= :endDate " +
                         "and e.position.id = :id", Long.class);
-        return Optional.of(query.setParameter("startDate", startDate)
+        return Optional.ofNullable(query.setParameter("startDate", startDate)
                 .setParameter("endDate", endDate)
                 .setParameter("id", id).getSingleResult())
                 .orElse(0L);
@@ -128,7 +140,7 @@ public class PositionServiceImpl implements PositionService {
                         "where d.date >= :startDate " +
                         "and d.date <= :endDate " +
                         "and e.position.id = :id", Long.class);
-        return Optional.of(query.setParameter("startDate", startDate)
+        return Optional.ofNullable(query.setParameter("startDate", startDate)
                         .setParameter("endDate", endDate)
                         .setParameter("id", id).getSingleResult())
                 .orElse(0L);
@@ -142,7 +154,7 @@ public class PositionServiceImpl implements PositionService {
                         "where r.date >= :startDate " +
                         "and r.date <= :endDate " +
                         "and e.position.id = :id", Long.class);
-        return Optional.of(query.setParameter("startDate", startDate)
+        return Optional.ofNullable(query.setParameter("startDate", startDate)
                         .setParameter("endDate", endDate)
                         .setParameter("id", id).getSingleResult())
                 .orElse(0L);

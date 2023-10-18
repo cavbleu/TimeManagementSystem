@@ -34,7 +34,7 @@ public class Employee {
     @Column(name = "privileges_number")
     private Long privilegesNumber;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Position position;
 
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
@@ -62,10 +62,6 @@ public class Employee {
         this.id = id;
     }
 
-    public Employee(Long id) {
-        this.id = id;
-    }
-
     public Employee(Long id, String name, int age, Long privilegesNumber, Position position, List<TimeSheet> timeSheets) {
         this.id = id;
         this.name = name;
@@ -75,9 +71,9 @@ public class Employee {
         this.timeSheets = timeSheets;
     }
 
-    public Employee(List<TimeSheet> timeSheets, List<Rest> rests, List<Distraction> distractions) {
-        this.timeSheets = timeSheets;
-        this.rests = rests;
-        this.distractions = distractions;
+    public Employee(String name, int age, Position position) {
+        this.name = name;
+        this.age = age;
+        this.position = position;
     }
 }

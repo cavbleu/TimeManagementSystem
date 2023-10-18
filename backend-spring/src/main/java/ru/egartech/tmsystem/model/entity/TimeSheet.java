@@ -48,7 +48,7 @@ public class TimeSheet {
     @Column(name = "work_time")
     private Long workTime;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnore
     private Employee employee;
 
@@ -58,6 +58,12 @@ public class TimeSheet {
         this.absenceReason = absenceReason;
         this.startWork = startWork;
         this.endWork = endWork;
+    }
+
+    public TimeSheet(LocalDate date, Long workTime, Employee employee) {
+        this.date = date;
+        this.workTime = workTime;
+        this.employee = employee;
     }
 
     public TimeSheet(Long workTime) {
