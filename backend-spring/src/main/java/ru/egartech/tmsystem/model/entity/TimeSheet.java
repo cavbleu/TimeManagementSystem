@@ -60,9 +60,10 @@ public class TimeSheet {
         this.endWork = endWork;
     }
 
-    public TimeSheet(LocalDate date, Long workTime, Employee employee) {
+    public TimeSheet(LocalDate date, LocalTime startWork, LocalTime endWork, Employee employee) {
         this.date = date;
-        this.workTime = workTime;
+        this.startWork = startWork;
+        this.endWork = endWork;
         this.employee = employee;
     }
 

@@ -28,7 +28,7 @@ public class Position {
     @Size(max = 60, message = "Наименование должно быть не более 60 символов")
     private String name;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.ALL)
     private Department department;
 
     @OneToMany(mappedBy = "position", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

@@ -34,7 +34,7 @@ public class Employee {
     @Column(name = "privileges_number")
     private Long privilegesNumber;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.ALL})
     private Position position;
 
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)

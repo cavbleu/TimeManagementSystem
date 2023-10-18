@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.egartech.tmsystem.model.entity.Employee;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -29,5 +30,12 @@ public class TimeSheetDto {
     private long workTime;
     //Работник
     private EmployeeDto employee;
+
+    public TimeSheetDto(LocalDate date, LocalTime startWork, LocalTime endWork, EmployeeDto employee) {
+        this.date = date;
+        this.startWork = startWork;
+        this.endWork = endWork;
+        this.employee = employee;
+    }
 
 }

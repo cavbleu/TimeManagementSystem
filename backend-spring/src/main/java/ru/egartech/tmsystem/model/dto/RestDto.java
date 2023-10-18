@@ -27,4 +27,11 @@ public class RestDto {
     //Суммарное время перерыва
     private long restTime;
     private Employee employee;
+
+    public RestDto(LocalDate date, LocalTime startRest, LocalTime endRest, Employee employee) {
+        this.date = date;
+        this.startRest = startRest;
+        this.endRest = endRest;
+        this.employee = employee;
+    }
 }

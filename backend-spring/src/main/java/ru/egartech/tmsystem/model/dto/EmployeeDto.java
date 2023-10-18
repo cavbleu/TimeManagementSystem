@@ -29,4 +29,10 @@ public class EmployeeDto extends EntityDto {
     private List<Rest> rests = new ArrayList<>();
     private List<Distraction> distractions = new ArrayList<>();
 
+    public EmployeeDto(String name, int age, Position position) {
+        super(name);
+        this.age = age;
+        this.position = position;
+    }
+
 }

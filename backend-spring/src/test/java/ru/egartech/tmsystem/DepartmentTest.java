@@ -5,22 +5,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import ru.egartech.tmsystem.model.dto.DepartmentDto;
-import ru.egartech.tmsystem.model.dto.EmployeeDto;
-import ru.egartech.tmsystem.model.dto.PositionDto;
-import ru.egartech.tmsystem.model.dto.TimeSheetDto;
+import ru.egartech.tmsystem.model.dto.*;
 import ru.egartech.tmsystem.model.entity.Department;
 import ru.egartech.tmsystem.model.entity.Employee;
 import ru.egartech.tmsystem.model.entity.Position;
 import ru.egartech.tmsystem.model.entity.TimeSheet;
 import ru.egartech.tmsystem.model.mapping.DepartmentMapper;
 import ru.egartech.tmsystem.model.mapping.TimeSheetMapper;
-import ru.egartech.tmsystem.service.DepartmentService;
-import ru.egartech.tmsystem.service.EmployeeService;
-import ru.egartech.tmsystem.service.PositionService;
-import ru.egartech.tmsystem.service.TimeSheetService;
+import ru.egartech.tmsystem.service.*;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,15 +25,16 @@ class DepartmentTest {
     @Autowired
     private DepartmentService departmentService;
     @Autowired
-    private TimeSheetService timeSheetService;
+    private RestService restService;
     @Autowired
-    TimeSheetMapper timeSheetMapper;
-    @Autowired
-    DepartmentMapper departmentMapper;
+    private DistractionService distractionService;
     @Autowired
     private EmployeeService employeeService;
     @Autowired
-    private PositionService positionService;
+    private TimeSheetService timeSheetService;
+    @Autowired
+    DepartmentMapper departmentMapper;
+
 
     /**
      * Тест всех используемых CRUD операций
@@ -62,7 +58,7 @@ class DepartmentTest {
         //FindById test
         beforeServiceDto = departmentService.findById(beforeServiceDto.getId());
         softAssertions.assertThat(beforeServiceDto.getName())
-                .describedAs(String.format("Проверяем, что имя найденной сущности сущности %s", beforeServiceDto.getName()))
+                .describedAs(String.format("Проверяем, что имя найденной по id сущности сущности %s", beforeServiceDto.getName()))
                 .isEqualTo(afterServiceDto.getName());
         //FindAll and Delete test
         departmentService.deleteById(beforeServiceDto.getId());
@@ -73,22 +69,52 @@ class DepartmentTest {
     }
 
     @Test
-    public void getDepartmentWorkTimeByPeriodTest() {
+    public void departmentSummaryTimeByPeriodTest() {
         LocalDate startDate = LocalDate.of(2023, 10, 18);
         LocalDate endDate = LocalDate.of(2023, 10, 21);
-        Department department = departmentMapper.toEntity(departmentService.save(departmentMapper.toDto(new Department("IT"))));
 
-        TimeSheet timeSheet1 = new TimeSheet(LocalDate.of(2023, 10, 19), 540L,
-                new Employee("Petr", 29, new Position("QA", department)));
-        TimeSheet timeSheet2 = new TimeSheet(LocalDate.of(2023, 10, 20), 540L,
-                new Employee("Ivan", 32, new Position("TeamLead", department)));
-        timeSheetService.save(timeSheetMapper.toDto(timeSheet1));
-        timeSheetService.save(timeSheetMapper.toDto(timeSheet2));
-        List<TimeSheetDto> t = timeSheetService.findAll();
-        List<PositionDto> p = positionService.findAll();
-        List<EmployeeDto> e = employeeService.findAll();
-        List<DepartmentDto> d = departmentService.findAll();
+        LocalDate date1 = LocalDate.of(2023, 10, 19);
+        LocalDate date2 = LocalDate.of(2023, 10, 20);
 
-        Assertions.assertEquals(1080L, departmentService.departmentWorkTimeByPeriod(startDate, endDate, department.getId()));
+        LocalTime startWork = LocalTime.of(9, 0);
+        LocalTime endWork = LocalTime.of(18, 0);
+
+        LocalTime startRest = LocalTime.of(9, 15);
+        LocalTime endRest = LocalTime.of(9, 30);
+
+        LocalTime startDistraction = LocalTime.of(10, 0);
+        LocalTime endDistraction = LocalTime.of(10, 40);
+
+        Department department = departmentMapper.toEntity(departmentService.save(new DepartmentDto("IT")));
+        Position position1 = new Position("QA", department);
+        Position position2 = new Position("TeamLead", department);
+        EmployeeDto employeeDto1 = new EmployeeDto("Petr", 29, position1);
+        EmployeeDto employeeDto2 = new EmployeeDto("Ivan", 32, position2);
+        Employee employee1 = new Employee("Petr", 29, position1);
+        Employee employee2 = new Employee("Ivan", 32, position2);
+        TimeSheetDto timeSheet1 = new TimeSheetDto(date1, startWork, endWork, employeeDto1);
+        TimeSheetDto timeSheet2 = new TimeSheetDto(date2, startWork, endWork, employeeDto2);
+        RestDto restDto1 = new RestDto(date1, startRest, endRest, employee1);
+        RestDto restDto2 = new RestDto(date2, startRest, endRest, employee2);
+        DistractionDto distractionDto1 = new DistractionDto(date1, startDistraction, endDistraction, employee1);
+        DistractionDto distractionDto2 = new DistractionDto(date2, startDistraction, endDistraction, employee2);
+
+        employeeService.save(employeeDto1);
+        employeeService.save(employeeDto2);
+
+        restService.save(restDto1);
+        restService.save(restDto2);
+
+        distractionService.save(distractionDto1);
+        distractionService.save(distractionDto2);
+
+        timeSheetService.save(timeSheet1);
+        timeSheetService.save(timeSheet2);
+
+        SoftAssertions softAssertions = new SoftAssertions();
+        softAssertions.assertThat(departmentService.departmentWorkTimeByPeriod(startDate, endDate, department.getId()))
+                .describedAs(String.format("Проверяем, что суммарное рабочее время %d мин", 1080))
+                .isEqualTo(1080L);
+
     }
 }
