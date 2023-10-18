@@ -29,9 +29,9 @@ public class TimeSheetDto {
     //Суммарное рабочее время
     private long workTime;
     //Работник
-    private EmployeeDto employee;
+    private Employee employee;
 
-    public TimeSheetDto(LocalDate date, LocalTime startWork, LocalTime endWork, EmployeeDto employee) {
+    public TimeSheetDto(LocalDate date, LocalTime startWork, LocalTime endWork, Employee employee) {
         this.date = date;
         this.startWork = startWork;
         this.endWork = endWork;

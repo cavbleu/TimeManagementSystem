@@ -48,7 +48,7 @@ public class TimeSheet {
     @Column(name = "work_time")
     private Long workTime;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JsonIgnore
     private Employee employee;
 

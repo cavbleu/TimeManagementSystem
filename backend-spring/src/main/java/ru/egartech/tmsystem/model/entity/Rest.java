@@ -35,7 +35,7 @@ public class Rest {
     @Column(name = "rest_time")
     private long restTime;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JsonIgnore
     private Employee employee;
 }

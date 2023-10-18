@@ -2,6 +2,7 @@ package ru.egartech.tmsystem;
 
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,10 +12,13 @@ import ru.egartech.tmsystem.model.entity.Employee;
 import ru.egartech.tmsystem.model.entity.Position;
 import ru.egartech.tmsystem.model.entity.TimeSheet;
 import ru.egartech.tmsystem.model.mapping.DepartmentMapper;
+import ru.egartech.tmsystem.model.mapping.EmployeeMapper;
 import ru.egartech.tmsystem.model.mapping.PositionMapper;
 import ru.egartech.tmsystem.model.mapping.TimeSheetMapper;
+import ru.egartech.tmsystem.model.repository.EmployeeRepository;
 import ru.egartech.tmsystem.service.*;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collections;
@@ -39,6 +43,10 @@ class DepartmentTest {
     DepartmentMapper departmentMapper;
     @Autowired
     PositionMapper positionMapper;
+    @Autowired
+    EmployeeMapper employeeMapper;
+    @Autowired
+    EmployeeRepository employeeRepository;
 
 
     /**
@@ -73,6 +81,14 @@ class DepartmentTest {
         softAssertions.assertAll();
     }
 
+    @BeforeAll
+    static void setup() {
+
+    }
+
+    /**
+     * Проверяем, что правильно считается суммарное время отвлечений, перерывов и отработанного времени по всему отделу
+     */
     @Test
     public void departmentSummaryTimeByPeriodTest() {
         LocalDate startDate = LocalDate.of(2023, 10, 18);
@@ -90,21 +106,25 @@ class DepartmentTest {
         LocalTime startDistraction = LocalTime.of(10, 0);
         LocalTime endDistraction = LocalTime.of(10, 40);
 
+        Long workTime = Duration.between(startWork, endWork).toMinutes() * 2;
+        Long restTime = Duration.between(startRest, endRest).toMinutes() * 2;
+        Long distractionTime = Duration.between(startDistraction, endDistraction).toMinutes() * 2;
+
         Department department = departmentMapper.toEntity(departmentService.save(new DepartmentDto("IT")));
 
         Position position1 = positionMapper.toEntity(positionService.save(positionMapper.toDto(new Position("QA", department))));
         Position position2 = positionMapper.toEntity(positionService.save(positionMapper.toDto(new Position("TeamLead", department))));
 
-        EmployeeDto employeeDto1 = employeeService.save(new EmployeeDto("Petr", 29, position1));
-        EmployeeDto employeeDto2 = employeeService.save(new EmployeeDto("Ivan", 32, position2));
+        Employee employee1 = employeeMapper.toEntity(employeeService.save(new EmployeeDto("Petr", 29, position1)));
+        Employee employee2 = employeeMapper.toEntity(employeeService.save(new EmployeeDto("Ivan", 32, position2)));
 
 
-        TimeSheetDto timeSheet1 = new TimeSheetDto(date1, startWork, endWork, employeeDto1);
-        TimeSheetDto timeSheet2 = new TimeSheetDto(date2, startWork, endWork, employeeDto2);
-        RestDto restDto1 = new RestDto(date1, startRest, endRest, employeeDto1);
-        RestDto restDto2 = new RestDto(date2, startRest, endRest, employeeDto2);
-        DistractionDto distractionDto1 = new DistractionDto(date1, startDistraction, endDistraction, employeeDto1);
-        DistractionDto distractionDto2 = new DistractionDto(date2, startDistraction, endDistraction, employeeDto2);
+        TimeSheetDto timeSheet1 = new TimeSheetDto(date1, startWork, endWork, employee1);
+        TimeSheetDto timeSheet2 = new TimeSheetDto(date2, startWork, endWork, employee2);
+        RestDto restDto1 = new RestDto(date1, startRest, endRest, employee1);
+        RestDto restDto2 = new RestDto(date2, startRest, endRest, employee2);
+        DistractionDto distractionDto1 = new DistractionDto(date1, startDistraction, endDistraction, employee1);
+        DistractionDto distractionDto2 = new DistractionDto(date2, startDistraction, endDistraction, employee2);
 
 
         restService.save(restDto1);
@@ -117,9 +137,20 @@ class DepartmentTest {
         timeSheetService.save(timeSheet2);
 
         SoftAssertions softAssertions = new SoftAssertions();
+
         softAssertions.assertThat(departmentService.departmentWorkTimeByPeriod(startDate, endDate, department.getId()))
-                .describedAs(String.format("Проверяем, что суммарное рабочее время %d мин", 1080))
+                .describedAs(String.format("Проверяем, что суммарное рабочее время %d мин", workTime))
                 .isEqualTo(1080);
+
+        softAssertions.assertThat(departmentService.departmentRestTimeByPeriod(startDate, endDate, department.getId()))
+                .describedAs(String.format("Проверяем, что суммарное время перерывов %d мин", restTime))
+                .isEqualTo(restTime);
+
+        softAssertions.assertThat(departmentService.departmentDistractionTimeByPeriod(startDate, endDate, department.getId()))
+                .describedAs(String.format("Проверяем, что суммарное время отвлечений %d мин", distractionTime))
+                .isEqualTo(distractionTime);
+
+        List<RestDto> r = restService.findAll();
 
         softAssertions.assertAll();
     }

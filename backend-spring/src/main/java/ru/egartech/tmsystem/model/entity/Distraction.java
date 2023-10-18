@@ -32,7 +32,7 @@ public class Distraction {
     @Column(name = "distraction_time")
     private long distractionTime;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JsonIgnore
     private Employee employee;
 }

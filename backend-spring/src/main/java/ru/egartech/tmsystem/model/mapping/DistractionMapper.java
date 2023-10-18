@@ -10,9 +10,6 @@ import java.time.Duration;
 @Mapper(componentModel = "spring")
 public abstract class DistractionMapper {
 
-    @Autowired
-    private EmployeeMapper employeeMapper;
-
     public DistractionDto toDto(Distraction distraction) {
         if (distraction == null) {
             return null;
@@ -25,19 +22,23 @@ public abstract class DistractionMapper {
         distractionDto.setStartDistraction(distraction.getStartDistraction());
         distractionDto.setEndDistraction(distraction.getEndDistraction());
         distractionDto.setDistractionTime(distraction.getDistractionTime());
-        distractionDto.setEmployee(employeeMapper.toDto(distraction.getEmployee()));
+        distractionDto.setEmployee(distraction.getEmployee());
 
         return distractionDto;
     }
 
     public Distraction toEntity(DistractionDto dto) {
         Distraction distraction = new Distraction();
+        distraction.setId(dto.getId());
         distraction.setDate(dto.getDate());
         distraction.setStartDistraction(dto.getStartDistraction());
         distraction.setEndDistraction(dto.getEndDistraction());
-        distraction.setDistractionTime(Duration.between(dto.getStartDistraction(),
-                dto.getEndDistraction()).toMinutes());
-        distraction.setEmployee(employeeMapper.toEntity(dto.getEmployee()));
+        if (dto.getStartDistraction() == null || dto.getEndDistraction() == null) {
+            distraction.setDistractionTime(0L);
+        } else {
+            distraction.setDistractionTime(Duration.between(dto.getStartDistraction(), dto.getEndDistraction()).toMinutes());
+        }
+        distraction.setEmployee(dto.getEmployee());
         return distraction;
     }
 }
