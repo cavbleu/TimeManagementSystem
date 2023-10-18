@@ -1,7 +1,6 @@
 package ru.egartech.tmsystem;
 
 import org.assertj.core.api.SoftAssertions;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +9,9 @@ import ru.egartech.tmsystem.model.dto.*;
 import ru.egartech.tmsystem.model.entity.Department;
 import ru.egartech.tmsystem.model.entity.Employee;
 import ru.egartech.tmsystem.model.entity.Position;
-import ru.egartech.tmsystem.model.entity.TimeSheet;
 import ru.egartech.tmsystem.model.mapping.DepartmentMapper;
 import ru.egartech.tmsystem.model.mapping.EmployeeMapper;
 import ru.egartech.tmsystem.model.mapping.PositionMapper;
-import ru.egartech.tmsystem.model.mapping.TimeSheetMapper;
 import ru.egartech.tmsystem.model.repository.EmployeeRepository;
 import ru.egartech.tmsystem.service.*;
 
@@ -22,7 +19,6 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collections;
-import java.util.List;
 
 @SpringBootTest
 class DepartmentTest {
@@ -149,8 +145,6 @@ class DepartmentTest {
         softAssertions.assertThat(departmentService.departmentDistractionTimeByPeriod(startDate, endDate, department.getId()))
                 .describedAs(String.format("Проверяем, что суммарное время отвлечений %d мин", distractionTime))
                 .isEqualTo(distractionTime);
-
-        List<RestDto> r = restService.findAll();
 
         softAssertions.assertAll();
     }
