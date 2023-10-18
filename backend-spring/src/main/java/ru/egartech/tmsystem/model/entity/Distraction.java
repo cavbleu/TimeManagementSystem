@@ -32,7 +32,7 @@ public class Distraction {
     @Column(name = "distraction_time")
     private long distractionTime;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JsonIgnore
     private Employee employee;
 }

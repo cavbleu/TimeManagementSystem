@@ -34,21 +34,21 @@ public class Employee {
     @Column(name = "privileges_number")
     private Long privilegesNumber;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne
     private Position position;
 
-    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy("date ASC")
     @JsonIgnore
     private List<TimeSheet> timeSheets = new ArrayList<>();
 
-    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy("date ASC")
     @OrderColumn(name = "id")
     @JsonIgnore
     private List<Rest> rests = new ArrayList<>();
 
-    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy("date ASC")
     @OrderColumn(name = "id")
     @JsonIgnore
@@ -71,9 +71,8 @@ public class Employee {
         this.timeSheets = timeSheets;
     }
 
-    public Employee(String name, int age, Position position) {
+    public Employee(String name, int age) {
         this.name = name;
         this.age = age;
-        this.position = position;
     }
 }

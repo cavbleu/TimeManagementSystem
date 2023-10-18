@@ -11,6 +11,7 @@ import ru.egartech.tmsystem.model.entity.Employee;
 import ru.egartech.tmsystem.model.entity.Position;
 import ru.egartech.tmsystem.model.entity.TimeSheet;
 import ru.egartech.tmsystem.model.mapping.DepartmentMapper;
+import ru.egartech.tmsystem.model.mapping.PositionMapper;
 import ru.egartech.tmsystem.model.mapping.TimeSheetMapper;
 import ru.egartech.tmsystem.service.*;
 
@@ -27,6 +28,8 @@ class DepartmentTest {
     @Autowired
     private RestService restService;
     @Autowired
+    private PositionService positionService;
+    @Autowired
     private DistractionService distractionService;
     @Autowired
     private EmployeeService employeeService;
@@ -34,6 +37,8 @@ class DepartmentTest {
     private TimeSheetService timeSheetService;
     @Autowired
     DepartmentMapper departmentMapper;
+    @Autowired
+    PositionMapper positionMapper;
 
 
     /**
@@ -86,21 +91,21 @@ class DepartmentTest {
         LocalTime endDistraction = LocalTime.of(10, 40);
 
         Department department = departmentMapper.toEntity(departmentService.save(new DepartmentDto("IT")));
-        Position position1 = new Position("QA", department);
-        Position position2 = new Position("TeamLead", department);
-        EmployeeDto employeeDto1 = new EmployeeDto("Petr", 29, position1);
-        EmployeeDto employeeDto2 = new EmployeeDto("Ivan", 32, position2);
-        Employee employee1 = new Employee("Petr", 29, position1);
-        Employee employee2 = new Employee("Ivan", 32, position2);
+
+        Position position1 = positionMapper.toEntity(positionService.save(positionMapper.toDto(new Position("QA", department))));
+        Position position2 = positionMapper.toEntity(positionService.save(positionMapper.toDto(new Position("TeamLead", department))));
+
+        EmployeeDto employeeDto1 = employeeService.save(new EmployeeDto("Petr", 29, position1));
+        EmployeeDto employeeDto2 = employeeService.save(new EmployeeDto("Ivan", 32, position2));
+
+
         TimeSheetDto timeSheet1 = new TimeSheetDto(date1, startWork, endWork, employeeDto1);
         TimeSheetDto timeSheet2 = new TimeSheetDto(date2, startWork, endWork, employeeDto2);
-        RestDto restDto1 = new RestDto(date1, startRest, endRest, employee1);
-        RestDto restDto2 = new RestDto(date2, startRest, endRest, employee2);
-        DistractionDto distractionDto1 = new DistractionDto(date1, startDistraction, endDistraction, employee1);
-        DistractionDto distractionDto2 = new DistractionDto(date2, startDistraction, endDistraction, employee2);
+        RestDto restDto1 = new RestDto(date1, startRest, endRest, employeeDto1);
+        RestDto restDto2 = new RestDto(date2, startRest, endRest, employeeDto2);
+        DistractionDto distractionDto1 = new DistractionDto(date1, startDistraction, endDistraction, employeeDto1);
+        DistractionDto distractionDto2 = new DistractionDto(date2, startDistraction, endDistraction, employeeDto2);
 
-        employeeService.save(employeeDto1);
-        employeeService.save(employeeDto2);
 
         restService.save(restDto1);
         restService.save(restDto2);
@@ -114,7 +119,8 @@ class DepartmentTest {
         SoftAssertions softAssertions = new SoftAssertions();
         softAssertions.assertThat(departmentService.departmentWorkTimeByPeriod(startDate, endDate, department.getId()))
                 .describedAs(String.format("Проверяем, что суммарное рабочее время %d мин", 1080))
-                .isEqualTo(1080L);
+                .isEqualTo(1080);
 
+        softAssertions.assertAll();
     }
 }

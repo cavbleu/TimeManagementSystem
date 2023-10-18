@@ -29,7 +29,7 @@ public class Department {
     @Size(max = 60, message = "Наименование должно быть не более 60 символов")
     private String name;
 
-    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy("name ASC")
     @JsonIgnore
     @OrderColumn(name = "id")

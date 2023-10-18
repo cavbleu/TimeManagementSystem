@@ -1,6 +1,7 @@
 package ru.egartech.tmsystem.model.mapping;
 
 import org.mapstruct.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.egartech.tmsystem.model.dto.DistractionDto;
 import ru.egartech.tmsystem.model.entity.Distraction;
 
@@ -8,6 +9,9 @@ import java.time.Duration;
 
 @Mapper(componentModel = "spring")
 public abstract class DistractionMapper {
+
+    @Autowired
+    private EmployeeMapper employeeMapper;
 
     public DistractionDto toDto(Distraction distraction) {
         if (distraction == null) {
@@ -21,7 +25,7 @@ public abstract class DistractionMapper {
         distractionDto.setStartDistraction(distraction.getStartDistraction());
         distractionDto.setEndDistraction(distraction.getEndDistraction());
         distractionDto.setDistractionTime(distraction.getDistractionTime());
-        distractionDto.setEmployee(distraction.getEmployee());
+        distractionDto.setEmployee(employeeMapper.toDto(distraction.getEmployee()));
 
         return distractionDto;
     }
@@ -33,7 +37,7 @@ public abstract class DistractionMapper {
         distraction.setEndDistraction(dto.getEndDistraction());
         distraction.setDistractionTime(Duration.between(dto.getStartDistraction(),
                 dto.getEndDistraction()).toMinutes());
-        distraction.setEmployee(dto.getEmployee());
+        distraction.setEmployee(employeeMapper.toEntity(dto.getEmployee()));
         return distraction;
     }
 }

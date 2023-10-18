@@ -26,9 +26,9 @@ public class DistractionDto {
     private LocalTime endDistraction;
     //Суммарное время отвлечения от целевых программ
     private long distractionTime;
-    private Employee employee;
+    private EmployeeDto employee;
 
-    public DistractionDto(LocalDate date, LocalTime startDistraction, LocalTime endDistraction, Employee employee) {
+    public DistractionDto(LocalDate date, LocalTime startDistraction, LocalTime endDistraction, EmployeeDto employee) {
         this.date = date;
         this.startDistraction = startDistraction;
         this.endDistraction = endDistraction;

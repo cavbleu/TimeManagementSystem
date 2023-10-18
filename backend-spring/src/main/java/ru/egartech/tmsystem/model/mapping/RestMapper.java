@@ -1,6 +1,7 @@
 package ru.egartech.tmsystem.model.mapping;
 
 import org.mapstruct.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.egartech.tmsystem.model.dto.RestDto;
 import ru.egartech.tmsystem.model.entity.Rest;
 
@@ -8,6 +9,9 @@ import java.time.Duration;
 
 @Mapper(componentModel = "spring")
 public abstract class RestMapper {
+
+    @Autowired
+    private EmployeeMapper employeeMapper;
 
     public RestDto toDto(Rest rest) {
         if ( rest == null ) {
@@ -21,7 +25,7 @@ public abstract class RestMapper {
         restDto.setStartRest( rest.getStartRest() );
         restDto.setEndRest( rest.getEndRest() );
         restDto.setRestTime( rest.getRestTime() );
-        restDto.setEmployee(rest.getEmployee());
+        restDto.setEmployee(employeeMapper.toDto(rest.getEmployee()));
         return restDto;
     }
 
@@ -31,7 +35,7 @@ public abstract class RestMapper {
         rest.setStartRest(dto.getStartRest());
         rest.setEndRest(dto.getEndRest());
         rest.setRestTime(Duration.between(dto.getStartRest(), dto.getEndRest()).toMinutes());
-        rest.setEmployee(dto.getEmployee());
+        rest.setEmployee(employeeMapper.toEntity(dto.getEmployee()));
         return rest;
     }
 }
