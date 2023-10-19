@@ -19,6 +19,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collections;
+import java.util.List;
 
 @SpringBootTest
 class DepartmentTest implements BaseTest{
@@ -48,9 +49,9 @@ class DepartmentTest implements BaseTest{
     @Test
     public void crudTest() {
         DepartmentDto beforeServiceDto = new DepartmentDto("Security");
+        SoftAssertions softAssertions = new SoftAssertions();
         //Save test
         DepartmentDto afterServiceDto = departmentService.save(beforeServiceDto);
-        SoftAssertions softAssertions = new SoftAssertions();
         softAssertions.assertThat(beforeServiceDto.getName())
                 .describedAs(String.format("Проверяем, что имя сохраненной сущности %s", beforeServiceDto.getName()))
                 .isEqualTo(afterServiceDto.getName());
@@ -72,11 +73,6 @@ class DepartmentTest implements BaseTest{
                 .describedAs("Проверяем, что список пустой")
                 .isEqualTo(Collections.EMPTY_LIST);
         softAssertions.assertAll();
-    }
-
-    @BeforeAll
-    static void setup() {
-
     }
 
     /**
@@ -105,12 +101,11 @@ class DepartmentTest implements BaseTest{
 
         Department department = departmentMapper.toEntity(departmentService.save(new DepartmentDto("IT")));
 
-        Position position1 = positionMapper.toEntity(positionService.save(positionMapper.toDto(new Position("QA", department))));
-        Position position2 = positionMapper.toEntity(positionService.save(positionMapper.toDto(new Position("TeamLead", department))));
+        Position position1 = positionMapper.toEntity(positionService.save(new PositionDto("QA", department)));
+        Position position2 = positionMapper.toEntity(positionService.save(new PositionDto("TeamLead", department)));
 
         Employee employee1 = employeeMapper.toEntity(employeeService.save(new EmployeeDto("Petr", 29, position1)));
         Employee employee2 = employeeMapper.toEntity(employeeService.save(new EmployeeDto("Ivan", 32, position2)));
-
 
         TimeSheetDto timeSheet1 = new TimeSheetDto(date1, startWork, endWork, employee1);
         TimeSheetDto timeSheet2 = new TimeSheetDto(date2, startWork, endWork, employee2);
