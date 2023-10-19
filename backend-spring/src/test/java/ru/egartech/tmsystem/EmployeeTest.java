@@ -20,7 +20,7 @@ import java.time.LocalTime;
 import java.util.Collections;
 
 @SpringBootTest
-class DepartmentTest implements BaseTest {
+public class EmployeeTest implements BaseTest {
 
     @Autowired
     private DepartmentService departmentService;
@@ -46,40 +46,40 @@ class DepartmentTest implements BaseTest {
     @Override
     @Test
     public void crudTest() {
-        DepartmentDto beforeServiceDto = new DepartmentDto("Security");
+        Department department = departmentMapper.toEntity(departmentService.save(new DepartmentDto("IT")));
+        Position position = positionMapper.toEntity(positionService.save(new PositionDto("QA", department)));
+        EmployeeDto beforeServiceDto = employeeService.save(new EmployeeDto("Petr", 29, position));
         SoftAssertions softAssertions = new SoftAssertions();
 
         //Save test
-        DepartmentDto afterServiceDto = departmentService.save(beforeServiceDto);
+        EmployeeDto afterServiceDto = employeeService.save(beforeServiceDto);
         softAssertions.assertThat(beforeServiceDto.getName())
                 .describedAs(String.format("Проверяем, что имя сохраненной сущности %s", beforeServiceDto.getName()))
                 .isEqualTo(afterServiceDto.getName());
         beforeServiceDto.setId(afterServiceDto.getId());
 
-        //Update test
-        beforeServiceDto.setName("IT");
-        afterServiceDto = departmentService.updateById(beforeServiceDto.getId(), beforeServiceDto);
-        softAssertions.assertThat(beforeServiceDto.getName())
-                .describedAs(String.format("Проверяем, что имя обновленной сущности сущности %s", beforeServiceDto.getName()))
-                .isEqualTo(afterServiceDto.getName());
-
         //FindById test
-        beforeServiceDto = departmentService.findById(beforeServiceDto.getId());
+        beforeServiceDto = employeeService.findById(beforeServiceDto.getId());
         softAssertions.assertThat(beforeServiceDto.getName())
                 .describedAs(String.format("Проверяем, что имя найденной по id сущности сущности %s", beforeServiceDto.getName()))
                 .isEqualTo(afterServiceDto.getName());
 
+        //Update test
+        beforeServiceDto.setName("Ivan");
+        afterServiceDto = employeeService.updateById(beforeServiceDto.getId(), beforeServiceDto);
+        softAssertions.assertThat(beforeServiceDto.getName())
+                .describedAs(String.format("Проверяем, что имя обновленной сущности сущности %s", afterServiceDto.getName()));
+
         //FindAll and Delete test
-        departmentService.deleteById(beforeServiceDto.getId());
-        softAssertions.assertThat(departmentService.findAll())
+        employeeService.deleteById(beforeServiceDto.getId());
+        softAssertions.assertThat(employeeService.findAll())
                 .describedAs("Проверяем, что список пустой")
                 .isEqualTo(Collections.EMPTY_LIST);
-
         softAssertions.assertAll();
     }
 
     /**
-     * Проверяем, что правильно считается суммарное время отвлечений, перерывов и отработанного времени по всему отделу
+     * Проверяем, что правильно считается суммарное время отвлечений, перерывов и отработанного времени по работнику
      */
     @Test
     public void departmentSummaryTimeByPeriodTest() {
@@ -104,19 +104,17 @@ class DepartmentTest implements BaseTest {
 
         Department department = departmentMapper.toEntity(departmentService.save(new DepartmentDto("IT")));
 
-        Position position1 = positionMapper.toEntity(positionService.save(new PositionDto("QA", department)));
-        Position position2 = positionMapper.toEntity(positionService.save(new PositionDto("TeamLead", department)));
+        Position position = positionMapper.toEntity(positionService.save(new PositionDto("QA", department)));
 
-        Employee employee1 = employeeMapper.toEntity(employeeService.save(new EmployeeDto("Petr", 29, position1)));
-        Employee employee2 = employeeMapper.toEntity(employeeService.save(new EmployeeDto("Ivan", 32, position2)));
+        Employee employee = employeeMapper.toEntity(employeeService.save(new EmployeeDto("Petr", 29, position)));
 
-        TimeSheetDto timeSheet1 = new TimeSheetDto(date1, startWork, endWork, employee1);
-        TimeSheetDto timeSheet2 = new TimeSheetDto(date2, startWork, endWork, employee2);
-        RestDto restDto1 = new RestDto(date1, startRest, endRest, employee1);
-        RestDto restDto2 = new RestDto(date2, startRest, endRest, employee2);
-        DistractionDto distractionDto1 = new DistractionDto(date1, startDistraction, endDistraction, employee1);
-        DistractionDto distractionDto2 = new DistractionDto(date2, startDistraction, endDistraction, employee2);
-        SoftAssertions softAssertions = new SoftAssertions();
+        TimeSheetDto timeSheet1 = new TimeSheetDto(date1, startWork, endWork, employee);
+        TimeSheetDto timeSheet2 = new TimeSheetDto(date2, startWork, endWork, employee);
+        RestDto restDto1 = new RestDto(date1, startRest, endRest, employee);
+        RestDto restDto2 = new RestDto(date2, startRest, endRest, employee);
+        DistractionDto distractionDto1 = new DistractionDto(date1, startDistraction, endDistraction, employee);
+        DistractionDto distractionDto2 = new DistractionDto(date2, startDistraction, endDistraction, employee);
+
 
         restService.save(restDto1);
         restService.save(restDto2);
@@ -127,18 +125,17 @@ class DepartmentTest implements BaseTest {
         timeSheetService.save(timeSheet1);
         timeSheetService.save(timeSheet2);
 
-        //Суммарное рабочее время
-        softAssertions.assertThat(departmentService.departmentWorkTimeByPeriod(startDate, endDate, department.getId()))
+        SoftAssertions softAssertions = new SoftAssertions();
+
+        softAssertions.assertThat(employeeService.employeeWorkTimeByPeriod(startDate, endDate, department.getId()))
                 .describedAs(String.format("Проверяем, что суммарное рабочее время %d мин", workTime))
                 .isEqualTo(workTime);
 
-        //Суммарное время перерывов
-        softAssertions.assertThat(departmentService.departmentRestTimeByPeriod(startDate, endDate, department.getId()))
+        softAssertions.assertThat(employeeService.employeeRestTimeByPeriod(startDate, endDate, department.getId()))
                 .describedAs(String.format("Проверяем, что суммарное время перерывов %d мин", restTime))
                 .isEqualTo(restTime);
 
-        //Суммарное время отвлечений
-        softAssertions.assertThat(departmentService.departmentDistractionTimeByPeriod(startDate, endDate, department.getId()))
+        softAssertions.assertThat(employeeService.employeeDistractionTimeByPeriod(startDate, endDate, department.getId()))
                 .describedAs(String.format("Проверяем, что суммарное время отвлечений %d мин", distractionTime))
                 .isEqualTo(distractionTime);
 

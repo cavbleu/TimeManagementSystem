@@ -1,25 +1,25 @@
 package ru.egartech.tmsystem.service;
 
-import jakarta.persistence.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.exception.CustomEntityNotFoundException;
-import ru.egartech.tmsystem.exception.DepartmentConstraintException;
 import ru.egartech.tmsystem.exception.PositionConstraintException;
 import ru.egartech.tmsystem.model.dto.EditPositionDto;
 import ru.egartech.tmsystem.model.dto.PositionDto;
 import ru.egartech.tmsystem.model.dto.PositionSummaryDto;
 import ru.egartech.tmsystem.model.dto.SettingsDto;
-import ru.egartech.tmsystem.model.entity.Department;
 import ru.egartech.tmsystem.model.entity.Position;
 import ru.egartech.tmsystem.model.mapping.PositionMapper;
 import ru.egartech.tmsystem.model.repository.PositionRepository;
 import ru.egartech.tmsystem.utils.PeriodValidation;
 import ru.egartech.tmsystem.utils.SummaryFormatter;
 
-import java.net.Inet4Address;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,15 +48,7 @@ public class PositionServiceImpl implements PositionService {
 
     @Override
     public PositionDto findById(Long id) {
-//        return repository.findById(id)
-//                .map(mapper::toDto)
-//                .orElseThrow();
-        Query query = entityManager.createQuery(
-                "select p " +
-                        "from Position p join fetch p.employees " +
-                        "where p.id = :id");
-        query.setParameter("id", id);
-        Position position = (Position) query.getSingleResult();
+        Position position = entityManager.find(Position.class, id);
         return Optional.ofNullable(position)
                 .map(mapper::toDto)
                 .orElseThrow(() -> new CustomEntityNotFoundException(id));
