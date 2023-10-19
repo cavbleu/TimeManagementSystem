@@ -21,7 +21,7 @@ import java.time.LocalTime;
 import java.util.Collections;
 
 @SpringBootTest
-class DepartmentTest {
+class DepartmentTest implements BaseTest{
 
     @Autowired
     private DepartmentService departmentService;
@@ -44,10 +44,7 @@ class DepartmentTest {
     @Autowired
     EmployeeRepository employeeRepository;
 
-
-    /**
-     * Тест всех используемых CRUD операций
-     */
+    @Override
     @Test
     public void crudTest() {
         DepartmentDto beforeServiceDto = new DepartmentDto("Security");

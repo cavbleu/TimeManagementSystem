@@ -44,17 +44,6 @@ public class PositionServiceImpl implements PositionService {
         return repository.findAll().stream()
                 .map(mapper::toDto)
                 .toList();
-
-//        TypedQuery<Long> query = entityManager.createQuery(
-//                "select p " +
-//                        "from Position p join fetch p.employees e " +
-//                        "where d.date >= :startDate " +
-//                        "and d.date <= :endDate " +
-//                        "and e.position.id = :id", Long.class);
-//        return Optional.ofNullable(query.setParameter("startDate", startDate)
-//                        .setParameter("endDate", endDate)
-//                        .setParameter("id", id).getSingleResult())
-//                .orElse(0L);
     }
 
     @Override
