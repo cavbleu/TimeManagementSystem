@@ -20,7 +20,7 @@ import java.time.LocalTime;
 import java.util.Collections;
 
 @SpringBootTest
-public class PositionTest implements BaseTest{
+public class PositionTest implements BaseTest {
 
     @Autowired
     private DepartmentService departmentService;
@@ -48,27 +48,28 @@ public class PositionTest implements BaseTest{
     public void crudTest() {
         Department department = departmentMapper.toEntity(departmentService.save(new DepartmentDto("IT")));
         Position position = positionMapper.toEntity(positionService.save(new PositionDto("QA", department)));
-        PositionDto beforeServiceDto = positionMapper.toDto(position);
         SoftAssertions softAssertions = new SoftAssertions();
 
         //Save test
+        PositionDto beforeServiceDto = positionMapper.toDto(position);
         PositionDto afterServiceDto = positionService.save(beforeServiceDto);
         softAssertions.assertThat(beforeServiceDto.getName())
                 .describedAs(String.format("Проверяем, что имя сохраненной сущности %s", beforeServiceDto.getName()))
                 .isEqualTo(afterServiceDto.getName());
-        beforeServiceDto.setId(afterServiceDto.getId());
 
         //FindById test
-        beforeServiceDto = positionService.findById(beforeServiceDto.getId());
+        beforeServiceDto.setId(afterServiceDto.getId());
+        afterServiceDto = positionService.findById(beforeServiceDto.getId());
         softAssertions.assertThat(beforeServiceDto.getName())
-                .describedAs(String.format("Проверяем, что имя найденной по id сущности сущности %s", beforeServiceDto.getName()))
+                .describedAs(String.format("Проверяем, что имя найденной по id сущности %s", beforeServiceDto.getName()))
                 .isEqualTo(afterServiceDto.getName());
 
         //Update test
         beforeServiceDto.setName("TeamLead");
         afterServiceDto = positionService.updateById(beforeServiceDto.getId(), beforeServiceDto);
         softAssertions.assertThat(beforeServiceDto.getName())
-                .describedAs(String.format("Проверяем, что имя обновленной сущности сущности %s", afterServiceDto.getName()));
+                .describedAs(String.format("Проверяем, что имя обновленной сущности %s", beforeServiceDto.getName()))
+                .isEqualTo(afterServiceDto.getName());
 
         //FindAll and Delete test
         positionService.deleteById(beforeServiceDto.getId());

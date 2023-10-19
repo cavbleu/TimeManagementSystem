@@ -48,17 +48,17 @@ public class EmployeeTest implements BaseTest {
     public void crudTest() {
         Department department = departmentMapper.toEntity(departmentService.save(new DepartmentDto("IT")));
         Position position = positionMapper.toEntity(positionService.save(new PositionDto("QA", department)));
-        EmployeeDto beforeServiceDto = employeeService.save(new EmployeeDto("Petr", 29, position));
         SoftAssertions softAssertions = new SoftAssertions();
 
         //Save test
+        EmployeeDto beforeServiceDto = employeeService.save(new EmployeeDto("Petr", 29, position));
         EmployeeDto afterServiceDto = employeeService.save(beforeServiceDto);
         softAssertions.assertThat(beforeServiceDto.getName())
                 .describedAs(String.format("Проверяем, что имя сохраненной сущности %s", beforeServiceDto.getName()))
                 .isEqualTo(afterServiceDto.getName());
-        beforeServiceDto.setId(afterServiceDto.getId());
 
         //FindById test
+        beforeServiceDto.setId(afterServiceDto.getId());
         beforeServiceDto = employeeService.findById(beforeServiceDto.getId());
         softAssertions.assertThat(beforeServiceDto.getName())
                 .describedAs(String.format("Проверяем, что имя найденной по id сущности сущности %s", beforeServiceDto.getName()))
@@ -68,7 +68,8 @@ public class EmployeeTest implements BaseTest {
         beforeServiceDto.setName("Ivan");
         afterServiceDto = employeeService.updateById(beforeServiceDto.getId(), beforeServiceDto);
         softAssertions.assertThat(beforeServiceDto.getName())
-                .describedAs(String.format("Проверяем, что имя обновленной сущности сущности %s", afterServiceDto.getName()));
+                .describedAs(String.format("Проверяем, что имя обновленной сущности сущности %s", afterServiceDto.getName()))
+                .isEqualTo(afterServiceDto.getName());
 
         //FindAll and Delete test
         employeeService.deleteById(beforeServiceDto.getId());

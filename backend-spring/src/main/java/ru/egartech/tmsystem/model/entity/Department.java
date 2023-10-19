@@ -5,9 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +15,8 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Table(name = "department")
+@ToString(exclude = {"positions"})
+@EqualsAndHashCode(exclude = {"positions"})
 public class Department {
 
     @Id

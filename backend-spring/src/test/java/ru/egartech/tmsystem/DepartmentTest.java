@@ -46,15 +46,21 @@ class DepartmentTest implements BaseTest {
     @Override
     @Test
     public void crudTest() {
-        DepartmentDto beforeServiceDto = new DepartmentDto("Security");
         SoftAssertions softAssertions = new SoftAssertions();
 
         //Save test
+        DepartmentDto beforeServiceDto = new DepartmentDto("Security");
         DepartmentDto afterServiceDto = departmentService.save(beforeServiceDto);
         softAssertions.assertThat(beforeServiceDto.getName())
                 .describedAs(String.format("Проверяем, что имя сохраненной сущности %s", beforeServiceDto.getName()))
                 .isEqualTo(afterServiceDto.getName());
+
+        //FindById test
         beforeServiceDto.setId(afterServiceDto.getId());
+        afterServiceDto = departmentService.findById(beforeServiceDto.getId());
+        softAssertions.assertThat(beforeServiceDto.getName())
+                .describedAs(String.format("Проверяем, что имя найденной по id сущности %s", beforeServiceDto.getName()))
+                .isEqualTo(afterServiceDto.getName());
 
         //Update test
         beforeServiceDto.setName("IT");
@@ -63,11 +69,6 @@ class DepartmentTest implements BaseTest {
                 .describedAs(String.format("Проверяем, что имя обновленной сущности сущности %s", beforeServiceDto.getName()))
                 .isEqualTo(afterServiceDto.getName());
 
-        //FindById test
-        beforeServiceDto = departmentService.findById(beforeServiceDto.getId());
-        softAssertions.assertThat(beforeServiceDto.getName())
-                .describedAs(String.format("Проверяем, что имя найденной по id сущности сущности %s", beforeServiceDto.getName()))
-                .isEqualTo(afterServiceDto.getName());
 
         //FindAll and Delete test
         departmentService.deleteById(beforeServiceDto.getId());

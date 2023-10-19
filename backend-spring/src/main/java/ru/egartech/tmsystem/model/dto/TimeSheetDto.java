@@ -31,6 +31,14 @@ public class TimeSheetDto {
     //Работник
     private Employee employee;
 
+    public TimeSheetDto(LocalDate date, LocalTime startWork, LocalTime endWork, Employee employee, String absenceReason) {
+        this.date = date;
+        this.startWork = startWork;
+        this.endWork = endWork;
+        this.employee = employee;
+        this.absenceReason = absenceReason;
+    }
+
     public TimeSheetDto(LocalDate date, LocalTime startWork, LocalTime endWork, Employee employee) {
         this.date = date;
         this.startWork = startWork;

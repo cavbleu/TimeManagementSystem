@@ -5,6 +5,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.exception.CustomEntityNotFoundException;
 import ru.egartech.tmsystem.model.dto.PrivilegeDto;
+import ru.egartech.tmsystem.model.entity.Privilege;
 import ru.egartech.tmsystem.model.mapping.PrivilegeMapper;
 import ru.egartech.tmsystem.model.repository.PrivilegeRepository;
 
@@ -27,7 +28,13 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     public PrivilegeDto findById(Long id) {
         return repository.findById(id)
                 .map(mapper::toDto)
-                .orElseThrow();
+                .orElseThrow(() -> new CustomEntityNotFoundException(id));
+    }
+
+    @Override
+    public PrivilegeDto save(PrivilegeDto dto) {
+        Privilege privilege = repository.save(mapper.toEntity(dto));
+        return mapper.toDto(privilege);
     }
 
     @Override
@@ -38,6 +45,11 @@ public class PrivilegeServiceImpl implements PrivilegeService {
                     return mapper.toDto(repository.save(entity));
                 })
                 .orElseThrow(() -> new CustomEntityNotFoundException(id));
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        repository.deleteById(id);
     }
 
 }
