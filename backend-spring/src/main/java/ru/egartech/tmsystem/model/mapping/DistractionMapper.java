@@ -1,6 +1,7 @@
 package ru.egartech.tmsystem.model.mapping;
 
 import org.mapstruct.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.egartech.tmsystem.model.dto.DistractionDto;
 import ru.egartech.tmsystem.model.entity.Distraction;
 
@@ -28,11 +29,15 @@ public abstract class DistractionMapper {
 
     public Distraction toEntity(DistractionDto dto) {
         Distraction distraction = new Distraction();
+        distraction.setId(dto.getId());
         distraction.setDate(dto.getDate());
         distraction.setStartDistraction(dto.getStartDistraction());
         distraction.setEndDistraction(dto.getEndDistraction());
-        distraction.setDistractionTime(Duration.between(dto.getStartDistraction(),
-                dto.getEndDistraction()).toMinutes());
+        if (dto.getStartDistraction() == null || dto.getEndDistraction() == null) {
+            distraction.setDistractionTime(0L);
+        } else {
+            distraction.setDistractionTime(Duration.between(dto.getStartDistraction(), dto.getEndDistraction()).toMinutes());
+        }
         distraction.setEmployee(dto.getEmployee());
         return distraction;
     }

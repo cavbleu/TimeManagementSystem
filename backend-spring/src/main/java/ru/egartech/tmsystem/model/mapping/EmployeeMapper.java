@@ -11,6 +11,7 @@ public abstract class EmployeeMapper {
 
     public Employee toEntity(EmployeeDto dto) {
         Employee employee = new Employee();
+        employee.setId(dto.getId());
         employee.setName(dto.getName());
         employee.setAge(dto.getAge());
         employee.setPosition(dto.getPosition());

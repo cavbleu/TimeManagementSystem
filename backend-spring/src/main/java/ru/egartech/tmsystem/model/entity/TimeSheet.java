@@ -60,6 +60,13 @@ public class TimeSheet {
         this.endWork = endWork;
     }
 
+    public TimeSheet(LocalDate date, LocalTime startWork, LocalTime endWork, Employee employee) {
+        this.date = date;
+        this.startWork = startWork;
+        this.endWork = endWork;
+        this.employee = employee;
+    }
+
     public TimeSheet(Long workTime) {
         this.workTime = workTime;
     }

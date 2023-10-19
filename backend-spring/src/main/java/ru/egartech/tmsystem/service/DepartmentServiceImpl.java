@@ -105,7 +105,6 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public long departmentWorkTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id) {
-
         return repository.departmentWorkTimeByPeriod(startDate, endDate, id)
                 .orElse(0L);
     }

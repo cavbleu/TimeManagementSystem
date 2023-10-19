@@ -1,6 +1,7 @@
 package ru.egartech.tmsystem.model.mapping;
 
 import org.mapstruct.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.egartech.tmsystem.model.dto.RestDto;
 import ru.egartech.tmsystem.model.entity.Rest;
 
@@ -27,10 +28,15 @@ public abstract class RestMapper {
 
     public Rest toEntity(RestDto dto) {
         Rest rest = new Rest();
+        rest.setId((dto.getId()));
         rest.setDate(dto.getDate());
         rest.setStartRest(dto.getStartRest());
         rest.setEndRest(dto.getEndRest());
-        rest.setRestTime(Duration.between(dto.getStartRest(), dto.getEndRest()).toMinutes());
+        if (dto.getStartRest() == null || dto.getEndRest() == null) {
+            rest.setRestTime(0L);
+        } else {
+            rest.setRestTime(Duration.between(dto.getStartRest(), dto.getEndRest()).toMinutes());
+        }
         rest.setEmployee(dto.getEmployee());
         return rest;
     }

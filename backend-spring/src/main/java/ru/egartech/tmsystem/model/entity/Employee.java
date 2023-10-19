@@ -37,18 +37,18 @@ public class Employee {
     @ManyToOne
     private Position position;
 
-    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy("date ASC")
     @JsonIgnore
     private List<TimeSheet> timeSheets = new ArrayList<>();
 
-    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy("date ASC")
     @OrderColumn(name = "id")
     @JsonIgnore
     private List<Rest> rests = new ArrayList<>();
 
-    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy("date ASC")
     @OrderColumn(name = "id")
     @JsonIgnore
@@ -62,10 +62,6 @@ public class Employee {
         this.id = id;
     }
 
-    public Employee(Long id) {
-        this.id = id;
-    }
-
     public Employee(Long id, String name, int age, Long privilegesNumber, Position position, List<TimeSheet> timeSheets) {
         this.id = id;
         this.name = name;
@@ -75,9 +71,8 @@ public class Employee {
         this.timeSheets = timeSheets;
     }
 
-    public Employee(List<TimeSheet> timeSheets, List<Rest> rests, List<Distraction> distractions) {
-        this.timeSheets = timeSheets;
-        this.rests = rests;
-        this.distractions = distractions;
+    public Employee(String name, int age) {
+        this.name = name;
+        this.age = age;
     }
 }
