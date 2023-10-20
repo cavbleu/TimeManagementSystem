@@ -21,6 +21,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @SpringBootTest
+@DirtiesContext
 class DepartmentTest {
 
     @Autowired

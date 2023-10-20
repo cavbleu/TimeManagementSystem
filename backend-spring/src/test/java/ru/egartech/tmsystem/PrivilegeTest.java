@@ -5,6 +5,7 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import ru.egartech.tmsystem.model.dto.PrivilegeDto;
 import ru.egartech.tmsystem.model.mapping.DepartmentMapper;
 import ru.egartech.tmsystem.model.mapping.EmployeeMapper;
@@ -17,6 +18,7 @@ import java.util.Collections;
 
 @Slf4j
 @SpringBootTest
+@DirtiesContext
 public class PrivilegeTest implements CrudTest {
     @Autowired
     PrivilegeService privilegeService;

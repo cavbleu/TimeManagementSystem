@@ -2,9 +2,11 @@ package ru.egartech.tmsystem;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import ru.egartech.tmsystem.model.dto.*;
 import ru.egartech.tmsystem.model.entity.Department;
 import ru.egartech.tmsystem.model.entity.Employee;
@@ -19,6 +21,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @SpringBootTest
+@DirtiesContext
 public class DeviationTest {
 
     @Autowired
@@ -91,57 +94,69 @@ public class DeviationTest {
     }
 
     @Test
+    @DisplayName("Тест - общее число превышений времени перерывов")
+    @DirtiesContext
     void excessRestTimeCountByEmployeeAndPeriodTest() {
         long maxTimeByDay = 1;
         int expected = 2;
         Assertions.assertThat(deviationService.excessRestTimeCountByEmployeeAndPeriod(employee.getId(), startDate, endDate, maxTimeByDay))
-                .describedAs(String.format("Проверяем, что общее число превышений равно %d", expected))
+                .describedAs(String.format("Проверяем, что общее число превышений времени перерывов равно %d", expected))
                 .isEqualTo(expected);
 
     }
 
     @Test
+    @DisplayName("Тест - общее число превышений времени отвлечений")
+    @DirtiesContext
     void excessDistractionTimeCountByEmployeeAndPeriodTest() {
         long maxTimeByDay = 1;
         int expected = 2;
         Assertions.assertThat(deviationService.excessDistractionTimeCountByEmployeeAndPeriod(employee.getId(), startDate, endDate, maxTimeByDay))
-                .describedAs(String.format("Проверяем, что общее число превышений равно %d", expected))
+                .describedAs(String.format("Проверяем, что общее число превышений времени отвлечений равно %d", expected))
                 .isEqualTo(expected);
     }
 
     @Test
+    @DisplayName("Тест - общее число превышений прогулов")
+    @DirtiesContext
     void skipCountByEmployeeAndPeriodTest() {
         int expected = 1;
         Assertions.assertThat(deviationService.skipCountByEmployeeAndPeriod(employee.getId(), startDate, endDate))
-                .describedAs(String.format("Проверяем, что общее число превышений равно %d", expected))
+                .describedAs(String.format("Проверяем, что общее число превышений прогулов равно %d", expected))
                 .isEqualTo(expected);
     }
 
     @Test
+    @DisplayName("Тест - общее число превышений отсутствий")
+    @DirtiesContext
     void absenceCountByEmployeeAndPeriod() {
         int expected = 1;
         Assertions.assertThat(deviationService.absenceCountByEmployeeAndPeriod(employee.getId(), startDate, endDate))
-                .describedAs(String.format("Проверяем, что общее число превышений равно %d", expected))
+                .describedAs(String.format("Проверяем, что общее число превышений отсутствий равно %d", expected))
                 .isEqualTo(expected);
     }
 
     @Test
+    @DisplayName("Тест - общее число превышений ранних уходов с работы")
+    @DirtiesContext
     void earlyLeavingCountByEmployeeAndPeriodTest() {
         long defaultWorkTime = 900;
         int expected = 2;
         Assertions.assertThat(deviationService.earlyLeavingCountByEmployeeAndPeriod(defaultWorkTime, employee.getId(),
                         startDate, endDate))
-                .describedAs(String.format("Проверяем, что общее число превышений равно %d", expected))
+                .describedAs(String.format("Проверяем, что общее число превышений ранних уходов с работы равно %d", expected))
                 .isEqualTo(expected);
     }
 
     @Test
+    @DisplayName("Тест - общее число превышений опозданий")
+    @DirtiesContext
     void employeeLateCountByMonthTest() {
         LocalTime defaultStartWork = LocalTime.of(7, 0);
         int expected = 2;
         Assertions.assertThat(deviationService.employeeLateCountByMonth(defaultStartWork, employee.getId(),
                         startDate, endDate))
-                .describedAs(String.format("Проверяем, что общее число превышений равно %d", expected))
+                .describedAs(String.format("Проверяем, что общее число превышений опозданий равно %d", expected))
                 .isEqualTo(expected);
     }
 }

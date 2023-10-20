@@ -4,6 +4,7 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import ru.egartech.tmsystem.model.dto.DepartmentDto;
 import ru.egartech.tmsystem.model.dto.EmployeeDto;
 import ru.egartech.tmsystem.model.dto.PositionDto;
@@ -22,6 +23,7 @@ import java.time.LocalTime;
 import java.util.Collections;
 
 @SpringBootTest
+@DirtiesContext
 public class RestTest implements CrudTest {
 
     @Autowired
