@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.exception.CustomEntityNotFoundException;
-import ru.egartech.tmsystem.exception.DepartmentConstraintException;
+import ru.egartech.tmsystem.exception.PositionConstraintException;
 import ru.egartech.tmsystem.model.dto.EditPositionDto;
 import ru.egartech.tmsystem.model.dto.PositionDto;
 import ru.egartech.tmsystem.model.dto.PositionSummaryDto;
@@ -44,23 +44,12 @@ public class PositionServiceImpl implements PositionService {
         return repository.findAll().stream()
                 .map(mapper::toDto)
                 .toList();
-
-//        TypedQuery<Long> query = entityManager.createQuery(
-//                "select p " +
-//                        "from Position p join fetch p.employees e " +
-//                        "where d.date >= :startDate " +
-//                        "and d.date <= :endDate " +
-//                        "and e.position.id = :id", Long.class);
-//        return Optional.ofNullable(query.setParameter("startDate", startDate)
-//                        .setParameter("endDate", endDate)
-//                        .setParameter("id", id).getSingleResult())
-//                .orElse(0L);
     }
 
     @Override
     public PositionDto findById(Long id) {
         Position position = entityManager.find(Position.class, id);
-        return Optional.of(position)
+        return Optional.ofNullable(position)
                 .map(mapper::toDto)
                 .orElseThrow(() -> new CustomEntityNotFoundException(id));
     }
@@ -86,7 +75,7 @@ public class PositionServiceImpl implements PositionService {
     @Override
     public void deleteById(Long id) {
         if (!findById(id).getEmployees().isEmpty()) {
-            throw new DepartmentConstraintException();
+            throw new PositionConstraintException();
         } else {
             repository.deleteById(id);
         }
@@ -95,7 +84,7 @@ public class PositionServiceImpl implements PositionService {
     @Override
     public List<PositionSummaryDto> positionsSummaryByPeriod(LocalDate startDate, LocalDate endDate) {
 
-        PeriodValidation.validatePeriod(30,0,0, startDate, endDate);
+        PeriodValidation.validatePeriod(30, 0, 0, startDate, endDate);
 
         List<PositionSummaryDto> positionsSummary = new ArrayList<>();
         List<PositionDto> positions = findAll();
@@ -127,8 +116,8 @@ public class PositionServiceImpl implements PositionService {
                         "and t.date <= :endDate " +
                         "and e.position.id = :id", Long.class);
         return Optional.ofNullable(query.setParameter("startDate", startDate)
-                .setParameter("endDate", endDate)
-                .setParameter("id", id).getSingleResult())
+                        .setParameter("endDate", endDate)
+                        .setParameter("id", id).getSingleResult())
                 .orElse(0L);
     }
 

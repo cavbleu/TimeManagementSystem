@@ -22,7 +22,7 @@ import java.time.LocalTime;
 
 @SpringBootTest
 @DirtiesContext
-class DepartmentTest {
+public class EmployeeTest {
 
     @Autowired
     private DepartmentService departmentService;
@@ -48,7 +48,7 @@ class DepartmentTest {
     private Long workTime;
     private Long restTime;
     private Long distractionTime;
-    private Department department;
+    private Employee employee;
 
     @BeforeEach
     void init() {
@@ -71,20 +71,19 @@ class DepartmentTest {
         restTime = Duration.between(startRest, endRest).toMinutes() * 2;
         distractionTime = Duration.between(startDistraction, endDistraction).toMinutes() * 2;
 
-        department = departmentMapper.toEntity(departmentService.save(new DepartmentDto("IT")));
+        Department department = departmentMapper.toEntity(departmentService.save(new DepartmentDto("IT")));
 
-        Position position1 = positionMapper.toEntity(positionService.save(new PositionDto("QA", department)));
-        Position position2 = positionMapper.toEntity(positionService.save(new PositionDto("TeamLead", department)));
+        Position position = positionMapper.toEntity(positionService.save(new PositionDto("QA", department)));
 
-        Employee employee1 = employeeMapper.toEntity(employeeService.save(new EmployeeDto("Petr", 29, position1)));
-        Employee employee2 = employeeMapper.toEntity(employeeService.save(new EmployeeDto("Ivan", 32, position2)));
+        employee = employeeMapper.toEntity(employeeService.save(new EmployeeDto("Petr", 29, position)));
 
-        TimeSheetDto timeSheet1 = new TimeSheetDto(date1, startWork, endWork, employee1);
-        TimeSheetDto timeSheet2 = new TimeSheetDto(date2, startWork, endWork, employee2);
-        RestDto restDto1 = new RestDto(date1, startRest, endRest, employee1);
-        RestDto restDto2 = new RestDto(date2, startRest, endRest, employee2);
-        DistractionDto distractionDto1 = new DistractionDto(date1, startDistraction, endDistraction, employee1);
-        DistractionDto distractionDto2 = new DistractionDto(date2, startDistraction, endDistraction, employee2);
+        TimeSheetDto timeSheet1 = new TimeSheetDto(date1, startWork, endWork, employee);
+        TimeSheetDto timeSheet2 = new TimeSheetDto(date2, startWork, endWork, employee);
+        RestDto restDto1 = new RestDto(date1, startRest, endRest, employee);
+        RestDto restDto2 = new RestDto(date2, startRest, endRest, employee);
+        DistractionDto distractionDto1 = new DistractionDto(date1, startDistraction, endDistraction, employee);
+        DistractionDto distractionDto2 = new DistractionDto(date2, startDistraction, endDistraction, employee);
+
 
         restService.save(restDto1);
         restService.save(restDto2);
@@ -97,10 +96,19 @@ class DepartmentTest {
     }
 
     @Test
+    @DisplayName("Тест - суммарное отработанное время")
+    @DirtiesContext
+    void employeeWorkTimeByPeriodTest() {
+        Assertions.assertThat(employeeService.employeeWorkTimeByPeriod(startDate, endDate, employee.getId()))
+                .describedAs(String.format("Проверяем, что суммарное рабочее время %d мин", workTime))
+                .isEqualTo(workTime);
+    }
+
+    @Test
     @DisplayName("Тест - суммарное время перерывов")
     @DirtiesContext
-    void departmentRestTimeByPeriodTest() {
-        Assertions.assertThat(departmentService.departmentRestTimeByPeriod(startDate, endDate, department.getId()))
+    void employeeRestTimeByPeriodTest() {
+        Assertions.assertThat(employeeService.employeeRestTimeByPeriod(startDate, endDate, employee.getId()))
                 .describedAs(String.format("Проверяем, что суммарное время перерывов %d мин", restTime))
                 .isEqualTo(restTime);
     }
@@ -108,19 +116,9 @@ class DepartmentTest {
     @Test
     @DisplayName("Тест - суммарное время отвлечений")
     @DirtiesContext
-    void departmentDistractionTimeByPeriodTest() {
-        Assertions.assertThat(departmentService.departmentDistractionTimeByPeriod(startDate, endDate, department.getId()))
+    public void employeeDistractionTimeByPeriod() {
+        Assertions.assertThat(employeeService.employeeDistractionTimeByPeriod(startDate, endDate, employee.getId()))
                 .describedAs(String.format("Проверяем, что суммарное время отвлечений %d мин", distractionTime))
                 .isEqualTo(distractionTime);
     }
-
-    @Test
-    @DisplayName("Тест - суммарное отработанное время")
-    @DirtiesContext
-    void departmentWorkTimeByPeriodTest() {
-        Assertions.assertThat(departmentService.departmentWorkTimeByPeriod(startDate, endDate, department.getId()))
-                .describedAs(String.format("Проверяем, что суммарное отработанное время %d мин", workTime))
-                .isEqualTo(workTime);
-    }
-
 }

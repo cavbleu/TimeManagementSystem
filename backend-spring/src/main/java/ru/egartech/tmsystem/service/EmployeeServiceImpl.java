@@ -59,15 +59,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<EmployeeDto> findAll() {
-//        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-//        CriteriaQuery<Employee> cq = cb.createQuery(Employee.class);
-//        Root<Employee> root = cq.from(Employee.class);
-//        cq.multiselect(root.get("name"), root.get("age"), root.get("position"), root.get("privilegesNumber"), root.get("id");
-//        List<Employee> result = entityManager.createQuery(cq).getResultList();
-//        return result.stream()
-//                .map(mapper::toDto)
-//                .toList();
-        return repository.findAll().stream()
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Employee> cq = cb.createQuery(Employee.class);
+        Root<Employee> root = cq.from(Employee.class);
+        cq.multiselect(root.get("name"), root.get("age"), root.get("position"), root.get("privilegesNumber"), root.get("id"));
+        List<Employee> result = entityManager.createQuery(cq).getResultList();
+        return result.stream()
                 .map(mapper::toDto)
                 .toList();
     }

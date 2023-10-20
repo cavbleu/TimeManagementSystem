@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.h2.command.dml.Merge;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +14,8 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "position")
+@ToString(exclude = {"employees"})
+@EqualsAndHashCode(exclude = {"employees"})
 public class Position {
 
     @Id

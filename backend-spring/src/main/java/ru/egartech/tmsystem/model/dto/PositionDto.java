@@ -21,6 +21,16 @@ public class PositionDto extends EntityDto {
     //Список сотрудников
     List<Employee> employees = new ArrayList<>();
 
+    public PositionDto(String name, Department department) {
+        super(name);
+        this.department = department;
+    }
+
+    public PositionDto(String name, Department department, List<Employee> employees) {
+        super(name);
+        this.department = department;
+        this.employees = employees;
+    }
 }
 
 

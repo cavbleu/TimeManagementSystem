@@ -16,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "employee")
+@ToString(exclude = {"timeSheets", "rests", "distractions"})
 @EqualsAndHashCode(exclude = {"timeSheets", "rests", "distractions"})
 public class Employee {
 

@@ -40,9 +40,9 @@ public class DeviationServiceImpl implements DeviationService {
         LocalDate startDate = month.atDay(1);
         LocalDate endDate   = month.atEndOfMonth();
 
-        long lateCount = employeeLateCountByMonth(settingsService.findByCurrentSettingsProfile().getDefaultStartWork(),
+        long lateCount = employeeLateCountByMonth(settingsDto.getDefaultStartWork(),
                 employeeId, startDate, endDate);
-        long earlyLeavingCount = earlyLeavingCountByEmployeeAndPeriod(settingsService.findByCurrentSettingsProfile().getDefaultWorkTime(),
+        long earlyLeavingCount = earlyLeavingCountByEmployeeAndPeriod(settingsDto.getDefaultWorkTime(),
                 employeeId, startDate, endDate);
         long absenceCount = absenceCountByEmployeeAndPeriod(employeeId, startDate, endDate);
         long skipCount = skipCountByEmployeeAndPeriod(employeeId, startDate, endDate);
