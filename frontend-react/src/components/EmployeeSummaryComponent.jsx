@@ -214,7 +214,7 @@ class EmployeeSummaryComponent extends Component {
 
 	render() {
 		return (
-			<div style={{ fontSize: 14, marginTop: 20 }}>
+			<div style={{ fontSize: 13, marginTop: 20 }}>
 				<h2 className='text-center'>Сводная статистика по сотрудникам</h2>
 				<div>
 					<h5>Дата начала отчетного периода: </h5>

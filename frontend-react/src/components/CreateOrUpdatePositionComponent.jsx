@@ -116,7 +116,7 @@ class CreateOrUpdatePositionComponent extends Component {
 
 		return (
 			<div>
-				<div>{this.getTitle()}</div>
+				<div style={{ marginTop: 20 }}>{this.getTitle()}</div>
 				<div className='container'>
 					<div className='card col-md-6 offset-md-3 offset-md-3'>
 						<div className='card-body'>
@@ -124,6 +124,7 @@ class CreateOrUpdatePositionComponent extends Component {
 								<div>
 									<label style={{ fontSize: 20 }}>Наименование: </label>
 									<input
+										style={{ marginTop: 10 }}
 										className='form-control'
 										value={this.state.name}
 										onChange={event => {
@@ -132,13 +133,13 @@ class CreateOrUpdatePositionComponent extends Component {
 									/>
 								</div>
 
-								<div style={{ marginTop: 20 }}>
+								<div style={{ marginTop: 20, fontSize: 13 }}>
 									<label style={{ fontSize: 20 }}>
 										Выберите отдел перевода
 									</label>
 								</div>
 
-								<div className='dropdown' style={{ marginTop: 20 }}>
+								<div className='dropdown' style={{ marginTop: 10 }}>
 									<button
 										type='button'
 										class='btn btn-secondary dropdown-toggle'

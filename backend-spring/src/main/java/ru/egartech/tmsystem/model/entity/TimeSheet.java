@@ -22,7 +22,8 @@ import java.time.LocalTime;
 public class TimeSheet {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @TableGenerator( name = "Address_Gen", initialValue = 61)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "Address_Gen")
     private Long id;
 
     @Temporal(TemporalType.DATE)

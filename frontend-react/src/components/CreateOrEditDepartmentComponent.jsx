@@ -69,7 +69,7 @@ class CreateOrEditDepartmentComponent extends Component {
 	render() {
 		return (
 			<div>
-				<div>{this.getTitle()}</div>
+				<div style={{ marginTop: 20 }}>{this.getTitle()}</div>
 				<div className='container'>
 					<div className='card col-md-6 offset-md-3 offset-md-3'>
 						<div className='card-body'>

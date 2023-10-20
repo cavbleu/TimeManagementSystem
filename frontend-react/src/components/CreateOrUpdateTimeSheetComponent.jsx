@@ -208,7 +208,7 @@ class CreateOrUpdateTimeSheetComponent extends Component {
 		))
 
 		let dropdown
-		if (this.props.id === "add") {
+		if (this.state.id === "add") {
 			dropdown = (
 				<div>
 					<div style={{ marginTop: 20 }}>

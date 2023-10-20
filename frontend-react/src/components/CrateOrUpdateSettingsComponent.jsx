@@ -104,7 +104,7 @@ class CreateOrUpdateSettingsComponent extends Component {
 	}
 
 	cancel = () => {
-		this.props.history.push("/summary/timeSheet")
+		this.props.history.push("/settings/limits")
 	}
 
 	render() {
