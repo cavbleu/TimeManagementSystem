@@ -242,7 +242,7 @@ VALUES (1, '2023-10-02', 30, '12:30', '12:00', 1),
 ON CONFLICT (id)
     DO NOTHING;
 
-INSERT INTO rest (id, date, start_rest, end_rest, rest_time, employee_id)
+INSERT INTO rest (id, date, rest_time, end_rest, start_rest, employee_id)
 VALUES (1, '2023-10-02', 30, '12:30', '12:00', 1),
        (2, '2023-10-02', 15, '13:10', '12:55', 1),
        (3, '2023-10-02', 35, '11:55', '11:20', 2),

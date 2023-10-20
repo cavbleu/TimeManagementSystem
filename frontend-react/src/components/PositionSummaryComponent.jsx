@@ -158,12 +158,13 @@ class PositionSummaryComponent extends Component {
 				<button
 					onClick={() => (window.location.href = `/add-position/${row.id}`)}
 					className='btn btn-success btn-sm'
+					style={{ fontSize: 13 }}
 				>
 					Редактировать
 				</button>
 
 				<button
-					style={{ marginTop: 5 }}
+					style={{ marginTop: 5, fontSize: 13 }}
 					onClick={() => {
 						PositionService.delete(row.id)
 							.catch(err => {
@@ -183,7 +184,7 @@ class PositionSummaryComponent extends Component {
 
 	render() {
 		return (
-			<div style={{ marginTop: 20 }}>
+			<div style={{ marginTop: 20, fontSize: 13 }}>
 				<h2 className='text-center'>Сводная статистика по должностям</h2>
 				<div>
 					<h5>Дата начала отчетного периода: </h5>

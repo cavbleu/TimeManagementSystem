@@ -147,12 +147,13 @@ class DepartmentSummaryComponent extends Component {
 				<button
 					onClick={() => (window.location.href = `/add-department/${row.id}`)}
 					className='btn btn-success btn-sm'
+					style={{ fontSize: 13 }}
 				>
 					Редактировать
 				</button>
 
 				<button
-					style={{ marginTop: 5 }}
+					style={{ marginTop: 5, fontSize: 13 }}
 					onClick={() => {
 						DepartmentService.deleteDepartment(row.id)
 							.catch(err => {
@@ -172,7 +173,7 @@ class DepartmentSummaryComponent extends Component {
 
 	render() {
 		return (
-			<div style={{ marginTop: 20 }}>
+			<div style={{ marginTop: 20, fontSize: 13 }}>
 				<h2 className='text-center'>Сводная статистика по отделам</h2>
 				<div>
 					<h5>Дата начала отчетного периода: </h5>

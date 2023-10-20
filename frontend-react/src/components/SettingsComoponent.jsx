@@ -183,7 +183,7 @@ class SettingsComponent extends Component {
 
 	render() {
 		return (
-			<div>
+			<div style={{ marginTop: 20, fontSize: 13 }}>
 				<h2 className='text-center'>
 					Настройки лимитов распорядка дня сотрудников
 				</h2>
@@ -197,7 +197,7 @@ class SettingsComponent extends Component {
 						Добавить профиль настроек
 					</button>
 				</div>
-				<div style={{ fontSize: 14 }}>
+				<div>
 					<BootStrapTable
 						bootstrap4
 						keyField='id'

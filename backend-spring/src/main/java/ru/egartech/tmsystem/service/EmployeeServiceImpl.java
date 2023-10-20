@@ -176,7 +176,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<EmployeeDto> findAllByPeriod(LocalDate startDate, LocalDate endDate) {
 
-        PeriodValidation.validatePeriod(10, 0, 0, startDate, endDate);
+        PeriodValidation.validatePeriod(30, 0, 0, startDate, endDate);
 
         List<EmployeeDto> result = new ArrayList<>();
         for (EmployeeDto employeeDto : findAll()) {

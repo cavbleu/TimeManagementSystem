@@ -45,8 +45,8 @@ class RestSummaryComponent extends Component {
 					name: "",
 				},
 			},
-			startDate: new Date(),
-			endDate: new Date(),
+			startDate: new Date(date.getFullYear(), date.getMonth(), 1),
+			endDate: new Date(date.getFullYear(), date.getMonth() + 1, 0),
 			options: {
 				weekday: "long",
 				year: "numeric",
@@ -194,13 +194,14 @@ class RestSummaryComponent extends Component {
 			<div>
 				<button
 					onClick={() => (window.location.href = `/add-rest/${row.rest.id}`)}
-					className='btn btn-success'
+					className='btn btn-success btn-sm'
+					style={{ fontSize: 13 }}
 				>
 					Редактировать
 				</button>
 
 				<button
-					style={{ marginTop: 5 }}
+					style={{ marginTop: 5, fontSize: 13 }}
 					onClick={() => {
 						RestService.delete(row.rest.id)
 							.catch(err => {
@@ -210,7 +211,7 @@ class RestSummaryComponent extends Component {
 								window.location.reload()
 							})
 					}}
-					className='btn btn-danger'
+					className='btn btn-danger btn-sm'
 				>
 					Удалить
 				</button>
@@ -220,7 +221,7 @@ class RestSummaryComponent extends Component {
 
 	render() {
 		return (
-			<div>
+			<div style={{ fontSize: 13 }}>
 				<h2 className='text-center' style={{ marginTop: 20 }}>
 					Сводная таблица перерывов сотрудников
 				</h2>

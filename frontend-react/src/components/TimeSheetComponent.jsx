@@ -44,8 +44,8 @@ class TimeSheetComponent extends Component {
 					name: "",
 				},
 			},
-			startDate: new Date(),
-			endDate: new Date(),
+			startDate: new Date(date.getFullYear(), date.getMonth(), 1),
+			endDate: new Date(date.getFullYear(), date.getMonth() + 1, 0),
 			options: {
 				weekday: "long",
 				year: "numeric",
@@ -193,7 +193,7 @@ class TimeSheetComponent extends Component {
 
 	filterFormatter(column, colIndex, { sortElement, filterElement }) {
 		return (
-			<div style={{ display: "flex", flexDirection: "column" }}>
+			<div style={{ display: "flex", flexDirection: "column", fontSize: 13 }}>
 				{filterElement}
 				{column.text}
 				{sortElement}
@@ -208,13 +208,14 @@ class TimeSheetComponent extends Component {
 					onClick={() =>
 						(window.location.href = `/add-timeSheet/${row.timeSheet.id}`)
 					}
-					className='btn btn-success'
+					className='btn btn-success btn-sm'
+					style={{ fontSize: 13 }}
 				>
 					Редактировать
 				</button>
 
 				<button
-					style={{ marginTop: 5 }}
+					style={{ marginTop: 5, fontSize: 13 }}
 					onClick={() => {
 						TimeSheetService.delete(row.timeSheet.id)
 							.catch(err => {
@@ -224,7 +225,7 @@ class TimeSheetComponent extends Component {
 								window.location.reload()
 							})
 					}}
-					className='btn btn-danger'
+					className='btn btn-danger btn-sm'
 				>
 					Удалить
 				</button>
@@ -234,7 +235,7 @@ class TimeSheetComponent extends Component {
 
 	render() {
 		return (
-			<div style={{ marginTop: 20 }}>
+			<div style={{ marginTop: 20, fontSize: 13 }}>
 				<h2 className='text-center'>Табели рабочего времени сотрудников</h2>
 				<div>
 					<h5>Дата начала отчетного периода: </h5>

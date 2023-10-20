@@ -45,8 +45,8 @@ class DistractionComponent extends Component {
 					name: "",
 				},
 			},
-			startDate: new Date(),
-			endDate: new Date(),
+			startDate: new Date(date.getFullYear(), date.getMonth(), 1),
+			endDate: new Date(date.getFullYear(), date.getMonth() + 1, 0),
 			options: {
 				weekday: "long",
 				year: "numeric",
@@ -197,13 +197,14 @@ class DistractionComponent extends Component {
 					onClick={() =>
 						(window.location.href = `/add-distraction/${row.distraction.id}`)
 					}
-					className='btn btn-success'
+					className='btn btn-success btn-sm'
+					style={{ fontSize: 13 }}
 				>
 					Редактировать
 				</button>
 
 				<button
-					style={{ marginTop: 5 }}
+					style={{ marginTop: 5, fontSize: 13 }}
 					onClick={() => {
 						DistractionService.delete(row.distraction.id)
 							.catch(err => {
@@ -213,7 +214,7 @@ class DistractionComponent extends Component {
 								window.location.reload()
 							})
 					}}
-					className='btn btn-danger'
+					className='btn btn-danger btn-sm'
 				>
 					Удалить
 				</button>
@@ -223,10 +224,10 @@ class DistractionComponent extends Component {
 
 	render() {
 		return (
-			<div>
-				<h2 className='text-center' style={{ marginTop: 20 }}>
+			<div style={{ fontSize: 13 }}>
+				<h3 className='text-center' style={{ marginTop: 20 }}>
 					Сводная таблица отвлечений сотрудников от целевых программ
-				</h2>
+				</h3>
 				<div style={{ marginTop: 20 }}>
 					<h5>Дата начала отчетного периода: </h5>
 					<DatePicker

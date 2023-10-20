@@ -173,7 +173,7 @@ class DeviationSummaryComponent extends Component {
 
 	render() {
 		return (
-			<div style={{ fontSize: 14, marginTop: 20 }}>
+			<div style={{ fontSize: 13, marginTop: 20 }}>
 				<h3 className='text-center'>
 					Сводная статистика по отклонениям от нормы рабочего времени
 					сотрудников
