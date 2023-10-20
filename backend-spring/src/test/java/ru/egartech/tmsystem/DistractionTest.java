@@ -19,7 +19,7 @@ import java.time.LocalTime;
 import java.util.Collections;
 
 @SpringBootTest
-public class DistractionTest implements BaseTest {
+public class DistractionTest implements CrudTest {
 
     @Autowired
     private DepartmentService departmentService;

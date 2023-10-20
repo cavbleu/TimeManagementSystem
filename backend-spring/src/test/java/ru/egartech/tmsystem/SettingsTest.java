@@ -17,7 +17,7 @@ import java.time.LocalTime;
 
 @Slf4j
 @SpringBootTest
-public class SettingsTest implements BaseTest {
+public class SettingsTest implements CrudTest {
 
     @Autowired
     SettingsService settingsService;

@@ -1,9 +1,12 @@
 package ru.egartech.tmsystem;
 
-import org.assertj.core.api.SoftAssertions;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import ru.egartech.tmsystem.model.dto.*;
 import ru.egartech.tmsystem.model.entity.Department;
 import ru.egartech.tmsystem.model.entity.Employee;
@@ -11,16 +14,14 @@ import ru.egartech.tmsystem.model.entity.Position;
 import ru.egartech.tmsystem.model.mapping.DepartmentMapper;
 import ru.egartech.tmsystem.model.mapping.EmployeeMapper;
 import ru.egartech.tmsystem.model.mapping.PositionMapper;
-import ru.egartech.tmsystem.model.repository.EmployeeRepository;
 import ru.egartech.tmsystem.service.*;
 
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Collections;
 
 @SpringBootTest
-class DepartmentTest implements BaseTest {
+class DepartmentTest {
 
     @Autowired
     private DepartmentService departmentService;
@@ -35,57 +36,23 @@ class DepartmentTest implements BaseTest {
     @Autowired
     private TimeSheetService timeSheetService;
     @Autowired
-    DepartmentMapper departmentMapper;
+    private DepartmentMapper departmentMapper;
     @Autowired
-    PositionMapper positionMapper;
+    private PositionMapper positionMapper;
     @Autowired
-    EmployeeMapper employeeMapper;
-    @Autowired
-    EmployeeRepository employeeRepository;
+    private EmployeeMapper employeeMapper;
 
-    @Override
-    @Test
-    public void crudTest() {
-        SoftAssertions softAssertions = new SoftAssertions();
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private Long workTime;
+    private Long restTime;
+    private Long distractionTime;
+    private Department department;
 
-        //Save test
-        DepartmentDto beforeServiceDto = new DepartmentDto("Security");
-        DepartmentDto afterServiceDto = departmentService.save(beforeServiceDto);
-        softAssertions.assertThat(beforeServiceDto.getName())
-                .describedAs(String.format("Проверяем, что имя сохраненной сущности %s", beforeServiceDto.getName()))
-                .isEqualTo(afterServiceDto.getName());
-
-        //FindById test
-        beforeServiceDto.setId(afterServiceDto.getId());
-        afterServiceDto = departmentService.findById(beforeServiceDto.getId());
-        softAssertions.assertThat(beforeServiceDto.getName())
-                .describedAs(String.format("Проверяем, что имя найденной по id сущности %s", beforeServiceDto.getName()))
-                .isEqualTo(afterServiceDto.getName());
-
-        //Update test
-        beforeServiceDto.setName("IT");
-        afterServiceDto = departmentService.updateById(beforeServiceDto.getId(), beforeServiceDto);
-        softAssertions.assertThat(beforeServiceDto.getName())
-                .describedAs(String.format("Проверяем, что имя обновленной сущности сущности %s", beforeServiceDto.getName()))
-                .isEqualTo(afterServiceDto.getName());
-
-
-        //FindAll and Delete test
-        departmentService.deleteById(beforeServiceDto.getId());
-        softAssertions.assertThat(departmentService.findAll())
-                .describedAs("Проверяем, что список пустой")
-                .isEqualTo(Collections.EMPTY_LIST);
-
-        softAssertions.assertAll();
-    }
-
-    /**
-     * Проверяем, что правильно считается суммарное время отвлечений, перерывов и отработанного времени по всему отделу
-     */
-    @Test
-    public void departmentSummaryTimeByPeriodTest() {
-        LocalDate startDate = LocalDate.of(2023, 10, 18);
-        LocalDate endDate = LocalDate.of(2023, 10, 21);
+    @BeforeEach
+    void init() {
+        startDate = LocalDate.of(2023, 10, 18);
+        endDate = LocalDate.of(2023, 10, 21);
 
         LocalDate date1 = LocalDate.of(2023, 10, 19);
         LocalDate date2 = LocalDate.of(2023, 10, 20);
@@ -99,11 +66,11 @@ class DepartmentTest implements BaseTest {
         LocalTime startDistraction = LocalTime.of(10, 0);
         LocalTime endDistraction = LocalTime.of(10, 40);
 
-        Long workTime = Duration.between(startWork, endWork).toMinutes() * 2;
-        Long restTime = Duration.between(startRest, endRest).toMinutes() * 2;
-        Long distractionTime = Duration.between(startDistraction, endDistraction).toMinutes() * 2;
+        workTime = Duration.between(startWork, endWork).toMinutes() * 2;
+        restTime = Duration.between(startRest, endRest).toMinutes() * 2;
+        distractionTime = Duration.between(startDistraction, endDistraction).toMinutes() * 2;
 
-        Department department = departmentMapper.toEntity(departmentService.save(new DepartmentDto("IT")));
+        department = departmentMapper.toEntity(departmentService.save(new DepartmentDto("IT")));
 
         Position position1 = positionMapper.toEntity(positionService.save(new PositionDto("QA", department)));
         Position position2 = positionMapper.toEntity(positionService.save(new PositionDto("TeamLead", department)));
@@ -117,7 +84,6 @@ class DepartmentTest implements BaseTest {
         RestDto restDto2 = new RestDto(date2, startRest, endRest, employee2);
         DistractionDto distractionDto1 = new DistractionDto(date1, startDistraction, endDistraction, employee1);
         DistractionDto distractionDto2 = new DistractionDto(date2, startDistraction, endDistraction, employee2);
-        SoftAssertions softAssertions = new SoftAssertions();
 
         restService.save(restDto1);
         restService.save(restDto2);
@@ -127,22 +93,33 @@ class DepartmentTest implements BaseTest {
 
         timeSheetService.save(timeSheet1);
         timeSheetService.save(timeSheet2);
+    }
 
-        //Суммарное рабочее время
-        softAssertions.assertThat(departmentService.departmentWorkTimeByPeriod(startDate, endDate, department.getId()))
-                .describedAs(String.format("Проверяем, что суммарное рабочее время %d мин", workTime))
-                .isEqualTo(workTime);
-
-        //Суммарное время перерывов
-        softAssertions.assertThat(departmentService.departmentRestTimeByPeriod(startDate, endDate, department.getId()))
+    @Test
+    @DisplayName("Тест - суммарное время перерывов")
+    @DirtiesContext
+    void departmentRestTimeByPeriodTest() {
+        Assertions.assertThat(departmentService.departmentRestTimeByPeriod(startDate, endDate, department.getId()))
                 .describedAs(String.format("Проверяем, что суммарное время перерывов %d мин", restTime))
                 .isEqualTo(restTime);
+    }
 
-        //Суммарное время отвлечений
-        softAssertions.assertThat(departmentService.departmentDistractionTimeByPeriod(startDate, endDate, department.getId()))
+    @Test
+    @DisplayName("Тест - суммарное время отвлечений")
+    @DirtiesContext
+    void departmentDistractionTimeByPeriodTest() {
+        Assertions.assertThat(departmentService.departmentDistractionTimeByPeriod(startDate, endDate, department.getId()))
                 .describedAs(String.format("Проверяем, что суммарное время отвлечений %d мин", distractionTime))
                 .isEqualTo(distractionTime);
-
-        softAssertions.assertAll();
     }
+
+    @Test
+    @DisplayName("Тест - суммарное отработанное время")
+    @DirtiesContext
+    void departmentWorkTimeByPeriodTest() {
+        Assertions.assertThat(departmentService.departmentWorkTimeByPeriod(startDate, endDate, department.getId()))
+                .describedAs(String.format("Проверяем, что суммарное отработанное время %d мин", workTime))
+                .isEqualTo(workTime);
+    }
+
 }

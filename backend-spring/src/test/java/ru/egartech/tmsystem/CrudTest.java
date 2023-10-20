@@ -1,5 +1,5 @@
 package ru.egartech.tmsystem;
 
-public interface BaseTest {
+public interface CrudTest {
     void crudTest();
 }

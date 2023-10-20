@@ -22,7 +22,7 @@ import java.time.LocalTime;
 import java.util.Collections;
 
 @SpringBootTest
-public class TimeSheetTest implements BaseTest {
+public class TimeSheetTest implements CrudTest {
 
     @Autowired
     private DepartmentService departmentService;

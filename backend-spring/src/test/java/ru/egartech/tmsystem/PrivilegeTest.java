@@ -17,7 +17,7 @@ import java.util.Collections;
 
 @Slf4j
 @SpringBootTest
-public class PrivilegeTest implements BaseTest {
+public class PrivilegeTest implements CrudTest {
     @Autowired
     PrivilegeService privilegeService;
     @Autowired
