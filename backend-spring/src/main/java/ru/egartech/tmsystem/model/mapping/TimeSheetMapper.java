@@ -1,8 +1,9 @@
 package ru.egartech.tmsystem.model.mapping;
 
 import org.mapstruct.Mapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import ru.egartech.tmsystem.model.dto.EmployeeDto;
 import ru.egartech.tmsystem.model.dto.TimeSheetDto;
+import ru.egartech.tmsystem.model.entity.Employee;
 import ru.egartech.tmsystem.model.entity.TimeSheet;
 
 import java.time.Duration;
@@ -21,8 +22,13 @@ public abstract class TimeSheetMapper {
         timeSheetDto.setAbsenceReason(timeSheet.getAbsenceReason());
         timeSheetDto.setStartWork(timeSheet.getStartWork());
         timeSheetDto.setEndWork(timeSheet.getEndWork());
-        timeSheetDto.setWorkTime(timeSheet.getWorkTime());
-        timeSheetDto.setEmployee(timeSheet.getEmployee());
+        timeSheetDto.setEmployee(employeeEntityToDto(timeSheet.getEmployee()));
+
+        if (timeSheet.getStartWork() == null || timeSheet.getEndWork() == null) {
+            timeSheetDto.setWorkTime(0L);
+        } else {
+            timeSheetDto.setWorkTime(timeSheet.getWorkTime());
+        }
 
         return timeSheetDto;
     }
@@ -34,7 +40,8 @@ public abstract class TimeSheetMapper {
         timeSheet.setAbsenceReason(dto.getAbsenceReason());
         timeSheet.setStartWork(dto.getStartWork());
         timeSheet.setEndWork(dto.getEndWork());
-        timeSheet.setEmployee(dto.getEmployee());
+        timeSheet.setEmployee(employeeDtoToEntity(dto.getEmployee()));
+
         if (dto.getStartWork() == null || dto.getEndWork() == null) {
             timeSheet.setWorkTime(0L);
         } else {
@@ -42,5 +49,36 @@ public abstract class TimeSheetMapper {
         }
 
         return timeSheet;
+    }
+
+    public Employee employeeDtoToEntity(EmployeeDto dto) {
+        if (dto == null) {
+            return null;
+        }
+
+        Employee employee = new Employee();
+
+        employee.setId(dto.getId());
+        employee.setName(dto.getName());
+        employee.setAge(dto.getAge());
+        employee.setPrivilegesNumber(dto.getPrivilegesNumber());
+
+        return employee;
+    }
+
+
+    public EmployeeDto employeeEntityToDto(Employee entity) {
+        if (entity == null) {
+            return null;
+        }
+
+        EmployeeDto employeeDto = new EmployeeDto();
+
+        employeeDto.setId(entity.getId());
+        employeeDto.setName(entity.getName());
+        employeeDto.setAge(entity.getAge());
+        employeeDto.setPrivilegesNumber(entity.getPrivilegesNumber());
+
+        return employeeDto;
     }
 }

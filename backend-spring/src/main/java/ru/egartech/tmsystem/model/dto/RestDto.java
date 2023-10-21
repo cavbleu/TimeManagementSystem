@@ -1,11 +1,11 @@
 package ru.egartech.tmsystem.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.egartech.tmsystem.model.entity.Employee;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -26,9 +26,11 @@ public class RestDto {
     private LocalTime endRest;
     //Суммарное время перерыва
     private long restTime;
-    private Employee employee;
+    @JsonIgnore
+    //Сотрудник
+    private EmployeeDto employee;
 
-    public RestDto(LocalDate date, LocalTime startRest, LocalTime endRest, Employee employee) {
+    public RestDto(LocalDate date, LocalTime startRest, LocalTime endRest, EmployeeDto employee) {
         this.date = date;
         this.startRest = startRest;
         this.endRest = endRest;

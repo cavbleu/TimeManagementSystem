@@ -1,6 +1,5 @@
 package ru.egartech.tmsystem.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,6 +35,5 @@ public class Rest {
     private long restTime;
 
     @ManyToOne
-    @JsonIgnore
     private Employee employee;
 }

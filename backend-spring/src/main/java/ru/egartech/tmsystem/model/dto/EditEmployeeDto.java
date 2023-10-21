@@ -3,14 +3,12 @@ package ru.egartech.tmsystem.model.dto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.egartech.tmsystem.model.entity.Position;
-
-import java.util.ArrayList;
-import java.util.List;
+import lombok.experimental.Accessors;
 
 @Setter
 @Getter
 @NoArgsConstructor
+@Accessors(chain = true)
 public class EditEmployeeDto {
 
     private Long id;
@@ -21,9 +19,9 @@ public class EditEmployeeDto {
     //Список привилегий в виде числа
     private Long privilegesNumber;
     //Список всех должностей
-    List<PositionDto> allPositions = new ArrayList<>();;
+//    List<PositionDto> allPositions = new ArrayList<>();
     //Должность
-    private Position position;
+    private PositionDto position;
     private boolean isLateIncreased;
     private boolean isEarlyLeavingIncreased;
     private boolean isAbsenceIncreased;

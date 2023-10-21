@@ -1,6 +1,5 @@
 package ru.egartech.tmsystem.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
@@ -40,19 +39,16 @@ public class Employee {
 
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy("date ASC")
-    @JsonIgnore
     private List<TimeSheet> timeSheets = new ArrayList<>();
 
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy("date ASC")
     @OrderColumn(name = "id")
-    @JsonIgnore
     private List<Rest> rests = new ArrayList<>();
 
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy("date ASC")
     @OrderColumn(name = "id")
-    @JsonIgnore
     private List<Distraction> distractions = new ArrayList<>();
 
     public Employee(String name, int age, Position position, Long privilegesNumber, Long id) {

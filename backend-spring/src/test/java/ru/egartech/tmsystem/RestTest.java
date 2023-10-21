@@ -5,18 +5,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
-import ru.egartech.tmsystem.model.dto.DepartmentDto;
 import ru.egartech.tmsystem.model.dto.EmployeeDto;
-import ru.egartech.tmsystem.model.dto.PositionDto;
 import ru.egartech.tmsystem.model.dto.RestDto;
-import ru.egartech.tmsystem.model.entity.Department;
-import ru.egartech.tmsystem.model.entity.Employee;
-import ru.egartech.tmsystem.model.entity.Position;
 import ru.egartech.tmsystem.model.mapping.DepartmentMapper;
 import ru.egartech.tmsystem.model.mapping.EmployeeMapper;
 import ru.egartech.tmsystem.model.mapping.PositionMapper;
 import ru.egartech.tmsystem.model.repository.EmployeeRepository;
-import ru.egartech.tmsystem.service.*;
+import ru.egartech.tmsystem.service.EmployeeService;
+import ru.egartech.tmsystem.service.RestService;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -27,11 +23,7 @@ import java.util.Collections;
 public class RestTest implements CrudTest {
 
     @Autowired
-    private DepartmentService departmentService;
-    @Autowired
     private RestService restService;
-    @Autowired
-    private PositionService positionService;
     @Autowired
     private EmployeeService employeeService;
     @Autowired
@@ -51,10 +43,8 @@ public class RestTest implements CrudTest {
         LocalTime startRest = LocalTime.of(9, 15);
         LocalTime endRest = LocalTime.of(9, 30);
 
-        Department department = departmentMapper.toEntity(departmentService.save(new DepartmentDto("IT")));
-        Position position = positionMapper.toEntity(positionService.save(new PositionDto("QA", department)));
-        Employee employee1 = employeeMapper.toEntity(employeeService.save(new EmployeeDto("Petr", 29, position)));
-        Employee employee2 = employeeMapper.toEntity(employeeService.save(new EmployeeDto("Ivan", 32, position)));
+        EmployeeDto employee1 = employeeService.save(new EmployeeDto("Petr", 29));
+        EmployeeDto employee2 = employeeService.save(new EmployeeDto("Ivan", 32));
         SoftAssertions softAssertions = new SoftAssertions();
 
         //Save test

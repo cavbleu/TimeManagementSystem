@@ -8,12 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import ru.egartech.tmsystem.model.dto.*;
-import ru.egartech.tmsystem.model.entity.Department;
-import ru.egartech.tmsystem.model.entity.Employee;
-import ru.egartech.tmsystem.model.entity.Position;
-import ru.egartech.tmsystem.model.mapping.DepartmentMapper;
-import ru.egartech.tmsystem.model.mapping.EmployeeMapper;
-import ru.egartech.tmsystem.model.mapping.PositionMapper;
 import ru.egartech.tmsystem.service.*;
 
 import java.time.Duration;
@@ -36,19 +30,13 @@ class DepartmentTest {
     private EmployeeService employeeService;
     @Autowired
     private TimeSheetService timeSheetService;
-    @Autowired
-    private DepartmentMapper departmentMapper;
-    @Autowired
-    private PositionMapper positionMapper;
-    @Autowired
-    private EmployeeMapper employeeMapper;
 
     private LocalDate startDate;
     private LocalDate endDate;
     private Long workTime;
     private Long restTime;
     private Long distractionTime;
-    private Department department;
+    private DepartmentDto department;
 
     @BeforeEach
     void init() {
@@ -71,13 +59,13 @@ class DepartmentTest {
         restTime = Duration.between(startRest, endRest).toMinutes() * 2;
         distractionTime = Duration.between(startDistraction, endDistraction).toMinutes() * 2;
 
-        department = departmentMapper.toEntity(departmentService.save(new DepartmentDto("IT")));
+        department = departmentService.save(new DepartmentDto("IT"));
 
-        Position position1 = positionMapper.toEntity(positionService.save(new PositionDto("QA", department)));
-        Position position2 = positionMapper.toEntity(positionService.save(new PositionDto("TeamLead", department)));
+        PositionDto position1 = positionService.save(new PositionDto("QA", department));
+        PositionDto position2 = positionService.save(new PositionDto("TeamLead", department));
 
-        Employee employee1 = employeeMapper.toEntity(employeeService.save(new EmployeeDto("Petr", 29, position1)));
-        Employee employee2 = employeeMapper.toEntity(employeeService.save(new EmployeeDto("Ivan", 32, position2)));
+        EmployeeDto employee1 = employeeService.save(new EmployeeDto("Petr", 29, position1));
+        EmployeeDto employee2 = employeeService.save(new EmployeeDto("Ivan", 32, position2));
 
         TimeSheetDto timeSheet1 = new TimeSheetDto(date1, startWork, endWork, employee1);
         TimeSheetDto timeSheet2 = new TimeSheetDto(date2, startWork, endWork, employee2);

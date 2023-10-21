@@ -1,11 +1,10 @@
 package ru.egartech.tmsystem.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.egartech.tmsystem.model.entity.Employee;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -13,7 +12,6 @@ import java.time.LocalTime;
 @Setter
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class TimeSheetDto {
 
     Long id;
@@ -28,10 +26,11 @@ public class TimeSheetDto {
     private LocalTime endWork;
     //Суммарное рабочее время
     private long workTime;
-    //Работник
-    private Employee employee;
+    @JsonIgnore
+    //Сотрудник
+    private EmployeeDto employee;
 
-    public TimeSheetDto(LocalDate date, LocalTime startWork, LocalTime endWork, Employee employee, String absenceReason) {
+    public TimeSheetDto(LocalDate date, LocalTime startWork, LocalTime endWork, EmployeeDto employee, String absenceReason) {
         this.date = date;
         this.startWork = startWork;
         this.endWork = endWork;
@@ -39,7 +38,7 @@ public class TimeSheetDto {
         this.absenceReason = absenceReason;
     }
 
-    public TimeSheetDto(LocalDate date, LocalTime startWork, LocalTime endWork, Employee employee) {
+    public TimeSheetDto(LocalDate date, LocalTime startWork, LocalTime endWork, EmployeeDto employee) {
         this.date = date;
         this.startWork = startWork;
         this.endWork = endWork;

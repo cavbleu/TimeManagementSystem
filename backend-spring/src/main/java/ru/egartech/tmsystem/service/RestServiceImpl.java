@@ -9,6 +9,7 @@ import ru.egartech.tmsystem.model.entity.Rest;
 import ru.egartech.tmsystem.model.mapping.RestMapper;
 import ru.egartech.tmsystem.model.repository.RestRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -51,13 +52,16 @@ public class RestServiceImpl implements RestService {
         repository.deleteById(id);
     }
 
-    @Override
-    public RestDto update(Long resId, RestDto restDto) {
-        return updateById(resId, restDto);
-    }
 
     @Override
     public RestDto save(Long timeSheetId, RestDto dto) {
         return save(dto);
+    }
+
+    @Override
+    public List<RestDto> findByDateBetweenAndEmployee_Id(LocalDate startDate, LocalDate endDate, Long empId) {
+        return repository.findByDateBetweenAndEmployee_Id(startDate, endDate, empId).stream()
+                .map(mapper::toDto)
+                .toList();
     }
 }

@@ -54,7 +54,6 @@ class CreateOrUpdateEmployeeComponent extends Component {
 					name: employee.name,
 					age: employee.age,
 					position: employee.position,
-					allPositions: employee.allPositions,
 					lateIncreased: employee.lateIncreased,
 					earlyLeavingIncreased: employee.earlyLeavingIncreased,
 					absenceIncreased: employee.absenceIncreased,
@@ -62,6 +61,11 @@ class CreateOrUpdateEmployeeComponent extends Component {
 					restTimeIncreased: employee.restTimeIncreased,
 					lunchTimeIncreased: employee.lunchTimeIncreased,
 					distractionTimeIncreased: employee.distractionTimeIncreased,
+				})
+			})
+			PositionService.getAll().then(res => {
+				this.setState({
+					allPositions: res.data,
 				})
 			})
 		}

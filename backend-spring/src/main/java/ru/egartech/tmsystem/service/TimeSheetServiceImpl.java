@@ -9,6 +9,7 @@ import ru.egartech.tmsystem.model.entity.TimeSheet;
 import ru.egartech.tmsystem.model.mapping.TimeSheetMapper;
 import ru.egartech.tmsystem.model.repository.TimeSheetRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -57,4 +58,10 @@ public class TimeSheetServiceImpl implements TimeSheetService{
         repository.deleteById(id);
     }
 
+    @Override
+    public List<TimeSheetDto> findByDateBetweenAndEmployee_Id(LocalDate startDate, LocalDate endDate, Long empId) {
+        return repository.findByDateBetweenAndEmployee_Id(startDate, endDate, empId).stream()
+                .map(mapper::toDto)
+                .toList();
+    }
 }
