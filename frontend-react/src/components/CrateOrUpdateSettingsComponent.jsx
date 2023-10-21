@@ -17,6 +17,8 @@ class CreateOrUpdateSettingsComponent extends Component {
 			maxSkipCountByMonth: "",
 			maxDistractionTimeByDay: "",
 			maxRestTimeByDay: "",
+			maxExcessDistractionCountByMonth: "",
+			maxExcessRestCountByMonth: "",
 		}
 		this.cancel = this.cancel.bind(this)
 	}
@@ -37,6 +39,9 @@ class CreateOrUpdateSettingsComponent extends Component {
 					maxSkipCountByMonth: settings.maxAbsenceCountByMonth,
 					maxDistractionTimeByDay: settings.maxDistractionTimeByDay,
 					maxRestTimeByDay: settings.maxRestTimeByDay,
+					maxExcessDistractionCountByMonth:
+						settings.maxExcessDistractionCountByMonth,
+					maxExcessRestCountByMonth: settings.maxExcessRestCountByMonth,
 				})
 			})
 		}
@@ -56,6 +61,9 @@ class CreateOrUpdateSettingsComponent extends Component {
 				maxSkipCountByMonth: this.state.maxSkipCountByMonth,
 				maxDistractionTimeByDay: this.state.maxDistractionTimeByDay,
 				maxRestTimeByDay: this.state.maxRestTimeByDay,
+				maxExcessDistractionCountByMonth:
+					this.state.maxExcessDistractionCountByMonth,
+				maxExcessRestCountByMonth: this.state.maxExcessRestCountByMonth,
 			}
 			console.log(JSON.stringify(settings))
 			SettingsService.create(settings)
@@ -78,6 +86,9 @@ class CreateOrUpdateSettingsComponent extends Component {
 				maxSkipCountByMonth: this.state.maxSkipCountByMonth,
 				maxDistractionTimeByDay: this.state.maxDistractionTimeByDay,
 				maxRestTimeByDay: this.state.maxRestTimeByDay,
+				maxExcessDistractionCountByMonth:
+					this.state.maxExcessDistractionCountByMonth,
+				maxExcessRestCountByMonth: this.state.maxExcessRestCountByMonth,
 			}
 			SettingsService.update(settings)
 				.then(res => {
@@ -237,6 +248,38 @@ class CreateOrUpdateSettingsComponent extends Component {
 										value={this.state.maxRestTimeByDay}
 										onChange={event => {
 											this.setState({ maxRestTimeByDay: event.target.value })
+										}}
+									/>
+								</div>
+								<div style={{ marginTop: 20 }}>
+									<label style={{ fontSize: 16 }}>
+										Максимальное количество превышений времени перерывов в
+										месяц:{" "}
+									</label>
+									<input
+										style={{ marginTop: 10 }}
+										className='form-control'
+										value={this.state.maxExcessRestCountByMonth}
+										onChange={event => {
+											this.setState({
+												maxExcessRestCountByMonth: event.target.value,
+											})
+										}}
+									/>
+								</div>
+								<div style={{ marginTop: 20 }}>
+									<label style={{ fontSize: 16 }}>
+										Максимальное количество превышений времени отвлечений в
+										месяц:{" "}
+									</label>
+									<input
+										style={{ marginTop: 10 }}
+										className='form-control'
+										value={this.state.maxExcessDistractionCountByMonth}
+										onChange={event => {
+											this.setState({
+												maxExcessDistractionCountByMonth: event.target.value,
+											})
 										}}
 									/>
 								</div>

@@ -20,7 +20,8 @@ import java.util.List;
 public class Employee {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @TableGenerator( name = "Address_Gen", initialValue = 13)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "Address_Gen")
     private Long id;
     @Column(name = "name", nullable = false, length = 60)
     @Pattern(regexp = "[Я-аА-яa-zA-Z\\s]*$", message = "{name.emp.only.letters}")

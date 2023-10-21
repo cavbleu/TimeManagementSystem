@@ -15,7 +15,8 @@ import java.time.LocalTime;
 @Table(name = "settings")
 public class Settings {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @TableGenerator( name = "Address_Gen", initialValue = 3)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "Address_Gen")
     private Long id;
     @Column(name = "name", nullable = false, unique = true)
     @Pattern(regexp = "^[Я-аА-яa-zA-Z0-9 ]*$", message = "{name.only.letters.digits}")
@@ -41,4 +42,8 @@ public class Settings {
     private Long maxRestTimeByDay;
     @Column(name = "max_distraction_time_by_day", nullable = false)
     private Long maxDistractionTimeByDay;
+    @Column(name = "max_excess_distraction_time_by_month", nullable = false)
+    private Long maxExcessDistractionCountByMonth;
+    @Column(name = "max_excess_rest_time_by_month", nullable = false)
+    private Long maxExcessRestCountByMonth;
 }

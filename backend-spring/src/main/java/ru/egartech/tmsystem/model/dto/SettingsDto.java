@@ -29,10 +29,15 @@ public class SettingsDto extends EntityDto {
     private long maxDistractionTimeByDay;
     //Максимальное суммарное время перерывов в день
     private long maxRestTimeByDay;
+    //Максимальное число превышений времени отвлечений в месяц
+    private Long maxExcessDistractionCountByMonth;
+    //Максимальное число превышений времени перерывов в месяц
+    private Long maxExcessRestCountByMonth;
 
     public SettingsDto(String name, boolean currentSettingsProfile, long defaultWorkTime, LocalTime defaultStartWork,
                        long maxLateCountByMonth, long maxEarlyLivingCountByMonth, long maxAbsenceCountByMonth,
-                       long maxSkipCountByMonth, long maxDistractionTimeByDay, long maxRestTimeByDay) {
+                       long maxSkipCountByMonth, long maxDistractionTimeByDay, long maxRestTimeByDay,
+                       long maxExcessDistractionCountByMonth, long maxExcessRestCountByMonth) {
         super(name);
         this.currentSettingsProfile = currentSettingsProfile;
         this.defaultWorkTime = defaultWorkTime;
@@ -43,5 +48,7 @@ public class SettingsDto extends EntityDto {
         this.maxSkipCountByMonth = maxSkipCountByMonth;
         this.maxDistractionTimeByDay = maxDistractionTimeByDay;
         this.maxRestTimeByDay = maxRestTimeByDay;
+        this.maxExcessDistractionCountByMonth = maxExcessDistractionCountByMonth;
+        this.maxExcessRestCountByMonth = maxExcessRestCountByMonth;
     }
 }

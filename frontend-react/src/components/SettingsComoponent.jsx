@@ -25,6 +25,8 @@ class SettingsComponent extends Component {
 			maxSkipCountByMonth: "",
 			maxDistractionTimeByDay: "",
 			maxRestTimeByDay: "",
+			maxExcessDistractionCountByMonth: "",
+			maxExcessRestCountByMonth: "",
 		}
 	}
 
@@ -138,6 +140,26 @@ class SettingsComponent extends Component {
 			}),
 			headerFormatter: this.filterFormatter,
 		},
+		{
+			dataField: "maxExcessRestCountByMonth",
+			text: "Максимальное количество превышений времени перерывов в месяц",
+			sort: true,
+			filter: numberFilter({
+				placeholder: "Фильтр...",
+				defaultValue: { comparator: Comparator.GT },
+			}),
+			headerFormatter: this.filterFormatter,
+		},
+		{
+			dataField: "maxExcessDistractionCountByMonth",
+			text: "Максимальное количество превышений времени отвлечений в месяц",
+			sort: true,
+			filter: numberFilter({
+				placeholder: "Фильтр...",
+				defaultValue: { comparator: Comparator.GT },
+			}),
+			headerFormatter: this.filterFormatter,
+		},
 		{ text: "Действия", formatter: this.buttonFormatter },
 	]
 
@@ -183,7 +205,7 @@ class SettingsComponent extends Component {
 
 	render() {
 		return (
-			<div style={{ marginTop: 20, fontSize: 13 }}>
+			<div style={{ marginTop: 20, fontSize: 13, width: "120%" }}>
 				<h2 className='text-center'>
 					Настройки лимитов распорядка дня сотрудников
 				</h2>
@@ -199,6 +221,7 @@ class SettingsComponent extends Component {
 				</div>
 				<div>
 					<BootStrapTable
+						responsive
 						bootstrap4
 						keyField='id'
 						data={this.state.settings}

@@ -53,6 +53,8 @@ public class DeviationServiceImpl implements DeviationService {
         long maxSkipCountByMonth = settingsDto.getMaxSkipCountByMonth();
         long maxDistractionTimeByDay = settingsDto.getMaxDistractionTimeByDay();
         long maxRestTimeByDay = settingsDto.getMaxRestTimeByDay();
+        long maxExcessRestTimeByMonth = settingsDto.getMaxExcessRestCountByMonth();
+        long maxExcessDistractionTimeByMonth = settingsDto.getMaxExcessDistractionCountByMonth();
 
 
         List<PrivilegeDto> allPrivileges = privilegeService.findAll();
@@ -93,16 +95,12 @@ public class DeviationServiceImpl implements DeviationService {
         long deviationCount = lateCount + earlyLeavingCount + absenceCount + skipCount + excessDistractionTimeCount
                 + excessRestTimeCount;
 
-        long workingDaysByMonth = SummaryFormatter.getWorkingDays(yearMonth.withDayOfMonth(1),
-                yearMonth.withDayOfMonth(yearMonth.getMonth().length(yearMonth.isLeapYear())));
-
         double latePercent = SummaryFormatter.percentFormat(lateCount, maxLateCountByMonth);
         double earlyLeavingPercent = SummaryFormatter.percentFormat(earlyLeavingCount, maxEarlyLivingCountByMonth);
         double absencePercent = SummaryFormatter.percentFormat(absenceCount, maxAbsenceCountByMonth);
         double skipPercent = SummaryFormatter.percentFormat(skipCount, maxSkipCountByMonth);
-        double excessDistractionTimePercent = SummaryFormatter.percentFormat(excessDistractionTimeCount, excessDistractionTimeCount * workingDaysByMonth);
-        double excessRestTimePercent = SummaryFormatter.percentFormat(excessRestTimeCount, settingsService.findByCurrentSettingsProfile()
-                .getMaxRestTimeByDay());
+        double excessDistractionTimePercent = SummaryFormatter.percentFormat(excessDistractionTimeCount, maxExcessDistractionTimeByMonth);
+        double excessRestTimePercent = SummaryFormatter.percentFormat(excessRestTimeCount, maxExcessRestTimeByMonth);
 
         deviationsSummaryDto.setEmployeeName(employeeDto.getName());
         deviationsSummaryDto.setDeviationCount(DeviationFormatter.format(deviationCount));

@@ -19,7 +19,8 @@ import java.util.List;
 public class Department {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @TableGenerator( name = "Address_Gen", initialValue = 4)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "Address_Gen")
     private Long id;
     @Column(unique = true, nullable = false, name = "name", length = 60)
     @Pattern(regexp = "[Я-аА-яa-zA-Z\\s]*$", message = "{name.only.letters}")

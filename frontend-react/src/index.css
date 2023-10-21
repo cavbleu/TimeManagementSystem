@@ -49,3 +49,11 @@ tr {
 	border-radius: 0.25rem;
 	font-size: 14px;
 }
+
+.table {
+	border: 1px solid lightgray;
+}
+
+.tbody {
+	border-bottom: 1px solid lightgray;
+}

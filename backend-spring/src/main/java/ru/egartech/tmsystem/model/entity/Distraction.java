@@ -16,7 +16,8 @@ import java.time.LocalTime;
 public class Distraction {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @TableGenerator( name = "Address_Gen", initialValue = 121)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "Address_Gen")
     private Long id;
     @Temporal(TemporalType.DATE)
     @Column(name = "date", nullable = false)
