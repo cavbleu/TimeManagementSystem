@@ -38,7 +38,7 @@ public class DeviationServiceImpl implements DeviationService {
         SettingsDto settingsDto = settingsService.findByCurrentSettingsProfile();
         YearMonth month = YearMonth.from(yearMonth);
         LocalDate startDate = month.atDay(1);
-        LocalDate endDate   = month.atEndOfMonth();
+        LocalDate endDate = month.atEndOfMonth();
 
         long lateCount = employeeLateCountByMonth(settingsDto.getDefaultStartWork(),
                 employeeId, startDate, endDate);
@@ -56,7 +56,13 @@ public class DeviationServiceImpl implements DeviationService {
 
 
         List<PrivilegeDto> allPrivileges = privilegeService.findAll();
-        List<String> currentPrivileges = Arrays.asList(employeeDto.getPrivileges().split("; "));
+        List<String> currentPrivileges = new ArrayList<>();
+
+        if(employeeDto.getPrivilegesNumber() == null) {
+            currentPrivileges.add("");
+        } else {
+            currentPrivileges = Arrays.asList(employeeDto.getPrivileges().split("; "));
+        }
 
         long increasedLate = DeviationFormatter.getIncreasedAmount(LATE_COUNT, allPrivileges);
         long increasedEarlyLeaving = DeviationFormatter.getIncreasedAmount(EARLY_LIVING_COUNT, allPrivileges);

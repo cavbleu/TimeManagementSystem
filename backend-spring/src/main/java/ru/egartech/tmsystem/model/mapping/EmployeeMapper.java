@@ -45,6 +45,8 @@ public abstract class EmployeeMapper {
         employee.setTimeSheets(timeSheetDtoListToTimeSheetList(dto.getTimeSheets()));
         employee.setRests(restDtoListToRestList(dto.getRests()));
         employee.setDistractions(distractionDtoListToDistractionList(dto.getDistractions()));
+        employee.setPrivilegesNumber(dto.getPrivilegesNumber());
+
 
         return employee;
     }
@@ -64,6 +66,10 @@ public abstract class EmployeeMapper {
         employeeDto.setTimeSheets(timeSheetListToTimeSheetDtoList(entity.getTimeSheets()));
         employeeDto.setRests(restListToRestDtoList(entity.getRests()));
         employeeDto.setDistractions(distractionListToDistractionDtoList(entity.getDistractions()));
+        if (entity.getPrivilegesNumber() != null) {
+            employeeDto.setPrivileges(String.join("; ", BitsConverter.getEmployeePrivileges(entity.getPrivilegesNumber())));
+        }
+
 
         return employeeDto;
     }
