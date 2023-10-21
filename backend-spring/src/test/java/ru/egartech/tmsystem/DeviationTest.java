@@ -8,9 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import ru.egartech.tmsystem.model.dto.*;
-import ru.egartech.tmsystem.model.entity.Department;
-import ru.egartech.tmsystem.model.entity.Employee;
-import ru.egartech.tmsystem.model.entity.Position;
 import ru.egartech.tmsystem.model.mapping.DepartmentMapper;
 import ru.egartech.tmsystem.model.mapping.EmployeeMapper;
 import ru.egartech.tmsystem.model.mapping.PositionMapper;
@@ -47,7 +44,7 @@ public class DeviationTest {
     @Autowired
     DeviationService deviationService;
 
-    Employee employee;
+    EmployeeDto employee;
     LocalDate startDate;
     LocalDate endDate;
 
@@ -70,11 +67,11 @@ public class DeviationTest {
 
         String absenceReason = "Устал";
 
-        Department department = departmentMapper.toEntity(departmentService.save(new DepartmentDto("IT")));
+        DepartmentDto department = departmentService.save(new DepartmentDto("IT"));
 
-        Position position = positionMapper.toEntity(positionService.save(new PositionDto("QA", department)));
+        PositionDto position = positionService.save(new PositionDto("QA", department));
 
-        employee = employeeMapper.toEntity(employeeService.save(new EmployeeDto("Petr", 29, position)));
+        employee = employeeService.save(new EmployeeDto("Petr", 29, position));
 
         TimeSheetDto timeSheet1 = new TimeSheetDto(date1, startWork, endWork, employee, absenceReason);
         TimeSheetDto timeSheet2 = new TimeSheetDto(date2, startWork, endWork, employee);

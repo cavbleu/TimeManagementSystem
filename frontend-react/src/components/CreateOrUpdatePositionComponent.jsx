@@ -37,7 +37,11 @@ class CreateOrUpdatePositionComponent extends Component {
 				this.setState({
 					name: position.name,
 					department: position.department,
-					allDepartments: position.allDepartments,
+				})
+			})
+			DepartmentService.getAll().then(res => {
+				this.setState({
+					allDepartments: res.data,
 				})
 			})
 		}

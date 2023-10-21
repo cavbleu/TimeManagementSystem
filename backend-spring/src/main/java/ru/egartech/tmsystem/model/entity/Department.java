@@ -1,7 +1,6 @@
 package ru.egartech.tmsystem.model.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -31,7 +30,6 @@ public class Department {
 
     @OneToMany(mappedBy = "department", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy("name ASC")
-    @JsonIgnore
     @OrderColumn(name = "id")
     private List<Position> positions = new ArrayList<>();
 

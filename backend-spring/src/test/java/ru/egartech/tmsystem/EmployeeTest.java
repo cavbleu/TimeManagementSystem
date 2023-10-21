@@ -8,12 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import ru.egartech.tmsystem.model.dto.*;
-import ru.egartech.tmsystem.model.entity.Department;
-import ru.egartech.tmsystem.model.entity.Employee;
-import ru.egartech.tmsystem.model.entity.Position;
-import ru.egartech.tmsystem.model.mapping.DepartmentMapper;
-import ru.egartech.tmsystem.model.mapping.EmployeeMapper;
-import ru.egartech.tmsystem.model.mapping.PositionMapper;
 import ru.egartech.tmsystem.service.*;
 
 import java.time.Duration;
@@ -36,19 +30,13 @@ public class EmployeeTest {
     private EmployeeService employeeService;
     @Autowired
     private TimeSheetService timeSheetService;
-    @Autowired
-    private DepartmentMapper departmentMapper;
-    @Autowired
-    private PositionMapper positionMapper;
-    @Autowired
-    private EmployeeMapper employeeMapper;
 
     private LocalDate startDate;
     private LocalDate endDate;
     private Long workTime;
     private Long restTime;
     private Long distractionTime;
-    private Employee employee;
+    private EmployeeDto employee;
 
     @BeforeEach
     void init() {
@@ -71,11 +59,11 @@ public class EmployeeTest {
         restTime = Duration.between(startRest, endRest).toMinutes() * 2;
         distractionTime = Duration.between(startDistraction, endDistraction).toMinutes() * 2;
 
-        Department department = departmentMapper.toEntity(departmentService.save(new DepartmentDto("IT")));
+        DepartmentDto department = departmentService.save(new DepartmentDto("IT"));
 
-        Position position = positionMapper.toEntity(positionService.save(new PositionDto("QA", department)));
+        PositionDto position = positionService.save(new PositionDto("QA", department));
 
-        employee = employeeMapper.toEntity(employeeService.save(new EmployeeDto("Petr", 29, position)));
+        employee = employeeService.save(new EmployeeDto("Petr", 29, position));
 
         TimeSheetDto timeSheet1 = new TimeSheetDto(date1, startWork, endWork, employee);
         TimeSheetDto timeSheet2 = new TimeSheetDto(date2, startWork, endWork, employee);

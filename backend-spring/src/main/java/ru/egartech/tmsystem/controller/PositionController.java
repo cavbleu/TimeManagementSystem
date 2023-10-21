@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.egartech.tmsystem.model.dto.EditPositionDto;
 import ru.egartech.tmsystem.model.dto.PositionDto;
 import ru.egartech.tmsystem.service.PositionService;
 
@@ -24,8 +23,8 @@ public class PositionController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EditPositionDto> getPositionById(@PathVariable Long id) {
-        return ResponseEntity.ok(positionService.getEditPositionDtoById(id));
+    public ResponseEntity<PositionDto> getPositionById(@PathVariable Long id) {
+        return ResponseEntity.ok(positionService.findById(id));
     }
 
     @PostMapping
@@ -35,7 +34,7 @@ public class PositionController {
 
     @PutMapping
     public ResponseEntity<PositionDto> updatePosition(@Valid @RequestBody PositionDto dto) {
-        return ResponseEntity.ok(positionService.update(dto));
+        return ResponseEntity.ok(positionService.updateById(dto.getId(), dto));
     }
 
     @DeleteMapping("/{id}")

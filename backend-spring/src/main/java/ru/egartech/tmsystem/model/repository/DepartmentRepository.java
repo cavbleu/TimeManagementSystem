@@ -1,12 +1,12 @@
 package ru.egartech.tmsystem.model.repository;
 
+import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ru.egartech.tmsystem.model.entity.Department;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 public interface DepartmentRepository extends JpaRepository<Department, Long> {
@@ -33,5 +33,14 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
             "and dep.id = :id")
     Optional<Long> departmentRestTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate,
                                               @Param("id") Long id);
+
+    @Query("select  d " +
+            "from Department d " +
+            "left join fetch d.positions " +
+            "where d.id = :id"
+            )
+    @Override
+    @NonNull
+    Optional<Department> findById(@NonNull @Param("id") Long id);
 
 }

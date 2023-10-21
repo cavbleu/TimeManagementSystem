@@ -1,24 +1,21 @@
 package ru.egartech.tmsystem.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import ru.egartech.tmsystem.model.entity.Position;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
-@AllArgsConstructor
+@ToString(exclude = {"positions"})
+@EqualsAndHashCode(callSuper = true)
 public class DepartmentDto extends EntityDto {
 
     @JsonIgnore
     //Должности, входящие в состав отдела
-    private List<Position> positions = new ArrayList<>();
+    private List<PositionDto> positions = new ArrayList<>();
 
     public DepartmentDto(String name) {
         super(name);

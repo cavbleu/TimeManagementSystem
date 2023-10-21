@@ -1,6 +1,5 @@
 package ru.egartech.tmsystem.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,6 +32,5 @@ public class Distraction {
     private long distractionTime;
 
     @ManyToOne
-    @JsonIgnore
     private Employee employee;
 }

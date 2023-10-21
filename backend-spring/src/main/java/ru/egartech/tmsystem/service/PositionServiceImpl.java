@@ -10,7 +10,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import ru.egartech.tmsystem.exception.CustomEntityNotFoundException;
 import ru.egartech.tmsystem.exception.PositionConstraintException;
-import ru.egartech.tmsystem.model.dto.EditPositionDto;
 import ru.egartech.tmsystem.model.dto.PositionDto;
 import ru.egartech.tmsystem.model.dto.PositionSummaryDto;
 import ru.egartech.tmsystem.model.dto.SettingsDto;
@@ -32,7 +31,6 @@ public class PositionServiceImpl implements PositionService {
     private final PositionRepository repository;
     private final PositionMapper mapper;
     private final SettingsService settingsService;
-    private final DepartmentService departmentService;
     private final EntityManagerFactory entityManagerFactory;
 
     @PersistenceContext
@@ -48,8 +46,7 @@ public class PositionServiceImpl implements PositionService {
 
     @Override
     public PositionDto findById(Long id) {
-        Position position = entityManager.find(Position.class, id);
-        return Optional.ofNullable(position)
+        return repository.findById(id)
                 .map(mapper::toDto)
                 .orElseThrow(() -> new CustomEntityNotFoundException(id));
     }
@@ -152,22 +149,5 @@ public class PositionServiceImpl implements PositionService {
     @Override
     public PositionDto save(PositionDto positionDto, String departmentName) {
         return save(positionDto);
-    }
-
-    @Transactional
-    @Override
-    public PositionDto update(PositionDto positionDto) {
-        return updateById(positionDto.getId(), positionDto);
-    }
-
-    @Override
-    public EditPositionDto getEditPositionDtoById(Long id) {
-        EditPositionDto editPositionDto = new EditPositionDto();
-        PositionDto positionDto = findById(id);
-        editPositionDto.setId(positionDto.getId());
-        editPositionDto.setName(positionDto.getName());
-        editPositionDto.setDepartment(positionDto.getDepartment());
-        editPositionDto.setAllDepartments(departmentService.findAll());
-        return editPositionDto;
     }
 }

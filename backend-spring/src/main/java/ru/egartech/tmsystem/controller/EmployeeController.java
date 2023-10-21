@@ -10,7 +10,6 @@ import ru.egartech.tmsystem.model.dto.EmployeeDto;
 import ru.egartech.tmsystem.model.dto.FilterDto;
 import ru.egartech.tmsystem.service.EmployeeService;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -20,12 +19,6 @@ import java.util.List;
 public class EmployeeController {
 
     private final EmployeeService employeeService;
-
-    @GetMapping("/test")
-    public Long test() {
-        return employeeService.employeeWorkTimeByPeriod(
-                LocalDate.of(2023, 10 , 2), LocalDate.of(2023, 10, 6), 1L);
-    }
 
     @GetMapping
     public ResponseEntity<List<EmployeeDto>> getAllEmployees() {

@@ -27,7 +27,7 @@ public class RestsController {
 
     @PutMapping
     public ResponseEntity<RestDto> updateRest(@Valid  @RequestBody RestDto dto ) {
-        return ResponseEntity.ok(restService.update(dto.getId(), dto));
+        return ResponseEntity.ok(restService.updateById(dto.getId(), dto));
     }
 
     @DeleteMapping("/{id}")

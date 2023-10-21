@@ -10,7 +10,7 @@ import ru.egartech.tmsystem.model.mapping.DepartmentMapper;
 import ru.egartech.tmsystem.model.mapping.EmployeeMapper;
 import ru.egartech.tmsystem.model.mapping.PositionMapper;
 import ru.egartech.tmsystem.model.repository.EmployeeRepository;
-import ru.egartech.tmsystem.service.*;
+import ru.egartech.tmsystem.service.DepartmentService;
 
 import java.util.Collections;
 
@@ -55,7 +55,6 @@ class DepartmentCrudTest implements CrudTest {
                 .describedAs(String.format("Проверяем, что имя обновленной сущности сущности %s", beforeServiceDto.getName()))
                 .isEqualTo(afterServiceDto.getName());
 
-
         //FindAll and Delete test
         departmentService.deleteById(beforeServiceDto.getId());
         softAssertions.assertThat(departmentService.findAll())
@@ -63,5 +62,6 @@ class DepartmentCrudTest implements CrudTest {
                 .isEqualTo(Collections.EMPTY_LIST);
 
         softAssertions.assertAll();
+
     }
 }

@@ -8,13 +8,13 @@ import org.springframework.test.annotation.DirtiesContext;
 import ru.egartech.tmsystem.model.dto.DepartmentDto;
 import ru.egartech.tmsystem.model.dto.EmployeeDto;
 import ru.egartech.tmsystem.model.dto.PositionDto;
-import ru.egartech.tmsystem.model.entity.Department;
-import ru.egartech.tmsystem.model.entity.Position;
 import ru.egartech.tmsystem.model.mapping.DepartmentMapper;
 import ru.egartech.tmsystem.model.mapping.EmployeeMapper;
 import ru.egartech.tmsystem.model.mapping.PositionMapper;
 import ru.egartech.tmsystem.model.repository.EmployeeRepository;
-import ru.egartech.tmsystem.service.*;
+import ru.egartech.tmsystem.service.DepartmentService;
+import ru.egartech.tmsystem.service.EmployeeService;
+import ru.egartech.tmsystem.service.PositionService;
 
 import java.util.Collections;
 
@@ -40,8 +40,8 @@ public class EmployeeCrudTest implements CrudTest {
     @Override
     @Test
     public void crudTest() {
-        Department department = departmentMapper.toEntity(departmentService.save(new DepartmentDto("IT")));
-        Position position = positionMapper.toEntity(positionService.save(new PositionDto("QA", department)));
+        DepartmentDto department = departmentService.save(new DepartmentDto("IT"));
+        PositionDto position = positionService.save(new PositionDto("QA", department));
         SoftAssertions softAssertions = new SoftAssertions();
 
         //Save test

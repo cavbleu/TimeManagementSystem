@@ -1,11 +1,11 @@
 package ru.egartech.tmsystem.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.egartech.tmsystem.model.entity.Employee;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -26,9 +26,11 @@ public class DistractionDto {
     private LocalTime endDistraction;
     //Суммарное время отвлечения от целевых программ
     private long distractionTime;
-    private Employee employee;
+    @JsonIgnore
+    //Сотрудник
+    private EmployeeDto employee;
 
-    public DistractionDto(LocalDate date, LocalTime startDistraction, LocalTime endDistraction, Employee employee) {
+    public DistractionDto(LocalDate date, LocalTime startDistraction, LocalTime endDistraction, EmployeeDto employee) {
         this.date = date;
         this.startDistraction = startDistraction;
         this.endDistraction = endDistraction;

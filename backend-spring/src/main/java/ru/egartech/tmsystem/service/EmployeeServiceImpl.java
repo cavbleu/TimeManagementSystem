@@ -2,7 +2,10 @@ package ru.egartech.tmsystem.service;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.criteria.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -14,10 +17,7 @@ import ru.egartech.tmsystem.model.dto.SettingsDto;
 import ru.egartech.tmsystem.model.entity.Employee;
 import ru.egartech.tmsystem.model.entity.TimeSheet;
 import ru.egartech.tmsystem.model.mapping.EmployeeMapper;
-import ru.egartech.tmsystem.model.repository.DistractionRepository;
 import ru.egartech.tmsystem.model.repository.EmployeeRepository;
-import ru.egartech.tmsystem.model.repository.RestRepository;
-import ru.egartech.tmsystem.model.repository.TimeSheetRepository;
 import ru.egartech.tmsystem.utils.BitsConverter;
 import ru.egartech.tmsystem.utils.PeriodValidation;
 import ru.egartech.tmsystem.utils.SummaryFormatter;
@@ -32,29 +32,24 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository repository;
     private final EmployeeMapper mapper;
     private final SettingsService settingsService;
-    private final PositionService positionService;
-    private  final TimeSheetRepository timeSheetRepository;
+    private final TimeSheetService timeSheetService;
+    private final RestService restService;
+    private final DistractionService distractionService;
 
-    private  final RestRepository restRepository;
-
-    private  final DistractionRepository distractionRepository;
 
     @PersistenceContext
     private EntityManager entityManager;
 
 
-
     public EmployeeServiceImpl(@Qualifier("employeeRepository") EmployeeRepository repository, EmployeeMapper mapper,
-                               SettingsService settingsService, PositionService positionService,
-                               TimeSheetRepository timeSheetRepository, RestRepository restRepository, DistractionRepository distractionRepository) {
+                               SettingsService settingsService, TimeSheetService timeSheetService, RestService restService,
+                               DistractionService distractionService) {
         this.repository = repository;
         this.mapper = mapper;
         this.settingsService = settingsService;
-        this.positionService = positionService;
-        this.distractionRepository = distractionRepository;
-        this.restRepository = restRepository;
-        this.timeSheetRepository = timeSheetRepository;
-
+        this.distractionService = distractionService;
+        this.restService = restService;
+        this.timeSheetService = timeSheetService;
     }
 
     @Override
@@ -187,9 +182,9 @@ public class EmployeeServiceImpl implements EmployeeService {
             dto.setPosition(employeeDto.getPosition());
             dto.setPrivilegesNumber(employeeDto.getPrivilegesNumber());
             dto.setPosition(employeeDto.getPosition());
-            dto.setRests(restRepository.findByDateBetweenAndEmployee_Id(startDate, endDate, employeeDto.getId()));
-            dto.setDistractions(distractionRepository.findByDateBetweenAndEmployee_Id(startDate, endDate, employeeDto.getId()));
-            dto.setTimeSheets(timeSheetRepository.findByDateBetweenAndEmployee_Id(startDate, endDate, employeeDto.getId()));
+            dto.setRests(restService.findByDateBetweenAndEmployee_Id(startDate, endDate, employeeDto.getId()));
+            dto.setDistractions(distractionService.findByDateBetweenAndEmployee_Id(startDate, endDate, employeeDto.getId()));
+            dto.setTimeSheets(timeSheetService.findByDateBetweenAndEmployee_Id(startDate, endDate, employeeDto.getId()));
 
             result.add(dto);
         }
@@ -201,12 +196,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EditEmployeeDto getEditEmployeeDtoById(Long employeeId) {
         EditEmployeeDto editEmployeeDto = new EditEmployeeDto();
         EmployeeDto employeeDto = findById(employeeId);
-        editEmployeeDto.setId(employeeId);
-        editEmployeeDto.setName(employeeDto.getName());
-        editEmployeeDto.setAge(employeeDto.getAge());
-        editEmployeeDto.setPosition(employeeDto.getPosition());
-        editEmployeeDto.setPrivilegesNumber(employeeDto.getPrivilegesNumber());
-        editEmployeeDto.setAllPositions(positionService.findAll());
+        editEmployeeDto.setId(employeeId)
+                .setName(employeeDto.getName())
+                .setAge(employeeDto.getAge())
+                .setPosition(employeeDto.getPosition())
+                .setPrivilegesNumber(employeeDto.getPrivilegesNumber());
+//        editEmployeeDto.setAllPositions(positionService.findAll());
         BitsConverter.setEmployeePrivileges(editEmployeeDto);
         return editEmployeeDto;
     }

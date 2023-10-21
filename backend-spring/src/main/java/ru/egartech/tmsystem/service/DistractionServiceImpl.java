@@ -9,6 +9,7 @@ import ru.egartech.tmsystem.model.entity.Distraction;
 import ru.egartech.tmsystem.model.mapping.DistractionMapper;
 import ru.egartech.tmsystem.model.repository.DistractionRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -59,7 +60,9 @@ public class DistractionServiceImpl implements DistractionService {
     }
 
     @Override
-    public DistractionDto update(Long timeSheetId, Long restId, DistractionDto dto) {
-        return updateById(restId, dto);
+    public List<DistractionDto> findByDateBetweenAndEmployee_Id(LocalDate startDate, LocalDate endDate, Long empId) {
+        return repository.findByDateBetweenAndEmployee_Id(startDate, endDate, empId).stream()
+                .map(mapper::toDto)
+                .toList();
     }
 }

@@ -1,22 +1,15 @@
 package ru.egartech.tmsystem.model.repository;
 
+import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ru.egartech.tmsystem.model.entity.Employee;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
-    @Query("select sum(t.workTime) " +
-            "from TimeSheet t join t.employee e " +
-            "where t.date >= :startDate " +
-            "and t.date <= :endDate " +
-            "and e.id = :id")
-    Optional<Long> employeeWorkTimeByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate,
-                                            @Param("id") Long id);
 
     @Query("select sum(d.distractionTime) " +
             "from Distraction d join d.employee e " +
@@ -35,7 +28,12 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
                                   @Param("id") Long id);
 
     @Query("select e " +
-            "from Employee e join fetch e.timeSheets")
+            "from Employee e " +
+            "left join fetch e.timeSheets " +
+            "left join fetch e.distractions " +
+            "left join fetch e.rests " +
+            "where e.id = :id")
     @Override
-    List<Employee> findAll();
+    @NonNull
+    Optional<Employee> findById(@NonNull @Param("id") Long id);
 }
