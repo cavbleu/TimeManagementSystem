@@ -1,5 +1,6 @@
 package ru.egartech.tmsystem.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +17,7 @@ public class SettingsDto extends EntityDto {
     //Норма рабочего времени за день
     private long defaultWorkTime;
     //Норма начала рабочего дня
+    @JsonFormat(pattern = "HH:mm")
     private LocalTime defaultStartWork;
     //Максимальное количество опозданий в месяц
     private long maxLateCountByMonth;

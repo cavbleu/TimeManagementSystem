@@ -72,15 +72,25 @@ class CreateOrUpdateSettingsComponent extends Component {
 				})
 				.catch(err => {
 					let r = err.response.data
-					alert(
-						r.message +
-							". Statuscode: " +
-							r.statusCode +
-							". Status: " +
-							r.status +
-							". Timestamp: " +
-							r.timestamp
-					)
+					if (r.status == 500) {
+						alert(
+							"Норма начала рабочего дня должна быть указана в формате чч:мм. Все поля должны быть заполнены корректными значениями"
+						)
+					} else if (r.type === "about:blank") {
+						alert(
+							"Норма начала рабочего дня должна быть указана в формате чч:мм. Все поля должны быть заполнены корректными значениями"
+						)
+					} else {
+						alert(
+							r.message +
+								". Statuscode: " +
+								r.statusCode +
+								". Status: " +
+								r.status +
+								". Timestamp: " +
+								r.timestamp
+						)
+					}
 				})
 		} else {
 			let settings = {
@@ -105,15 +115,25 @@ class CreateOrUpdateSettingsComponent extends Component {
 				})
 				.catch(err => {
 					let r = err.response.data
-					alert(
-						r.message +
-							". Statuscode: " +
-							r.statusCode +
-							". Status: " +
-							r.status +
-							". Timestamp: " +
-							r.timestamp
-					)
+					if (r.status == 500) {
+						alert(
+							"Норма начала рабочего дня должна быть указана в формате чч:мм. Все поля должны быть заполнены корректными значениями"
+						)
+					} else if (r.type === "about:blank") {
+						alert(
+							"Норма начала рабочего дня должна быть указана в формате чч:мм. Все поля должны быть заполнены корректными значениями"
+						)
+					} else {
+						alert(
+							r.message +
+								". Statuscode: " +
+								r.statusCode +
+								". Status: " +
+								r.status +
+								". Timestamp: " +
+								r.timestamp
+						)
+					}
 				})
 		}
 	}
@@ -170,7 +190,7 @@ class CreateOrUpdateSettingsComponent extends Component {
 								</div>
 								<div>
 									<label style={{ fontSize: 16, marginTop: 20 }}>
-										Норма начала рабочего дня в формате "чч:мм":
+										<b>Норма начала рабочего дня в формате "чч:мм"</b>:
 									</label>
 									<input
 										style={{ marginTop: 10 }}

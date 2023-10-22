@@ -130,15 +130,25 @@ class CreateOrUpdateDistractionComponent extends Component {
 				})
 				.catch(err => {
 					let r = err.response.data
-					alert(
-						r.message +
-							". Statuscode: " +
-							r.statusCode +
-							". Status: " +
-							r.status +
-							". Timestamp: " +
-							r.timestamp
-					)
+					if (r.status == 500) {
+						alert(
+							"Время должно быть указано в формате чч:мм. Дата должно быть указана в формате дд-мм-гггг. Все поля должны быть заполнены корректными значениями"
+						)
+					} else if (r.type === "about:blank") {
+						alert(
+							"Время должно быть указано в формате чч:мм. Дата должно быть указана в формате дд-мм-гггг. Все поля должны быть заполнены корректными значениями"
+						)
+					} else {
+						alert(
+							r.message +
+								". Statuscode: " +
+								r.statusCode +
+								". Status: " +
+								r.status +
+								". Timestamp: " +
+								r.timestamp
+						)
+					}
 				})
 		} else {
 			let timeSheet = {
@@ -155,15 +165,25 @@ class CreateOrUpdateDistractionComponent extends Component {
 				})
 				.catch(err => {
 					let r = err.response.data
-					alert(
-						r.message +
-							". Statuscode: " +
-							r.statusCode +
-							". Status: " +
-							r.status +
-							". Timestamp: " +
-							r.timestamp
-					)
+					if (r.status == 500) {
+						alert(
+							"Время должно быть указано в формате чч:мм. Дата должно быть указана в формате дд-мм-гггг. Все поля должны быть заполнены корректными значениями"
+						)
+					} else if (r.type === "about:blank") {
+						alert(
+							"Время должно быть указано в формате чч:мм. Дата должно быть указана в формате дд-мм-гггг. Все поля должны быть заполнены корректными значениями"
+						)
+					} else {
+						alert(
+							r.message +
+								". Statuscode: " +
+								r.statusCode +
+								". Status: " +
+								r.status +
+								". Timestamp: " +
+								r.timestamp
+						)
+					}
 				})
 		}
 	}

@@ -1,3 +1,5 @@
+CREATE SCHEMA IF NOT EXISTS time_management_system;
+
 SET SCHEMA 'time_management_system';
 -- --
 INSERT INTO privilege (id, increased_amount, name)
