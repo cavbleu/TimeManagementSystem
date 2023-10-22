@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import ru.egartech.tmsystem.exception.ActiveProfileDeleteException;
+import ru.egartech.tmsystem.exception.ActiveProfileNotInstalledException;
 import ru.egartech.tmsystem.model.dto.SettingsDto;
 import ru.egartech.tmsystem.model.mapping.DepartmentMapper;
 import ru.egartech.tmsystem.model.mapping.EmployeeMapper;
@@ -48,7 +49,7 @@ public class SettingsTest implements CrudTest {
         long maxExcessDistractionCountByMonth = 2;
         long maxExcessRestCountByMonth = 2;
 
-        settingsService.save(new SettingsDto("Альтернативный профиль", true, defaultWorkTime, defaultStartWork, maxLateCountByMonth,
+        SettingsDto dtoForTest = settingsService.save(new SettingsDto("Альтернативный профиль", true, defaultWorkTime, defaultStartWork, maxLateCountByMonth,
                 maxEarlyLivingCountByMonth, maxAbsenceCountByMonth, maxSkipCountByMonth, maxDistractionTimeByDay, maxRestTimeByDay,
                 maxExcessDistractionCountByMonth, maxExcessRestCountByMonth));
         SoftAssertions softAssertions = new SoftAssertions();
@@ -83,14 +84,25 @@ public class SettingsTest implements CrudTest {
         settingsService.updateById(beforeServiceDto.getId(), beforeServiceDto);
         try {
             settingsService.deleteById(beforeServiceDto.getId());
-            throw new RuntimeException("Ошибка валидации - удален активный профиль");
+            throw new ActiveProfileDeleteException();
         } catch (ActiveProfileDeleteException ex) {
             log.warn("Отработка валидации");
         }
 
         //FindAll and Delete test
         beforeServiceDto.setCurrentSettingsProfile(false);
+
+        try {
+            settingsService.updateById(beforeServiceDto.getId(), beforeServiceDto);
+            throw new ActiveProfileDeleteException();
+        } catch (ActiveProfileNotInstalledException ex) {
+            log.warn("Отработка валидации");
+        }
+
+        dtoForTest.setCurrentSettingsProfile(true);
+        settingsService.updateById(dtoForTest.getId(), dtoForTest);
         settingsService.updateById(beforeServiceDto.getId(), beforeServiceDto);
+
         settingsService.deleteById(beforeServiceDto.getId());
         softAssertions.assertThat(settingsService.findAll().size())
                 .describedAs("Проверяем, что в списке остался только один профиль")

@@ -14,25 +14,35 @@ public class SettingsDto extends EntityDto {
 
     //Является ли текущим профилем
     private boolean currentSettingsProfile;
+
     //Норма рабочего времени за день
     private long defaultWorkTime;
+
     //Норма начала рабочего дня
     @JsonFormat(pattern = "HH:mm")
     private LocalTime defaultStartWork;
+
     //Максимальное количество опозданий в месяц
     private long maxLateCountByMonth;
+
     //Максимальное количество уходов с работы до истечения нормы рабочего времени
     private long maxEarlyLivingCountByMonth;
+
     //Максимальное количество отсутствий за месяц
     private long maxAbsenceCountByMonth;
+
     //Максимальное количество прогулов за месяц
     private long maxSkipCountByMonth;
+
     //Максимальное суммарное время отвлечений в день
     private long maxDistractionTimeByDay;
+
     //Максимальное суммарное время перерывов в день
     private long maxRestTimeByDay;
+
     //Максимальное число превышений времени отвлечений в месяц
     private Long maxExcessDistractionCountByMonth;
+
     //Максимальное число превышений времени перерывов в месяц
     private Long maxExcessRestCountByMonth;
 

@@ -39,10 +39,23 @@ class DeviationSummaryComponent extends Component {
 		let filterDto = {
 			yearMonth: this.state.yearMonth.toLocaleDateString("ru-RU"),
 		}
-
-		DeviationService.getAll(filterDto).then(res => {
-			this.setState({ deviations: res.data })
-		})
+		console.log(JSON.stringify(filterDto))
+		DeviationService.getAll(filterDto)
+			.then(res => {
+				this.setState({ deviations: res.data })
+			})
+			.catch(err => {
+				let r = err.response.data
+				alert(
+					r.message +
+						". Statuscode: " +
+						r.statusCode +
+						". Status: " +
+						r.status +
+						". Timestamp: " +
+						r.timestamp
+				)
+			})
 	}
 
 	getDeviationSummaryByPeriod = e => {

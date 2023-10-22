@@ -2,6 +2,7 @@ package ru.egartech.tmsystem.model.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,23 +28,32 @@ public class Settings {
     @Column(name = "current_settings_profile", nullable = false)
     private Boolean currentSettingsProfile;
     @Column(name = "default_work_time", nullable = false)
+    @PositiveOrZero(message = "{number.only.positive}")
     private Long defaultWorkTime;
     @Column(name = "default_start_work", nullable = false)
     private LocalTime defaultStartWork;
     @Column(name = "max_late_count_by_month", nullable = false)
+    @PositiveOrZero(message = "{number.only.positive}")
     private Integer maxLateCountByMonth;
     @Column(name = "max_early_living_count_by_month", nullable = false)
+    @PositiveOrZero(message = "{number.only.positive}")
     private Integer maxEarlyLivingCountByMonth;
     @Column(name = "max_absence_count_by_month", nullable = false)
+    @PositiveOrZero(message = "{number.only.positive}")
     private Integer maxAbsenceCountByMonth;
     @Column(name = "max_skip_count_by_month", nullable = false)
+    @PositiveOrZero(message = "{number.only.positive}")
     private Integer maxSkipCountByMonth;
     @Column(name = "max_rest_time_by_day", nullable = false)
+    @PositiveOrZero(message = "{number.only.positive}")
     private Long maxRestTimeByDay;
     @Column(name = "max_distraction_time_by_day", nullable = false)
+    @PositiveOrZero(message = "{number.only.positive}")
     private Long maxDistractionTimeByDay;
     @Column(name = "max_excess_distraction_time_by_month", nullable = false)
+    @PositiveOrZero(message = "{number.only.positive}")
     private Long maxExcessDistractionCountByMonth;
     @Column(name = "max_excess_rest_time_by_month", nullable = false)
+    @PositiveOrZero(message = "{number.only.positive}")
     private Long maxExcessRestCountByMonth;
 }

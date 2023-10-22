@@ -33,8 +33,20 @@ class SettingsComponent extends Component {
 	componentDidMount() {
 		SettingsService.getAll()
 			.then(res => {
+				let ar = res.data
+				ar.sort(
+					(x, y) =>
+						Number(y.currentSettingsProfile) - Number(x.currentSettingsProfile)
+				)
+				ar.map(s => {
+					if (s.currentSettingsProfile === true) {
+						s.currentSettingsProfile = "Да"
+					} else {
+						s.currentSettingsProfile = "Нет"
+					}
+				})
 				this.setState({
-					settings: res.data,
+					settings: ar,
 				})
 			})
 			.catch(err => {

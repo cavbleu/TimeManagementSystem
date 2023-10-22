@@ -28,9 +28,17 @@ class CreateOrUpdateSettingsComponent extends Component {
 		} else {
 			SettingsService.getById(this.state.id).then(res => {
 				let settings = res.data
+				if (settings.currentSettingsProfile === true) {
+					this.setState({
+						currentSettingsProfile: "Да",
+					})
+				} else {
+					this.setState({
+						currentSettingsProfile: "Нет",
+					})
+				}
 				this.setState({
 					name: settings.name,
-					currentSettingsProfile: settings.currentSettingsProfile,
 					defaultWorkTime: settings.defaultWorkTime,
 					defaultStartWork: settings.defaultStartWork,
 					maxLateCountByMonth: settings.maxLateCountByMonth,
@@ -50,11 +58,20 @@ class CreateOrUpdateSettingsComponent extends Component {
 	saveOrUpdate = e => {
 		e.preventDefault()
 		if (this.state.id === "add") {
+			if (this.state.currentSettingsProfile === "Да") {
+				this.setState({
+					currentSettingsProfile: "true",
+				})
+			} else {
+				this.setState({
+					currentSettingsProfile: "false",
+				})
+			}
 			let settings = {
 				name: this.state.name,
-				currentSettingsProfile: this.state.currentSettingsProfile,
 				defaultWorkTime: this.state.defaultWorkTime,
 				defaultStartWork: this.state.defaultStartWork,
+				currentSettingsProfile: this.state.currentSettingsProfile,
 				maxLateCountByMonth: this.state.maxLateCountByMonth,
 				maxEarlyLivingCountByMonth: this.state.maxEarlyLivingCountByMonth,
 				maxAbsenceCountByMonth: this.state.maxAbsenceCountByMonth,
@@ -65,13 +82,13 @@ class CreateOrUpdateSettingsComponent extends Component {
 					this.state.maxExcessDistractionCountByMonth,
 				maxExcessRestCountByMonth: this.state.maxExcessRestCountByMonth,
 			}
-			console.log(JSON.stringify(settings))
 			SettingsService.create(settings)
 				.then(res => {
 					this.props.history.push("/settings/limits")
 				})
 				.catch(err => {
 					let r = err.response.data
+					console.log(r)
 					if (r.status == 500) {
 						alert(
 							"Норма начала рабочего дня должна быть указана в формате чч:мм. Все поля должны быть заполнены корректными значениями"
@@ -108,6 +125,11 @@ class CreateOrUpdateSettingsComponent extends Component {
 				maxExcessDistractionCountByMonth:
 					this.state.maxExcessDistractionCountByMonth,
 				maxExcessRestCountByMonth: this.state.maxExcessRestCountByMonth,
+			}
+			if (this.state.currentSettingsProfile === "Да") {
+				settings.currentSettingsProfile = "true"
+			} else if (this.state.currentSettingsProfile === "Нет") {
+				settings.currentSettingsProfile = "false"
 			}
 			SettingsService.update(settings)
 				.then(res => {
@@ -344,12 +366,12 @@ class CreateOrUpdateSettingsComponent extends Component {
 													type='button'
 													onClick={() => {
 														this.setState({
-															currentSettingsProfile: "true",
+															currentSettingsProfile: "Да",
 														})
-														this.state.currentSettingsProfile = "true"
+														this.state.currentSettingsProfile = "Да"
 													}}
 												>
-													true
+													Да
 												</button>
 											</li>
 											<li>
@@ -361,12 +383,12 @@ class CreateOrUpdateSettingsComponent extends Component {
 													type='button'
 													onClick={() => {
 														this.setState({
-															currentSettingsProfile: "false",
+															currentSettingsProfile: "Нет",
 														})
-														this.state.currentSettingsProfile = "false"
+														this.state.currentSettingsProfile = "Нет"
 													}}
 												>
-													false
+													Нет
 												</button>
 											</li>
 										</ul>

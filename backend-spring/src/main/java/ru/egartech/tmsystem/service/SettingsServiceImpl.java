@@ -50,19 +50,31 @@ public class SettingsServiceImpl implements SettingsService {
 
     @Override
     public SettingsDto updateById(Long id, SettingsDto dto) {
+        List<SettingsDto> list = findAll();
         if (dto.isCurrentSettingsProfile()) {
-            for (SettingsDto settingsDto : findAll()) {
+            for (SettingsDto settingsDto : list) {
                 settingsDto.setCurrentSettingsProfile(false);
                 repository.save(mapper.toEntity(settingsDto));
             }
+        } else {
+            if (!findById(id).isCurrentSettingsProfile()) {
+                return repository.findById(id)
+                        .map(entity -> {
+                            BeanUtils.copyProperties(mapper.toEntity(dto), entity, "id");
+                            return mapper.toDto(repository.save(entity));
+                        })
+                        .orElseThrow(() -> new CustomEntityNotFoundException(id));
+            } else {
+                throw new ActiveProfileNotInstalledException();
+            }
         }
-
         return repository.findById(id)
                 .map(entity -> {
                     BeanUtils.copyProperties(mapper.toEntity(dto), entity, "id");
                     return mapper.toDto(repository.save(entity));
                 })
-                .orElseThrow(() -> new CustomEntityNotFoundException(id));    }
+                .orElseThrow(() -> new CustomEntityNotFoundException(id));
+    }
 
     @Override
     public void deleteById(Long id) {
