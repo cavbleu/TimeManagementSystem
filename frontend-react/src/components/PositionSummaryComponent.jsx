@@ -65,7 +65,16 @@ class PositionSummaryComponent extends Component {
 					this.componentDidMount()
 				})
 				.catch(err => {
-					alert(err.response.data)
+					let r = err.response.data
+					alert(
+						r.message +
+							". Statuscode: " +
+							r.statusCode +
+							". Status: " +
+							r.status +
+							". Timestamp: " +
+							r.timestamp
+					)
 				})
 		}
 	}
@@ -168,7 +177,16 @@ class PositionSummaryComponent extends Component {
 					onClick={() => {
 						PositionService.delete(row.id)
 							.catch(err => {
-								alert(err.response.data)
+								let r = err.response.data
+								alert(
+									r.message +
+										". Statuscode: " +
+										r.statusCode +
+										". Status: " +
+										r.status +
+										". Timestamp: " +
+										r.timestamp
+								)
 							})
 							.then(res => {
 								window.location.reload()

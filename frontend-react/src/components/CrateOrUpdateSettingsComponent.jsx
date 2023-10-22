@@ -71,7 +71,16 @@ class CreateOrUpdateSettingsComponent extends Component {
 					this.props.history.push("/settings/limits")
 				})
 				.catch(err => {
-					alert(err.response.data)
+					let r = err.response.data
+					alert(
+						r.message +
+							". Statuscode: " +
+							r.statusCode +
+							". Status: " +
+							r.status +
+							". Timestamp: " +
+							r.timestamp
+					)
 				})
 		} else {
 			let settings = {
@@ -95,7 +104,16 @@ class CreateOrUpdateSettingsComponent extends Component {
 					this.props.history.push("/settings/limits")
 				})
 				.catch(err => {
-					alert(err.response.data)
+					let r = err.response.data
+					alert(
+						r.message +
+							". Statuscode: " +
+							r.statusCode +
+							". Status: " +
+							r.status +
+							". Timestamp: " +
+							r.timestamp
+					)
 				})
 		}
 	}

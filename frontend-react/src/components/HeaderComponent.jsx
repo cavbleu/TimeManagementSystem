@@ -46,9 +46,9 @@ class HeaderComponent extends Component {
 										<a
 											style={{ color: "white" }}
 											class='nav-link'
-											href='http://localhost:3000/summary/department'
+											href='http://localhost:3000/summary/employee'
 										>
-											Отделы
+											Сотрудники
 										</a>
 									</li>
 
@@ -66,9 +66,9 @@ class HeaderComponent extends Component {
 										<a
 											style={{ color: "white" }}
 											class='nav-link'
-											href='http://localhost:3000/summary/employee'
+											href='http://localhost:3000/summary/department'
 										>
-											Сотрудники
+											Отделы
 										</a>
 									</li>
 

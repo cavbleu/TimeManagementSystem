@@ -91,12 +91,22 @@ class CreateOrUpdateEmployeeComponent extends Component {
 					this.props.history.push("/summary/employee")
 				})
 				.catch(err => {
-					alert(err.response.data)
+					let r = err.response.data
+					alert(
+						r.message +
+							". Statuscode: " +
+							r.statusCode +
+							". Status: " +
+							r.status +
+							". Timestamp: " +
+							r.timestamp
+					)
 				})
 		} else {
 			let employee = {
 				id: this.state.id,
 				name: this.state.name,
+				age: this.state.age,
 				position: this.state.position,
 				lateIncreased: this.state.lateIncreased,
 				earlyLeavingIncreased: this.state.earlyLeavingIncreased,
@@ -111,15 +121,27 @@ class CreateOrUpdateEmployeeComponent extends Component {
 					this.props.history.push("/summary/employee")
 				})
 				.catch(err => {
-					alert(err.response.data)
+					let r = err.response.data
+					alert(
+						r.message +
+							". Statuscode: " +
+							r.statusCode +
+							". Status: " +
+							r.status +
+							". Timestamp: " +
+							r.timestamp
+					)
 				})
 		}
 	}
 
 	getTitle() {
-		if (this.props.id != "add") {
+		if (this.state.id != "add") {
 			return (
-				<h3 style={{ textAlign: "center" }}> Добавление нового сотрудника</h3>
+				<h3 style={{ textAlign: "center" }}>
+					{" "}
+					Редактирование данных сотрудника
+				</h3>
 			)
 		} else {
 			return (

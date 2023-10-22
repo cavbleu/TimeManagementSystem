@@ -34,7 +34,16 @@ class CreateOrEditDepartmentComponent extends Component {
 			}
 			DepartmentService.createDepartment(department)
 				.catch(err => {
-					alert(err.response.data)
+					let r = err.response.data
+					alert(
+						r.message +
+							". Statuscode: " +
+							r.statusCode +
+							". Status: " +
+							r.status +
+							". Timestamp: " +
+							r.timestamp
+					)
 				})
 				.then(res => {
 					this.props.history.push("/summary/department")
@@ -49,7 +58,16 @@ class CreateOrEditDepartmentComponent extends Component {
 					this.props.history.push("/summary/department")
 				})
 				.catch(err => {
-					alert(err.response.data)
+					let r = err.response.data
+					alert(
+						r.message +
+							". Statuscode: " +
+							r.statusCode +
+							". Status: " +
+							r.status +
+							". Timestamp: " +
+							r.timestamp
+					)
 				})
 		}
 	}

@@ -1,15 +1,22 @@
 package ru.egartech.tmsystem.model.mapping;
 
 import org.mapstruct.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.egartech.tmsystem.model.dto.DistractionDto;
-import ru.egartech.tmsystem.model.dto.EmployeeDto;
 import ru.egartech.tmsystem.model.entity.Distraction;
-import ru.egartech.tmsystem.model.entity.Employee;
+import ru.egartech.tmsystem.utils.MapHelper;
 
 import java.time.Duration;
 
 @Mapper(componentModel = "spring")
 public abstract class DistractionMapper {
+
+    private MapHelper mapHelper;
+
+    @Autowired
+    public void setMapHelper(MapHelper mapHelper) {
+        this.mapHelper = mapHelper;
+    }
 
     public DistractionDto toDto(Distraction distraction) {
         if (distraction == null) {
@@ -27,7 +34,7 @@ public abstract class DistractionMapper {
         } else {
             distractionDto.setDistractionTime(distraction.getDistractionTime());
         }
-        distractionDto.setEmployee(employeeEntityToDto(distraction.getEmployee()));
+        distractionDto.setEmployee(mapHelper.employeeEntityToDto(distraction.getEmployee()));
 
         return distractionDto;
     }
@@ -43,38 +50,7 @@ public abstract class DistractionMapper {
         } else {
             distraction.setDistractionTime(Duration.between(dto.getStartDistraction(), dto.getEndDistraction()).toMinutes());
         }
-        distraction.setEmployee(employeeDtoToEntity(dto.getEmployee()));
+        distraction.setEmployee(mapHelper.employeeDtoToEntity(dto.getEmployee()));
         return distraction;
-    }
-
-    public Employee employeeDtoToEntity(EmployeeDto dto) {
-        if (dto == null) {
-            return null;
-        }
-
-        Employee employee = new Employee();
-
-        employee.setId(dto.getId());
-        employee.setName(dto.getName());
-        employee.setAge(dto.getAge());
-        employee.setPrivilegesNumber(dto.getPrivilegesNumber());
-
-        return employee;
-    }
-
-
-    public EmployeeDto employeeEntityToDto(Employee entity) {
-        if (entity == null) {
-            return null;
-        }
-
-        EmployeeDto employeeDto = new EmployeeDto();
-
-        employeeDto.setId(entity.getId());
-        employeeDto.setName(entity.getName());
-        employeeDto.setAge(entity.getAge());
-        employeeDto.setPrivilegesNumber(entity.getPrivilegesNumber());
-
-        return employeeDto;
     }
 }

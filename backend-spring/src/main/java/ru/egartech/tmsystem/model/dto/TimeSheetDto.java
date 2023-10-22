@@ -1,7 +1,6 @@
 package ru.egartech.tmsystem.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,7 +25,6 @@ public class TimeSheetDto {
     private LocalTime endWork;
     //Суммарное рабочее время
     private long workTime;
-    @JsonIgnore
     //Сотрудник
     private EmployeeDto employee;
 

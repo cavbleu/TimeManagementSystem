@@ -1,8 +1,6 @@
 package ru.egartech.tmsystem.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,7 +11,6 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class RestDto {
 
     private Long id;
@@ -26,7 +23,6 @@ public class RestDto {
     private LocalTime endRest;
     //Суммарное время перерыва
     private long restTime;
-    @JsonIgnore
     //Сотрудник
     private EmployeeDto employee;
 

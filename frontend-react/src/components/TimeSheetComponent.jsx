@@ -106,7 +106,16 @@ class TimeSheetComponent extends Component {
 					this.componentDidMount()
 				})
 				.catch(err => {
-					alert(err.response.data)
+					let r = err.response.data
+					alert(
+						r.message +
+							". Statuscode: " +
+							r.statusCode +
+							". Status: " +
+							r.status +
+							". Timestamp: " +
+							r.timestamp
+					)
 				})
 		}
 	}
@@ -219,7 +228,16 @@ class TimeSheetComponent extends Component {
 					onClick={() => {
 						TimeSheetService.delete(row.timeSheet.id)
 							.catch(err => {
-								alert(err.response.data)
+								let r = err.response.data
+								alert(
+									r.message +
+										". Statuscode: " +
+										r.statusCode +
+										". Status: " +
+										r.status +
+										". Timestamp: " +
+										r.timestamp
+								)
 							})
 							.then(res => {
 								window.location.reload()

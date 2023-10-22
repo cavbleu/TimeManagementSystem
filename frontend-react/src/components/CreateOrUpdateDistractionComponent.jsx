@@ -129,7 +129,16 @@ class CreateOrUpdateDistractionComponent extends Component {
 					this.props.history.push("/summary/distraction")
 				})
 				.catch(err => {
-					alert(err.response.data)
+					let r = err.response.data
+					alert(
+						r.message +
+							". Statuscode: " +
+							r.statusCode +
+							". Status: " +
+							r.status +
+							". Timestamp: " +
+							r.timestamp
+					)
 				})
 		} else {
 			let timeSheet = {
@@ -145,7 +154,16 @@ class CreateOrUpdateDistractionComponent extends Component {
 					this.props.history.push("/summary/distraction")
 				})
 				.catch(err => {
-					alert(err.response.data)
+					let r = err.response.data
+					alert(
+						r.message +
+							". Statuscode: " +
+							r.statusCode +
+							". Status: " +
+							r.status +
+							". Timestamp: " +
+							r.timestamp
+					)
 				})
 		}
 	}

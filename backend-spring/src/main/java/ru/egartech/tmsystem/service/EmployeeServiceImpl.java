@@ -25,6 +25,7 @@ import ru.egartech.tmsystem.utils.SummaryFormatter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -132,9 +133,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         Predicate equalId = cb.equal(root.get("employee").get("id"), id);
         cq.select(cb.sum(root.get("workTime")))
                 .where(cb.and(greaterThanDate, lessThanDate, equalId));
-
-        return entityManager.createQuery(cq).getSingleResult();
-
+        return Optional.ofNullable(entityManager.createQuery(cq).getSingleResult())
+                .orElse(0L);
     }
 
     @Override
