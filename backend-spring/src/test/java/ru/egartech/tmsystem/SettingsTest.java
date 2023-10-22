@@ -12,7 +12,7 @@ import ru.egartech.tmsystem.model.mapping.DepartmentMapper;
 import ru.egartech.tmsystem.model.mapping.EmployeeMapper;
 import ru.egartech.tmsystem.model.mapping.PositionMapper;
 import ru.egartech.tmsystem.model.repository.EmployeeRepository;
-import ru.egartech.tmsystem.service.*;
+import ru.egartech.tmsystem.service.SettingsService;
 
 import java.time.LocalTime;
 
@@ -45,14 +45,18 @@ public class SettingsTest implements CrudTest {
         long maxSkipCountByMonth = 4;
         long maxDistractionTimeByDay = 15;
         long maxRestTimeByDay = 35;
+        long maxExcessDistractionCountByMonth = 2;
+        long maxExcessRestCountByMonth = 2;
 
         settingsService.save(new SettingsDto("Альтернативный профиль", true, defaultWorkTime, defaultStartWork, maxLateCountByMonth,
-                maxEarlyLivingCountByMonth, maxAbsenceCountByMonth, maxSkipCountByMonth, maxDistractionTimeByDay, maxRestTimeByDay));
+                maxEarlyLivingCountByMonth, maxAbsenceCountByMonth, maxSkipCountByMonth, maxDistractionTimeByDay, maxRestTimeByDay,
+                maxExcessDistractionCountByMonth, maxExcessRestCountByMonth));
         SoftAssertions softAssertions = new SoftAssertions();
 
         //Save test
         SettingsDto beforeServiceDto = new SettingsDto(name, currentSettingsProfile, defaultWorkTime, defaultStartWork, maxLateCountByMonth,
-                maxEarlyLivingCountByMonth, maxAbsenceCountByMonth, maxSkipCountByMonth, maxDistractionTimeByDay, maxRestTimeByDay);
+                maxEarlyLivingCountByMonth, maxAbsenceCountByMonth, maxSkipCountByMonth, maxDistractionTimeByDay, maxRestTimeByDay,
+                maxExcessDistractionCountByMonth, maxExcessRestCountByMonth);
         SettingsDto afterServiceDto = settingsService.save(beforeServiceDto);
         softAssertions.assertThat(beforeServiceDto.getName())
                 .describedAs(String.format("Проверяем, что имя сохраненной сущности %s", beforeServiceDto.getName()))

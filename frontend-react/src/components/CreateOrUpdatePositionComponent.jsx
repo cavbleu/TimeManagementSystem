@@ -56,7 +56,16 @@ class CreateOrUpdatePositionComponent extends Component {
 			}
 			PositionService.create(position)
 				.catch(err => {
-					alert(err.response.data)
+					let r = err.response.data
+					alert(
+						r.message +
+							". Statuscode: " +
+							r.statusCode +
+							". Status: " +
+							r.status +
+							". Timestamp: " +
+							r.timestamp
+					)
 				})
 				.then(res => {
 					this.props.history.push("/summary/position")
@@ -72,7 +81,16 @@ class CreateOrUpdatePositionComponent extends Component {
 					this.props.history.push("/summary/position")
 				})
 				.catch(err => {
-					alert(err.response.data)
+					let r = err.response.data
+					alert(
+						r.message +
+							". Statuscode: " +
+							r.statusCode +
+							". Status: " +
+							r.status +
+							". Timestamp: " +
+							r.timestamp
+					)
 				})
 		}
 	}

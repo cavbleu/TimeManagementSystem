@@ -20,7 +20,6 @@ public class ApiError {
     private String debugMessage;
     private String stackTrace;
 
-
     private ApiError() {
         this.timestamp = LocalDateTime.now();
     }
@@ -30,5 +29,4 @@ public class ApiError {
         this.status = status;
         this.statusCode = status.value();
     }
-
 }

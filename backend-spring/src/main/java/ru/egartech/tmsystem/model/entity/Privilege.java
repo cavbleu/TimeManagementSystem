@@ -19,10 +19,6 @@ public class Privilege {
     private String name;
     @Column(name = "increased_amount", nullable = false)
     private Long increasedAmount;
-
-    public Privilege(Long increasedAmount) {
-        this.increasedAmount = increasedAmount;
-    }
 }
 
 

@@ -104,7 +104,16 @@ class DistractionComponent extends Component {
 					this.componentDidMount()
 				})
 				.catch(err => {
-					alert(err.response.data)
+					let r = err.response.data
+					alert(
+						r.message +
+							". Statuscode: " +
+							r.statusCode +
+							". Status: " +
+							r.status +
+							". Timestamp: " +
+							r.timestamp
+					)
 				})
 		}
 	}
@@ -208,7 +217,16 @@ class DistractionComponent extends Component {
 					onClick={() => {
 						DistractionService.delete(row.distraction.id)
 							.catch(err => {
-								alert(err.response.data)
+								let r = err.response.data
+								alert(
+									r.message +
+										". Statuscode: " +
+										r.statusCode +
+										". Status: " +
+										r.status +
+										". Timestamp: " +
+										r.timestamp
+								)
 							})
 							.then(res => {
 								window.location.reload()

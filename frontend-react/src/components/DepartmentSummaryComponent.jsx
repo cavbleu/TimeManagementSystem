@@ -63,7 +63,16 @@ class DepartmentSummaryComponent extends Component {
 					this.componentDidMount()
 				})
 				.catch(err => {
-					alert(err.response.data)
+					let r = err.response.data
+					alert(
+						r.message +
+							". Statuscode: " +
+							r.statusCode +
+							". Status: " +
+							r.status +
+							". Timestamp: " +
+							r.timestamp
+					)
 				})
 		}
 	}
@@ -157,7 +166,16 @@ class DepartmentSummaryComponent extends Component {
 					onClick={() => {
 						DepartmentService.deleteDepartment(row.id)
 							.catch(err => {
-								alert(err.response.data)
+								let r = err.response.data
+								alert(
+									r.message +
+										". Statuscode: " +
+										r.statusCode +
+										". Status: " +
+										r.status +
+										". Timestamp: " +
+										r.timestamp
+								)
 							})
 							.then(res => {
 								window.location.reload()

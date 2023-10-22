@@ -10,7 +10,7 @@ class HeaderComponent extends Component {
 
 	render() {
 		return (
-			<div>
+			<div style={{ width: "120%" }}>
 				<header>
 					<nav className='navbar navbar-expand-lg bg-dark'>
 						<div className='container-fluid'>
@@ -46,9 +46,9 @@ class HeaderComponent extends Component {
 										<a
 											style={{ color: "white" }}
 											class='nav-link'
-											href='http://localhost:3000/summary/department'
+											href='http://localhost:3000/summary/employee'
 										>
-											Отделы
+											Сотрудники
 										</a>
 									</li>
 
@@ -66,9 +66,9 @@ class HeaderComponent extends Component {
 										<a
 											style={{ color: "white" }}
 											class='nav-link'
-											href='http://localhost:3000/summary/employee'
+											href='http://localhost:3000/summary/department'
 										>
-											Сотрудники
+											Отделы
 										</a>
 									</li>
 
@@ -96,7 +96,7 @@ class HeaderComponent extends Component {
 											class='nav-link'
 											href='http://localhost:3000/summary/distraction'
 										>
-											Отвлечения
+											Табели отвлечений
 										</a>
 									</li>
 									<li class='nav-item'>
@@ -105,7 +105,7 @@ class HeaderComponent extends Component {
 											class='nav-link'
 											href='http://localhost:3000/summary/rest'
 										>
-											Перерывы
+											Табели перерывов
 										</a>
 									</li>
 
