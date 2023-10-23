@@ -19,6 +19,7 @@ public class Distraction {
     @TableGenerator( name = "Address_Gen", initialValue = 121)
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "Address_Gen")
     private Long id;
+
     @Temporal(TemporalType.DATE)
     @Column(name = "date", nullable = false)
     private LocalDate date;
@@ -26,9 +27,11 @@ public class Distraction {
     @Temporal(TemporalType.TIME)
     @Column(name = "start_distraction")
     private LocalTime startDistraction;
+
     @Temporal(TemporalType.TIME)
     @Column(name = "end_distraction")
     private LocalTime endDistraction;
+
     @Column(name = "distraction_time")
     private long distractionTime;
 

@@ -41,9 +41,22 @@ class PositionSummaryComponent extends Component {
 			endDate: this.state.endDate.toLocaleDateString("ru-RU"),
 		}
 
-		PositionService.getSummaryByPeriod(filterDto).then(res => {
-			this.setState({ positions: res.data })
-		})
+		PositionService.getSummaryByPeriod(filterDto)
+			.then(res => {
+				this.setState({ positions: res.data })
+			})
+			.catch(err => {
+				let r = err.response.data
+				alert(
+					r.message +
+						". Statuscode: " +
+						r.statusCode +
+						". Status: " +
+						r.status +
+						". Timestamp: " +
+						r.timestamp
+				)
+			})
 	}
 
 	getPositionSummaryByPeriod = e => {

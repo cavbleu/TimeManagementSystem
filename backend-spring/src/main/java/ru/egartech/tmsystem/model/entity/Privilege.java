@@ -16,8 +16,10 @@ public class Privilege {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "name", nullable = false, length = 120)
     private String name;
+
     @Column(name = "increased_amount", nullable = false)
     @PositiveOrZero(message = "{number.only.positive}")
     private Long increasedAmount;

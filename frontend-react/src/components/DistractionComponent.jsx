@@ -61,15 +61,27 @@ class DistractionComponent extends Component {
 			startDate: this.state.startDate.toLocaleDateString("ru-RU"),
 			endDate: this.state.endDate.toLocaleDateString("ru-RU"),
 		}
-		console.log(JSON.stringify(filterDto))
 		EmployeeService.getAllByPeriod(filterDto)
 			.then(res => {
 				let ar = []
-				res.data.map(data => {
-					data.distractions.map(distr => {
-						ar.push(new Helper(data.name, data.position, distr, data.id))
+				res.data
+					.map(data => {
+						data.distractions.map(distr => {
+							ar.push(new Helper(data.name, data.position, distr, data.id))
+						})
 					})
-				})
+					.catch(err => {
+						let r = err.response.data
+						alert(
+							r.message +
+								". Statuscode: " +
+								r.statusCode +
+								". Status: " +
+								r.status +
+								". Timestamp: " +
+								r.timestamp
+						)
+					})
 
 				ar.sort(
 					(a, b) =>

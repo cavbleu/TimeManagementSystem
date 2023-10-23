@@ -23,12 +23,14 @@ public class Employee {
     @TableGenerator( name = "Address_Gen", initialValue = 13)
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "Address_Gen")
     private Long id;
+
     @Column(name = "name", nullable = false, length = 60)
     @Pattern(regexp = "[Я-аА-яa-zA-Z\\s]*$", message = "{name.emp.only.letters}")
     @Pattern(regexp = "^\\S+(?: \\S+)*$", message = "{name.emp.start.end.no.spaces}")
     @Size(min = 2, message = "Имя должно быть не менее 10 символов")
     @Size(max = 60, message = "Имя должно быть не более 60 символов")
     private String name;
+
     @Column(name = "age", nullable = false)
     @Min(value = 18, message = "{Минимальный возраст сотрудника 18}")
     private int age;
@@ -44,12 +46,10 @@ public class Employee {
 
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy("date ASC")
-    @OrderColumn(name = "id")
     private List<Rest> rests = new ArrayList<>();
 
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy("date ASC")
-    @OrderColumn(name = "id")
     private List<Distraction> distractions = new ArrayList<>();
 
     public Employee(String name, int age, Position position, Long privilegesNumber, Long id) {

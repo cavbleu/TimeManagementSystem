@@ -88,7 +88,6 @@ class CreateOrUpdateSettingsComponent extends Component {
 				})
 				.catch(err => {
 					let r = err.response.data
-					console.log(r)
 					if (r.status == 500) {
 						alert(
 							"Норма начала рабочего дня должна быть указана в формате чч:мм. Все поля должны быть заполнены корректными значениями"

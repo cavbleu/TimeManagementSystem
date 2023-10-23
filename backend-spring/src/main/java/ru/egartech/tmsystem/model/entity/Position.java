@@ -21,6 +21,7 @@ public class Position {
     @TableGenerator( name = "Address_Gen", initialValue = 7)
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "Address_Gen")
     private Long id;
+
     @Column(name = "name", nullable = false, unique = true, length = 60)
     @Pattern(regexp = "[Я-аА-яa-zA-Z\\s]*$", message = "{name.only.letters}")
     @Pattern(regexp = "^\\S+(?: \\S+)*$", message = "{name.start.end.no.spaces}")
@@ -33,7 +34,6 @@ public class Position {
 
     @OneToMany(mappedBy = "position", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy("name ASC")
-    @OrderColumn(name = "id")
     private List<Employee> employees = new ArrayList<>();
 
     public Position(String name) {

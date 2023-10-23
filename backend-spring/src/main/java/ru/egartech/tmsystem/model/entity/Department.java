@@ -31,7 +31,6 @@ public class Department {
 
     @OneToMany(mappedBy = "department", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy("name ASC")
-    @OrderColumn(name = "id")
     private List<Position> positions = new ArrayList<>();
 
     public Department(String name) {
