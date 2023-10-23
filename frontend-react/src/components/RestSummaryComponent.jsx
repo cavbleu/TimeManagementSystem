@@ -81,7 +81,16 @@ class RestSummaryComponent extends Component {
 				})
 			})
 			.catch(err => {
-				alert(err.response.data)
+				let r = err.response.data
+				alert(
+					r.message +
+						". Statuscode: " +
+						r.statusCode +
+						". Status: " +
+						r.status +
+						". Timestamp: " +
+						r.timestamp
+				)
 			})
 	}
 

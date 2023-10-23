@@ -15,7 +15,6 @@ class UpdatePrivilegeComponent extends Component {
 	componentDidMount() {
 		PrivilegeService.getById(this.state.id).then(res => {
 			let privilege = res.data
-			console.log(res.data)
 			this.setState({
 				name: privilege.name,
 				increasedAmount: privilege.increasedAmount,

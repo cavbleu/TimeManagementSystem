@@ -16,11 +16,24 @@ class PrivilegeComponent extends Component {
 	}
 
 	componentDidMount() {
-		PrivilegeService.getAll().then(res => {
-			this.setState({
-				privilege: res.data,
+		PrivilegeService.getAll()
+			.then(res => {
+				this.setState({
+					privilege: res.data,
+				})
 			})
-		})
+			.catch(err => {
+				let r = err.response.data
+				alert(
+					r.message +
+						". Statuscode: " +
+						r.statusCode +
+						". Status: " +
+						r.status +
+						". Timestamp: " +
+						r.timestamp
+				)
+			})
 	}
 
 	columns = [

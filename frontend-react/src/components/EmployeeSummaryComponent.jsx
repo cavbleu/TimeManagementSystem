@@ -43,9 +43,22 @@ class EmployeeSummaryComponent extends Component {
 			endDate: this.state.endDate.toLocaleDateString("ru-RU"),
 		}
 
-		EmployeeService.getSummaryByPeriod(filterDto).then(res => {
-			this.setState({ employees: res.data })
-		})
+		EmployeeService.getSummaryByPeriod(filterDto)
+			.then(res => {
+				this.setState({ employees: res.data })
+			})
+			.catch(err => {
+				let r = err.response.data
+				alert(
+					r.message +
+						". Statuscode: " +
+						r.statusCode +
+						". Status: " +
+						r.status +
+						". Timestamp: " +
+						r.timestamp
+				)
+			})
 	}
 
 	getEmployeeSummaryByPeriod = e => {

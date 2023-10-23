@@ -60,9 +60,6 @@ class TimeSheetComponent extends Component {
 			startDate: this.state.startDate.toLocaleDateString("ru-RU"),
 			endDate: this.state.endDate.toLocaleDateString("ru-RU"),
 		}
-
-		console.log(JSON.stringify(filterDto))
-
 		EmployeeService.getAllByPeriod(filterDto)
 			.then(res => {
 				let ar = []
@@ -84,7 +81,16 @@ class TimeSheetComponent extends Component {
 				})
 			})
 			.catch(err => {
-				alert(err.response.data)
+				let r = err.response.data
+				alert(
+					r.message +
+						". Statuscode: " +
+						r.statusCode +
+						". Status: " +
+						r.status +
+						". Timestamp: " +
+						r.timestamp
+				)
 			})
 	}
 

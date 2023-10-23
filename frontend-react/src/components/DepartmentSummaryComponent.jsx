@@ -41,7 +41,18 @@ class DepartmentSummaryComponent extends Component {
 		}
 
 		DepartmentService.getDepartmentSummaryByPeriod(filterDto).then(res => {
-			this.setState({ departments: res.data })
+			this.setState({ departments: res.data }).catch(err => {
+				let r = err.response.data
+				alert(
+					r.message +
+						". Statuscode: " +
+						r.statusCode +
+						". Status: " +
+						r.status +
+						". Timestamp: " +
+						r.timestamp
+				)
+			})
 		})
 	}
 
