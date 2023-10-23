@@ -42,14 +42,17 @@ public class Employee {
 
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy("date ASC")
+    @OrderColumn(name = "id")
     private List<TimeSheet> timeSheets = new ArrayList<>();
 
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy("date ASC")
+    @OrderColumn(name = "id")
     private List<Rest> rests = new ArrayList<>();
 
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy("date ASC")
+    @OrderColumn(name = "id")
     private List<Distraction> distractions = new ArrayList<>();
 
     public Employee(String name, int age, Position position, Long privilegesNumber, Long id) {
