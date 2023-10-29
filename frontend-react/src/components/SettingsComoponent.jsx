@@ -11,7 +11,6 @@ class SettingsComponent extends Component {
 	constructor(props) {
 		super(props)
 
-		var date = new Date()
 		this.state = {
 			settings: [],
 			id: "",

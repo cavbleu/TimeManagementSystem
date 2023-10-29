@@ -18,7 +18,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @SpringBootTest
-@DirtiesContext
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class DeviationTest {
 
     @Autowired
@@ -92,7 +92,6 @@ public class DeviationTest {
 
     @Test
     @DisplayName("Тест - общее число превышений времени перерывов")
-    @DirtiesContext
     void excessRestTimeCountByEmployeeAndPeriodTest() {
         long maxTimeByDay = 1;
         int expected = 2;
@@ -104,7 +103,6 @@ public class DeviationTest {
 
     @Test
     @DisplayName("Тест - общее число превышений времени отвлечений")
-    @DirtiesContext
     void excessDistractionTimeCountByEmployeeAndPeriodTest() {
         long maxTimeByDay = 1;
         int expected = 2;
@@ -115,7 +113,6 @@ public class DeviationTest {
 
     @Test
     @DisplayName("Тест - общее число превышений прогулов")
-    @DirtiesContext
     void skipCountByEmployeeAndPeriodTest() {
         int expected = 1;
         Assertions.assertThat(deviationService.skipCountByEmployeeAndPeriod(employee.getId(), startDate, endDate))
@@ -125,7 +122,6 @@ public class DeviationTest {
 
     @Test
     @DisplayName("Тест - общее число превышений отсутствий")
-    @DirtiesContext
     void absenceCountByEmployeeAndPeriod() {
         int expected = 1;
         Assertions.assertThat(deviationService.absenceCountByEmployeeAndPeriod(employee.getId(), startDate, endDate))
@@ -135,7 +131,6 @@ public class DeviationTest {
 
     @Test
     @DisplayName("Тест - общее число превышений ранних уходов с работы")
-    @DirtiesContext
     void earlyLeavingCountByEmployeeAndPeriodTest() {
         long defaultWorkTime = 900;
         int expected = 2;
@@ -147,7 +142,6 @@ public class DeviationTest {
 
     @Test
     @DisplayName("Тест - общее число превышений опозданий")
-    @DirtiesContext
     void employeeLateCountByMonthTest() {
         LocalTime defaultStartWork = LocalTime.of(7, 0);
         int expected = 2;

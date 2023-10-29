@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @SpringBootTest
-@DirtiesContext
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class EmployeeTest {
 
     @Autowired
@@ -85,7 +85,6 @@ public class EmployeeTest {
 
     @Test
     @DisplayName("Тест - суммарное отработанное время")
-    @DirtiesContext
     void employeeWorkTimeByPeriodTest() {
         Assertions.assertThat(employeeService.employeeWorkTimeByPeriod(startDate, endDate, employee.getId()))
                 .describedAs(String.format("Проверяем, что суммарное рабочее время %d мин", workTime))
@@ -94,7 +93,6 @@ public class EmployeeTest {
 
     @Test
     @DisplayName("Тест - суммарное время перерывов")
-    @DirtiesContext
     void employeeRestTimeByPeriodTest() {
         Assertions.assertThat(employeeService.employeeRestTimeByPeriod(startDate, endDate, employee.getId()))
                 .describedAs(String.format("Проверяем, что суммарное время перерывов %d мин", restTime))
@@ -103,7 +101,6 @@ public class EmployeeTest {
 
     @Test
     @DisplayName("Тест - суммарное время отвлечений")
-    @DirtiesContext
     public void employeeDistractionTimeByPeriod() {
         Assertions.assertThat(employeeService.employeeDistractionTimeByPeriod(startDate, endDate, employee.getId()))
                 .describedAs(String.format("Проверяем, что суммарное время отвлечений %d мин", distractionTime))

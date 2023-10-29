@@ -13,7 +13,6 @@ class DepartmentSummaryComponent extends Component {
 	constructor(props) {
 		super(props)
 
-		var date = new Date()
 		this.state = {
 			departments: [],
 			id: "",
@@ -23,8 +22,8 @@ class DepartmentSummaryComponent extends Component {
 			distractionTime: "",
 			restTime: "",
 			overTime: "",
-			startDate: new Date(date.getFullYear(), date.getMonth(), 1),
-			endDate: new Date(date.getFullYear(), date.getMonth() + 1, 0),
+			startDate: new Date(2023, 9, 1),
+			endDate: new Date(2023, 9, 31),
 			options: {
 				weekday: "long",
 				year: "numeric",

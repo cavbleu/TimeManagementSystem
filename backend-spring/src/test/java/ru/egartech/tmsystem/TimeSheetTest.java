@@ -19,7 +19,7 @@ import java.time.LocalTime;
 import java.util.Collections;
 
 @SpringBootTest
-@DirtiesContext
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class TimeSheetTest implements CrudTest {
 
     @Autowired
@@ -43,8 +43,6 @@ public class TimeSheetTest implements CrudTest {
         LocalTime startWork = LocalTime.of(9, 0);
         LocalTime endWork = LocalTime.of(18, 0);
 
-//        DepartmentDto department = departmentService.save(new DepartmentDto("IT"));
-//        PositionDto position = positionService.save(new PositionDto("QA", department));
         EmployeeDto employee1 = employeeService.save(new EmployeeDto("Petr", 29));
         EmployeeDto employee2 = employeeService.save(new EmployeeDto("Ivan", 32));
         SoftAssertions softAssertions = new SoftAssertions();
