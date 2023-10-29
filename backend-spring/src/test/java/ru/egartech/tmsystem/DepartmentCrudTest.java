@@ -15,7 +15,7 @@ import ru.egartech.tmsystem.service.DepartmentService;
 import java.util.Collections;
 
 @SpringBootTest
-@DirtiesContext
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class DepartmentCrudTest implements CrudTest {
 
     @Autowired

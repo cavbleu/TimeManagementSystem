@@ -13,7 +13,6 @@ class DeviationSummaryComponent extends Component {
 	constructor(props) {
 		super(props)
 
-		var date = new Date()
 		this.state = {
 			deviations: [],
 			employeeName: "",
@@ -25,7 +24,7 @@ class DeviationSummaryComponent extends Component {
 			excessDistractionTimeCount: "",
 			excessRestTimeCount: "",
 			privileges: "",
-			yearMonth: new Date(date.getFullYear(), date.getMonth(), 1),
+			yearMonth: new Date(2023, 9, 1),
 			options: {
 				weekday: "long",
 				year: "numeric",

@@ -18,7 +18,7 @@ import java.util.Collections;
 
 @Slf4j
 @SpringBootTest
-@DirtiesContext
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class PrivilegeTest implements CrudTest {
     @Autowired
     PrivilegeService privilegeService;

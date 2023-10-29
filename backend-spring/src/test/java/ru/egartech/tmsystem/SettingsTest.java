@@ -19,7 +19,7 @@ import java.time.LocalTime;
 
 @Slf4j
 @SpringBootTest
-@DirtiesContext
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class SettingsTest implements CrudTest {
 
     @Autowired
