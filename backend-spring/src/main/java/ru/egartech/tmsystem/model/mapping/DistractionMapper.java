@@ -1,41 +1,17 @@
 package ru.egartech.tmsystem.model.mapping;
 
 import org.mapstruct.Mapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import ru.egartech.tmsystem.model.dto.DistractionDto;
 import ru.egartech.tmsystem.model.entity.Distraction;
-import ru.egartech.tmsystem.utils.MapHelper;
 
 import java.time.Duration;
 
 @Mapper(componentModel = "spring")
-public abstract class DistractionMapper {
-
-    private MapHelper mapHelper;
-
-    @Autowired
-    public void setMapHelper(MapHelper mapHelper) {
-        this.mapHelper = mapHelper;
-    }
+public abstract class DistractionMapper extends MapHelper {
 
     public DistractionDto toDto(Distraction distraction) {
-        if (distraction == null) {
-            return null;
-        }
-
-        DistractionDto distractionDto = new DistractionDto();
-
-        distractionDto.setId(distraction.getId());
-        distractionDto.setDate(distraction.getDate());
-        distractionDto.setStartDistraction(distraction.getStartDistraction());
-        distractionDto.setEndDistraction(distraction.getEndDistraction());
-        if (distraction.getStartDistraction() == null || distraction.getEndDistraction() == null) {
-            distractionDto.setDistractionTime(0L);
-        } else {
-            distractionDto.setDistractionTime(distraction.getDistractionTime());
-        }
-        distractionDto.setEmployee(mapHelper.employeeEntityToDto(distraction.getEmployee()));
-
+        DistractionDto distractionDto = distractionToDistractionDto(distraction);
+        distractionDto.setEmployee(employeeEntityToDto(distraction.getEmployee()));
         return distractionDto;
     }
 
@@ -50,7 +26,7 @@ public abstract class DistractionMapper {
         } else {
             distraction.setDistractionTime(Duration.between(dto.getStartDistraction(), dto.getEndDistraction()).toMinutes());
         }
-        distraction.setEmployee(mapHelper.employeeDtoToEntity(dto.getEmployee()));
+        distraction.setEmployee(employeeDtoToEntity(dto.getEmployee()));
         return distraction;
     }
 }

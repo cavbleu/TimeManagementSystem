@@ -10,7 +10,6 @@ import ru.egartech.tmsystem.exception.CustomEntityNotFoundException;
 import ru.egartech.tmsystem.exception.DepartmentConstraintException;
 import ru.egartech.tmsystem.model.dto.DepartmentDto;
 import ru.egartech.tmsystem.model.dto.DepartmentSummaryDto;
-import ru.egartech.tmsystem.model.dto.SettingsDto;
 import ru.egartech.tmsystem.model.entity.Department;
 import ru.egartech.tmsystem.model.entity.Position;
 import ru.egartech.tmsystem.model.mapping.DepartmentMapper;
@@ -18,10 +17,8 @@ import ru.egartech.tmsystem.model.repository.DepartmentRepository;
 import ru.egartech.tmsystem.service.DepartmentService;
 import ru.egartech.tmsystem.service.SettingsService;
 import ru.egartech.tmsystem.utils.PeriodValidation;
-import ru.egartech.tmsystem.utils.SummaryFormatter;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -81,28 +78,15 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public List<DepartmentSummaryDto> departmentsSummary(LocalDate startDate, LocalDate endDate) {
-
+    public List<DepartmentSummaryDto> departmentSummaryByPeriod(LocalDate startDate, LocalDate endDate) {
         PeriodValidation.validatePeriod(30,0,0, startDate, endDate);
-
-        List<DepartmentSummaryDto> departmentsSummary = new ArrayList<>();
-        List<DepartmentDto> departments = findAll();
-        SettingsDto settings = settingsService.findByCurrentSettingsProfile();
-
-        for (DepartmentDto department : departments) {
-
-            DepartmentSummaryDto departmentSummaryDto = new DepartmentSummaryDto();
-            departmentSummaryDto.setId(department.getId());
-            long workTime = departmentWorkTimeByPeriod(startDate, endDate, department.getId());
-            long distractionTime = departmentDistractionTimeByPeriod(startDate, endDate, department.getId());
-            long restTime = departmentRestTimeByPeriod(startDate, endDate, department.getId());
-            SummaryFormatter.toSummaryDto(workTime, distractionTime, restTime,
-                    departmentSummaryDto, department, startDate, endDate, settings);
-
-            departmentsSummary.add(departmentSummaryDto);
-        }
-
-        return departmentsSummary;
+        return findAll().stream()
+                .map(d -> mapper.toDepartmentSummaryDto(d,settingsService.findByCurrentSettingsProfile(),
+                        startDate, endDate,
+                        departmentWorkTimeByPeriod(startDate, endDate, d.getId()),
+                        departmentDistractionTimeByPeriod(startDate, endDate, d.getId()),
+                        departmentRestTimeByPeriod(startDate, endDate, d.getId())))
+                .toList();
     }
 
     @Override

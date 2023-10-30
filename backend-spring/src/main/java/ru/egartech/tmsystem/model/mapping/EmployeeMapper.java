@@ -2,15 +2,24 @@ package ru.egartech.tmsystem.model.mapping;
 
 import org.mapstruct.Mapper;
 import ru.egartech.tmsystem.model.dto.*;
-import ru.egartech.tmsystem.model.entity.*;
+import ru.egartech.tmsystem.model.entity.Distraction;
+import ru.egartech.tmsystem.model.entity.Employee;
+import ru.egartech.tmsystem.model.entity.Rest;
+import ru.egartech.tmsystem.model.entity.TimeSheet;
 import ru.egartech.tmsystem.utils.BitsConverter;
+import ru.egartech.tmsystem.utils.SummaryFormatter;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public abstract class EmployeeMapper {
+public abstract class EmployeeMapper extends MapHelper {
+
     public Employee toEntity(EditEmployeeDto dto) {
+        if (dto == null) {
+            return null;
+        }
         Employee employee = new Employee();
         employee.setName(dto.getName());
         employee.setAge(dto.getAge());
@@ -20,6 +29,9 @@ public abstract class EmployeeMapper {
     }
 
     public EmployeeDto toDto(EditEmployeeDto dto) {
+        if (dto == null) {
+            return null;
+        }
         EmployeeDto employeeDto = new EmployeeDto();
         employeeDto.setId(dto.getId());
         employeeDto.setName(dto.getName());
@@ -29,14 +41,29 @@ public abstract class EmployeeMapper {
         return employeeDto;
     }
 
+    public EmployeeSummaryDto toEmployeeSummaryDto(EmployeeDto dto, SettingsDto settingsDto, LocalDate startDate, LocalDate endDate,
+                                                   Long workTime, Long distractionTime, Long restTime) {
+        if (dto == null) {
+            return null;
+        }
+        EmployeeSummaryDto employeeSummaryDto = new EmployeeSummaryDto();
+        employeeSummaryDto.setId(dto.getId());
+        employeeSummaryDto.setAge(dto.getAge());
+        SummaryFormatter.toSummaryDto(workTime, distractionTime, restTime,
+                employeeSummaryDto, dto, startDate, endDate, settingsDto);
+        employeeSummaryDto.setEmployeeName(dto.getName());
+        employeeSummaryDto.setPositionName(dto.getPosition().getName());
+        employeeSummaryDto.setDepartmentName(dto.getPosition().getDepartment().getName());
+        employeeSummaryDto.setPrivileges(String.join("; ", dto.getPrivileges()));
+        return employeeSummaryDto;
+    }
+
 
     public Employee toEntity(EmployeeDto dto) {
         if (dto == null) {
             return null;
         }
-
         Employee employee = new Employee();
-
         employee.setId(dto.getId());
         employee.setName(dto.getName());
         employee.setAge(dto.getAge());
@@ -45,9 +72,6 @@ public abstract class EmployeeMapper {
         employee.setTimeSheets(timeSheetDtoListToTimeSheetList(dto.getTimeSheets()));
         employee.setRests(restDtoListToRestList(dto.getRests()));
         employee.setDistractions(distractionDtoListToDistractionList(dto.getDistractions()));
-        employee.setPrivilegesNumber(dto.getPrivilegesNumber());
-
-
         return employee;
     }
 
@@ -55,9 +79,7 @@ public abstract class EmployeeMapper {
         if (entity == null) {
             return null;
         }
-
         EmployeeDto employeeDto = new EmployeeDto();
-
         employeeDto.setId(entity.getId());
         employeeDto.setName(entity.getName());
         employeeDto.setAge(entity.getAge());
@@ -69,34 +91,41 @@ public abstract class EmployeeMapper {
         if (entity.getPrivilegesNumber() != null) {
             employeeDto.setPrivileges(String.join("; ", BitsConverter.getEmployeePrivileges(entity.getPrivilegesNumber())));
         }
-
-
         return employeeDto;
     }
 
-    protected Department departmentDtoToDepartment(DepartmentDto departmentDto) {
-        if (departmentDto == null) {
+    public EmployeeDto toEmployeeDtoByPeriod(EmployeeDto dto,
+                                             List<TimeSheetDto> timeSheetDtoList,
+                                             List<RestDto> restDtoList,
+                                             List<DistractionDto> distractionDtoList) {
+        if (dto == null) {
             return null;
         }
-
-        Department department = new Department();
-        department.setId(departmentDto.getId());
-        department.setName(departmentDto.getName());
-
-        return department;
+        EmployeeDto employeeDto = new EmployeeDto();
+        employeeDto.setId(dto.getId());
+        employeeDto.setName(dto.getName());
+        employeeDto.setAge(dto.getAge());
+        employeeDto.setPosition(dto.getPosition());
+        employeeDto.setPrivilegesNumber(dto.getPrivilegesNumber());
+        employeeDto.setPosition(dto.getPosition());
+        employeeDto.setRests(restDtoList);
+        employeeDto.setDistractions(distractionDtoList);
+        employeeDto.setTimeSheets(timeSheetDtoList);
+        return employeeDto;
     }
 
-    protected Position positionDtoToPosition(PositionDto positionDto) {
-        if (positionDto == null) {
+    public EditEmployeeDto toEditEmployeeDto(EmployeeDto dto) {
+        if (dto == null) {
             return null;
         }
-
-        Position position = new Position();
-        position.setId(positionDto.getId());
-        position.setName(positionDto.getName());
-        position.setDepartment(departmentDtoToDepartment(positionDto.getDepartment()));
-
-        return position;
+        EditEmployeeDto editEmployeeDto = new EditEmployeeDto();
+        editEmployeeDto.setId(dto.getId());
+        editEmployeeDto.setName(dto.getName());
+        editEmployeeDto.setAge(dto.getAge());
+        editEmployeeDto.setPosition(dto.getPosition());
+        editEmployeeDto.setPrivilegesNumber(dto.getPrivilegesNumber());
+        BitsConverter.setEmployeePrivileges(editEmployeeDto);
+        return editEmployeeDto;
     }
 
     protected TimeSheet timeSheetDtoToTimeSheet(TimeSheetDto timeSheetDto) {
@@ -129,13 +158,11 @@ public abstract class EmployeeMapper {
 
     protected Rest restDtoToRest(RestDto restDto) {
         Rest rest = new Rest();
-
         rest.setId(restDto.getId());
         rest.setDate(restDto.getDate());
         rest.setStartRest(restDto.getStartRest());
         rest.setEndRest(restDto.getEndRest());
         rest.setRestTime(restDto.getRestTime());
-
         return rest;
     }
 
@@ -143,14 +170,12 @@ public abstract class EmployeeMapper {
         if (list == null) {
             return null;
         }
-
         List<Rest> list1 = new ArrayList<>(list.size());
         for (RestDto restDto : list) {
             if (restDto != null) {
                 list1.add(restDtoToRest(restDto));
             }
         }
-
         return list1;
     }
 
@@ -162,7 +187,6 @@ public abstract class EmployeeMapper {
         distraction.setStartDistraction(distractionDto.getStartDistraction());
         distraction.setEndDistraction(distractionDto.getEndDistraction());
         distraction.setDistractionTime(distractionDto.getDistractionTime());
-
         return distraction;
     }
 
@@ -170,133 +194,51 @@ public abstract class EmployeeMapper {
         if (list == null) {
             return null;
         }
-
         List<Distraction> list1 = new ArrayList<>(list.size());
         for (DistractionDto distractionDto : list) {
             if (distractionDto != null) {
                 list1.add(distractionDtoToDistraction(distractionDto));
             }
         }
-
         return list1;
-    }
-
-    protected DepartmentDto departmentToDepartmentDto(Department department) {
-        if (department == null) {
-            return null;
-        }
-
-        DepartmentDto departmentDto = new DepartmentDto();
-        departmentDto.setId(department.getId());
-        departmentDto.setName(department.getName());
-
-        return departmentDto;
-    }
-
-    protected PositionDto positionToPositionDto(Position position) {
-        if (position == null) {
-            return null;
-        }
-
-        PositionDto positionDto = new PositionDto();
-
-        positionDto.setId(position.getId());
-        positionDto.setName(position.getName());
-        positionDto.setDepartment(departmentToDepartmentDto(position.getDepartment()));
-
-        return positionDto;
-    }
-
-    protected TimeSheetDto timeSheetToTimeSheetDto(TimeSheet timeSheet) {
-        TimeSheetDto timeSheetDto = new TimeSheetDto();
-
-        timeSheetDto.setId(timeSheet.getId());
-        timeSheetDto.setDate(timeSheet.getDate());
-        timeSheetDto.setAbsenceReason(timeSheet.getAbsenceReason());
-        timeSheetDto.setStartWork(timeSheet.getStartWork());
-        timeSheetDto.setEndWork(timeSheet.getEndWork());
-        if (timeSheet.getStartWork() == null || timeSheet.getEndWork() == null) {
-            timeSheetDto.setWorkTime(0L);
-        } else {
-            timeSheetDto.setWorkTime(timeSheet.getWorkTime());
-        }
-        return timeSheetDto;
     }
 
     protected List<TimeSheetDto> timeSheetListToTimeSheetDtoList(List<TimeSheet> list) {
         if (list == null) {
             return null;
         }
-
         List<TimeSheetDto> list1 = new ArrayList<>(list.size());
         for (TimeSheet timeSheet : list) {
             if (timeSheet != null) {
                 list1.add(timeSheetToTimeSheetDto(timeSheet));
             }
         }
-
         return list1;
-    }
-
-    protected RestDto restToRestDto(Rest rest) {
-        RestDto restDto = new RestDto();
-
-        restDto.setId(rest.getId());
-        restDto.setDate(rest.getDate());
-        restDto.setStartRest(rest.getStartRest());
-        restDto.setEndRest(rest.getEndRest());
-        if (rest.getStartRest() == null || rest.getEndRest() == null) {
-            restDto.setRestTime(0L);
-        } else {
-            restDto.setRestTime(rest.getRestTime());
-        }
-
-        return restDto;
     }
 
     protected List<RestDto> restListToRestDtoList(List<Rest> list) {
         if (list == null) {
             return null;
         }
-
         List<RestDto> list1 = new ArrayList<>(list.size());
         for (Rest rest : list) {
             if (rest != null) {
                 list1.add(restToRestDto(rest));
             }
         }
-
         return list1;
-    }
-
-    protected DistractionDto distractionToDistractionDto(Distraction distraction) {
-        DistractionDto distractionDto = new DistractionDto();
-
-        distractionDto.setId(distraction.getId());
-        distractionDto.setDate(distraction.getDate());
-        distractionDto.setStartDistraction(distraction.getStartDistraction());
-        distractionDto.setEndDistraction(distraction.getEndDistraction());
-        if (distraction.getStartDistraction() == null || distraction.getEndDistraction() == null) {
-            distractionDto.setDistractionTime(0L);
-        } else {
-            distractionDto.setDistractionTime(distraction.getDistractionTime());
-        }
-
-        return distractionDto;
     }
 
     protected List<DistractionDto> distractionListToDistractionDtoList(List<Distraction> list) {
         if (list == null) {
             return null;
         }
-
         List<DistractionDto> list1 = new ArrayList<>(list.size());
         for (Distraction distraction : list) {
             if (distraction != null) {
                 list1.add(distractionToDistractionDto(distraction));
             }
         }
-
         return list1;
     }
 }

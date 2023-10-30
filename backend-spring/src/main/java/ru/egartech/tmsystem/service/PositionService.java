@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface PositionService extends BaseService<PositionDto, Long> {
 
-    List<PositionSummaryDto> positionsSummaryByPeriod(LocalDate startDate, LocalDate endDate);
+    List<PositionSummaryDto> positionSummaryByPeriod(LocalDate startDate, LocalDate endDate);
 
     long positionWorkTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id);
 

@@ -3,7 +3,7 @@ package ru.egartech.tmsystem.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.egartech.tmsystem.model.dto.DeviationDto;
+import ru.egartech.tmsystem.model.dto.DeviationSummaryDto;
 import ru.egartech.tmsystem.model.dto.FilterDto;
 import ru.egartech.tmsystem.service.DeviationService;
 
@@ -18,7 +18,7 @@ public class DeviationController {
     private final DeviationService deviationService;
 
     @PutMapping
-    public ResponseEntity<List<DeviationDto>> getDeviationsByEmployee(@RequestBody FilterDto filterDto) {
+    public ResponseEntity<List<DeviationSummaryDto>> getDeviationsByEmployee(@RequestBody FilterDto filterDto) {
         return ResponseEntity.ok(deviationService.deviationAllEmployeesByMonth(filterDto.getYearMonth()));
     }
 

@@ -1,7 +1,6 @@
 package ru.egartech.tmsystem.utils;
 
 import lombok.experimental.UtilityClass;
-import ru.egartech.tmsystem.exception.CustomEntityNotFoundException;
 import ru.egartech.tmsystem.model.dto.PrivilegeDto;
 import ru.egartech.tmsystem.model.enumeration.EmployeePrivilegesEnum;
 
@@ -27,6 +26,6 @@ public class DeviationFormatter {
                 .filter(p -> p.getName().equals(privilege.getName()))
                 .findFirst()
                 .map(PrivilegeDto::getIncreasedAmount)
-                .orElseThrow(CustomEntityNotFoundException::new);
+                .orElse(0L);
     }
 }

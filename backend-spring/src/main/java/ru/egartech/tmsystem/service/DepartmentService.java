@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface DepartmentService extends BaseService<DepartmentDto, Long> {
 
-    List<DepartmentSummaryDto> departmentsSummary(LocalDate startDate, LocalDate endDate);
+    List<DepartmentSummaryDto> departmentSummaryByPeriod(LocalDate startDate, LocalDate endDate);
 
     long departmentWorkTimeByPeriod(LocalDate startDate, LocalDate endDate, Long id);
 

@@ -12,17 +12,14 @@ import ru.egartech.tmsystem.exception.CustomEntityNotFoundException;
 import ru.egartech.tmsystem.exception.PositionConstraintException;
 import ru.egartech.tmsystem.model.dto.PositionDto;
 import ru.egartech.tmsystem.model.dto.PositionSummaryDto;
-import ru.egartech.tmsystem.model.dto.SettingsDto;
 import ru.egartech.tmsystem.model.entity.Position;
 import ru.egartech.tmsystem.model.mapping.PositionMapper;
 import ru.egartech.tmsystem.model.repository.PositionRepository;
 import ru.egartech.tmsystem.service.PositionService;
 import ru.egartech.tmsystem.service.SettingsService;
 import ru.egartech.tmsystem.utils.PeriodValidation;
-import ru.egartech.tmsystem.utils.SummaryFormatter;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,8 +29,8 @@ public class PositionServiceImpl implements PositionService {
 
     private final PositionRepository repository;
     private final PositionMapper mapper;
-    private final SettingsService settingsService;
     private final EntityManagerFactory entityManagerFactory;
+    private final SettingsService settingsService;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -59,7 +56,7 @@ public class PositionServiceImpl implements PositionService {
         try {
             EntityManager entityManager = entityManagerFactory.createEntityManager();
             entityManager.getTransaction().begin();
-            positionDto = mapper.toDto(entityManager.merge(mapper.toEntity(dto)));
+            positionDto = mapper.toDto(entityManager.merge(mapper.positionDtoToPosition(dto)));
             entityManager.getTransaction().commit();
         } catch (Exception ex) {
             entityManager.getTransaction().rollback();
@@ -72,8 +69,8 @@ public class PositionServiceImpl implements PositionService {
     @Transactional
     @Override
     public PositionDto updateById(Long id, PositionDto updated) {
-        Position actual = mapper.toEntity(findById(id));
-        BeanUtils.copyProperties(mapper.toEntity(updated), actual, "id");
+        Position actual = mapper.positionDtoToPosition(findById(id));
+        BeanUtils.copyProperties(mapper.positionDtoToPosition(updated), actual, "id");
         return mapper.toDto(entityManager.merge(actual));
     }
 
@@ -87,29 +84,15 @@ public class PositionServiceImpl implements PositionService {
     }
 
     @Override
-    public List<PositionSummaryDto> positionsSummaryByPeriod(LocalDate startDate, LocalDate endDate) {
-
+    public List<PositionSummaryDto> positionSummaryByPeriod(LocalDate startDate, LocalDate endDate) {
         PeriodValidation.validatePeriod(30, 0, 0, startDate, endDate);
-
-        List<PositionSummaryDto> positionsSummary = new ArrayList<>();
-        List<PositionDto> positions = findAll();
-        SettingsDto settings = settingsService.findByCurrentSettingsProfile();
-
-        for (PositionDto position : positions) {
-
-            PositionSummaryDto positionSummaryDto = new PositionSummaryDto();
-            positionSummaryDto.setId(position.getId());
-            long workTime = positionWorkTimeByPeriod(startDate, endDate, position.getId());
-            long distractionTime = positionDistractionTimeByPeriod(startDate, endDate, position.getId());
-            long restTime = positionRestTimeByPeriod(startDate, endDate, position.getId());
-            SummaryFormatter.toSummaryDto(workTime, distractionTime, restTime,
-                    positionSummaryDto, position, startDate, endDate, settings);
-            positionSummaryDto.setDepartmentName(position.getDepartment().getName());
-            positionSummaryDto.setPositionName(position.getName());
-            positionsSummary.add(positionSummaryDto);
-        }
-
-        return positionsSummary;
+        return findAll().stream()
+                .map(p -> mapper.toPositionSummaryDto(p, settingsService.findByCurrentSettingsProfile(),
+                        startDate, endDate,
+                        positionWorkTimeByPeriod(startDate, endDate, p.getId()),
+                        positionDistractionTimeByPeriod(startDate, endDate, p.getId()),
+                        positionRestTimeByPeriod(startDate, endDate, p.getId())))
+                .toList();
     }
 
     @Override

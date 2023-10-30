@@ -38,7 +38,7 @@ public class PositionCrudTest implements CrudTest {
     @Test
     public void crudTest() {
         DepartmentDto department = departmentService.save(new DepartmentDto("IT"));
-        Position position = positionMapper.toEntity(positionService.save(new PositionDto("QA", department)));
+        Position position = positionMapper.positionDtoToPosition(positionService.save(new PositionDto("QA", department)));
         SoftAssertions softAssertions = new SoftAssertions();
 
         //Save test
