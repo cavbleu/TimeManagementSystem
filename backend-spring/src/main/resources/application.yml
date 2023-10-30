@@ -25,6 +25,7 @@ spring:
   sql:
     init:
       mode: always
+      data-locations: sql/data.sql
 
 logging:
   level:
