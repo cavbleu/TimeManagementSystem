@@ -13,18 +13,14 @@ import ru.egartech.tmsystem.exception.CustomEntityNotFoundException;
 import ru.egartech.tmsystem.model.dto.EditEmployeeDto;
 import ru.egartech.tmsystem.model.dto.EmployeeDto;
 import ru.egartech.tmsystem.model.dto.EmployeeSummaryDto;
-import ru.egartech.tmsystem.model.dto.SettingsDto;
 import ru.egartech.tmsystem.model.entity.Employee;
 import ru.egartech.tmsystem.model.entity.TimeSheet;
 import ru.egartech.tmsystem.model.mapping.EmployeeMapper;
 import ru.egartech.tmsystem.model.repository.EmployeeRepository;
 import ru.egartech.tmsystem.service.*;
-import ru.egartech.tmsystem.utils.BitsConverter;
 import ru.egartech.tmsystem.utils.PeriodValidation;
-import ru.egartech.tmsystem.utils.SummaryFormatter;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,8 +46,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         this.mapper = mapper;
         this.settingsService = settingsService;
         this.distractionService = distractionService;
-        this.restService = restService;
         this.timeSheetService = timeSheetService;
+        this.restService = restService;
     }
 
     @Override
@@ -96,31 +92,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<EmployeeSummaryDto> employeeSummaryByPeriod(LocalDate startDate, LocalDate endDate) {
-
         PeriodValidation.validatePeriod(30, 0, 0, startDate, endDate);
-
-        List<EmployeeSummaryDto> employeesSummary = new ArrayList<>();
-        List<EmployeeDto> employees = findAll();
-        SettingsDto settings = settingsService.findByCurrentSettingsProfile();
-
-        for (EmployeeDto employee : employees) {
-
-            EmployeeSummaryDto employeeSummaryDto = new EmployeeSummaryDto();
-            employeeSummaryDto.setId(employee.getId());
-            employeeSummaryDto.setAge(employee.getAge());
-            long workTime = employeeWorkTimeByPeriod(startDate, endDate, employee.getId());
-            long distractionTime = employeeDistractionTimeByPeriod(startDate, endDate, employee.getId());
-            long restTime = employeeRestTimeByPeriod(startDate, endDate, employee.getId());
-            SummaryFormatter.toSummaryDto(workTime, distractionTime, restTime,
-                    employeeSummaryDto, employee, startDate, endDate, settings);
-            employeeSummaryDto.setEmployeeName(employee.getName());
-            employeeSummaryDto.setPositionName(employee.getPosition().getName());
-            employeeSummaryDto.setDepartmentName(employee.getPosition().getDepartment().getName());
-            employeeSummaryDto.setPrivileges(String.join("; ", employee.getPrivileges()));
-            employeesSummary.add(employeeSummaryDto);
-        }
-
-        return employeesSummary;
+        return findAll().stream()
+                .map(e -> mapper.toEmployeeSummaryDto(e,
+                        settingsService.findByCurrentSettingsProfile(),
+                        startDate, endDate,
+                        employeeWorkTimeByPeriod(startDate, endDate, e.getId()),
+                        employeeDistractionTimeByPeriod(startDate, endDate, e.getId()),
+                        employeeRestTimeByPeriod(startDate, endDate, e.getId())))
+                .toList();
     }
 
     @Override
@@ -164,46 +144,24 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EditEmployeeDto save(EditEmployeeDto dto) {
-
         EmployeeDto employee = save(mapper.toDto(dto));
         return getEditEmployeeDtoById(employee.getId());
     }
 
     @Override
     public List<EmployeeDto> findAllByPeriod(LocalDate startDate, LocalDate endDate) {
-
         PeriodValidation.validatePeriod(30, 0, 0, startDate, endDate);
-
-        List<EmployeeDto> result = new ArrayList<>();
-        for (EmployeeDto employeeDto : findAll()) {
-            EmployeeDto dto = new EmployeeDto();
-            dto.setId(employeeDto.getId());
-            dto.setName(employeeDto.getName());
-            dto.setAge(employeeDto.getAge());
-            dto.setPosition(employeeDto.getPosition());
-            dto.setPrivilegesNumber(employeeDto.getPrivilegesNumber());
-            dto.setPosition(employeeDto.getPosition());
-            dto.setRests(restService.findByDateBetweenAndEmployee_Id(startDate, endDate, employeeDto.getId()));
-            dto.setDistractions(distractionService.findByDateBetweenAndEmployee_Id(startDate, endDate, employeeDto.getId()));
-            dto.setTimeSheets(timeSheetService.findByDateBetweenAndEmployee_Id(startDate, endDate, employeeDto.getId()));
-
-            result.add(dto);
-        }
-
-        return result;
+        return findAll().stream()
+                .map(e -> mapper.toEmployeeDtoByPeriod(e,
+                        timeSheetService.findByDateBetweenAndEmployee_Id(startDate, endDate, e.getId()),
+                        restService.findByDateBetweenAndEmployee_Id(startDate, endDate, e.getId()),
+                        distractionService.findByDateBetweenAndEmployee_Id(startDate, endDate, e.getId())
+                ))
+                .toList();
     }
 
     @Override
-    public EditEmployeeDto getEditEmployeeDtoById(Long employeeId) {
-        EditEmployeeDto editEmployeeDto = new EditEmployeeDto();
-        EmployeeDto employeeDto = findById(employeeId);
-        editEmployeeDto.setId(employeeId)
-                .setName(employeeDto.getName())
-                .setAge(employeeDto.getAge())
-                .setPosition(employeeDto.getPosition())
-                .setPrivilegesNumber(employeeDto.getPrivilegesNumber());
-//        editEmployeeDto.setAllPositions(positionService.findAll());
-        BitsConverter.setEmployeePrivileges(editEmployeeDto);
-        return editEmployeeDto;
+    public EditEmployeeDto getEditEmployeeDtoById(Long id) {
+        return mapper.toEditEmployeeDto(findById(id));
     }
 }

@@ -25,12 +25,12 @@ public class SummaryController {
 
     @PutMapping("/departmentByPeriod")
     public ResponseEntity<List<DepartmentSummaryDto>> getDepartmentsSummary(@RequestBody FilterDto filterDto) {
-        return ResponseEntity.ok(departmentService.departmentsSummary(filterDto.getStartDate(), filterDto.getEndDate()));
+        return ResponseEntity.ok(departmentService.departmentSummaryByPeriod(filterDto.getStartDate(), filterDto.getEndDate()));
     }
 
     @PutMapping("/positionByPeriod")
     public ResponseEntity<List<PositionSummaryDto>> getPositionsSummary(@RequestBody FilterDto filterDto) {
-        return ResponseEntity.ok(positionService.positionsSummaryByPeriod(filterDto.getStartDate(), filterDto.getEndDate()));
+        return ResponseEntity.ok(positionService.positionSummaryByPeriod(filterDto.getStartDate(), filterDto.getEndDate()));
     }
 
     @PutMapping("/employeeByPeriod")
